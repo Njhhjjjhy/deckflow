@@ -43,8 +43,9 @@
 /* Headline */
 .cover-page__headline {
   position: absolute;
-  left: 60px;
-  top: 220px;
+  left: 104px;
+  top: 291px;
+  transform: translateY(-50%);
   max-width: 400px;
   font-family: 'REM', sans-serif;
   font-weight: 600;
@@ -66,9 +67,9 @@
   height: 280px;
   border-radius: 50%;
   overflow: hidden;
-  /* Center at x=672, y=300 means top-left = (672-140, 300-140) = (532, 160) */
-  left: 532px;
-  top: 160px;
+  left: 576px;
+  top: 291px;
+  transform: translateY(-50%);
 }
 
 .cover-page__hero img {
