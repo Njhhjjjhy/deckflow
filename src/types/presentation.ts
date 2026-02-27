@@ -139,6 +139,24 @@ export function createValuePropositionPage(order: number): Page {
   };
 }
 
+/** Helper to create a new diagram/branching page */
+export function createDiagramPage(order: number): Page {
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'diagram',
+    content: {
+      logoImage: '',
+      branch1Heading: createTranslatableField(''),
+      branch1Body: createTranslatableField(''),
+      branch2Heading: createTranslatableField(''),
+      branch2Body: createTranslatableField(''),
+      branch3Heading: createTranslatableField(''),
+      branch3Body: createTranslatableField(''),
+    },
+  };
+}
+
 /** Helper to create a new contact/closing page */
 export function createContactPage(order: number): Page {
   return {

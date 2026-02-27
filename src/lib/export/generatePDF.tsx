@@ -4,6 +4,7 @@ import CoverPagePDF from './CoverPagePDF';
 import ValuePropositionPDF from './ValuePropositionPDF';
 import SectionDividerPDF from './SectionDividerPDF';
 import ContactPagePDF from './ContactPagePDF';
+import DiagramPagePDF from './DiagramPagePDF';
 import DisclaimerPagePDF from './DisclaimerPagePDF';
 import { loadImage } from '../images/imageStore';
 
@@ -18,7 +19,7 @@ async function buildDocument(presentation: Presentation) {
   const pages = await Promise.all(
     presentation.pages.map(async (page) => {
       const heroImageKey = page.type === 'cover' ? (page.content.heroImage as string) : '';
-      const logoImageKey = page.type === 'contact' ? (page.content.logoImage as string) : '';
+      const logoImageKey = (page.type === 'contact' || page.type === 'diagram') ? (page.content.logoImage as string) : '';
       const badge1IconKey = page.type === 'value-proposition' ? (page.content.badge1Icon as string) : '';
       const badge2IconKey = page.type === 'value-proposition' ? (page.content.badge2Icon as string) : '';
       const badge3IconKey = page.type === 'value-proposition' ? (page.content.badge3Icon as string) : '';
@@ -88,6 +89,32 @@ async function buildDocument(presentation: Presentation) {
                 badge3Icon={badge3Icon}
                 accentBarVisible={accentBarVisible}
                 accentBarColor={accentBarColor}
+              />
+            </Page>
+          );
+        }
+
+        if (page.type === 'diagram') {
+          const branch1Heading = page.content.branch1Heading as TranslatableField;
+          const branch1Body = page.content.branch1Body as TranslatableField;
+          const branch2Heading = page.content.branch2Heading as TranslatableField;
+          const branch2Body = page.content.branch2Body as TranslatableField;
+          const branch3Heading = page.content.branch3Heading as TranslatableField;
+          const branch3Body = page.content.branch3Body as TranslatableField;
+
+          return (
+            <Page
+              key={page.id}
+              size={[width, height]}
+              style={{ width, height }}
+            >
+              <DiagramPagePDF
+                logoImage={logoImage}
+                branches={[
+                  { heading: branch1Heading?.en || '', body: branch1Body?.en || '' },
+                  { heading: branch2Heading?.en || '', body: branch2Body?.en || '' },
+                  { heading: branch3Heading?.en || '', body: branch3Body?.en || '' },
+                ]}
               />
             </Page>
           );

@@ -7,6 +7,7 @@ import CoverPageEditor from './CoverPageEditor';
 import SectionDividerEditor from './SectionDividerEditor';
 import ContactPageEditor from './ContactPageEditor';
 import ValuePropositionEditor from './ValuePropositionEditor';
+import DiagramPageEditor from './DiagramPageEditor';
 import DisclaimerPageEditor from './DisclaimerPageEditor';
 import SlidePreview from '../preview/SlidePreview';
 import DebugOverlay from '../templates/DebugOverlay';
@@ -83,6 +84,8 @@ export default function PresentationEditor() {
               <CoverPageEditor page={selectedPage} />
             ) : selectedPage.type === 'value-proposition' ? (
               <ValuePropositionEditor page={selectedPage} />
+            ) : selectedPage.type === 'diagram' ? (
+              <DiagramPageEditor page={selectedPage} />
             ) : selectedPage.type === 'section-divider' ? (
               <SectionDividerEditor page={selectedPage} />
             ) : selectedPage.type === 'disclaimer' ? (

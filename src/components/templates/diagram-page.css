@@ -1,0 +1,91 @@
+.diagram-page {
+  position: relative;
+  width: 960px;
+  height: 540px;
+  background: #F2F2F2;
+  overflow: hidden;
+}
+
+/* Circular logo on the left */
+.diagram-page__logo {
+  position: absolute;
+  left: 90px;
+  top: 190px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 3px solid #E5E5E5;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.diagram-page__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Logo placeholder when no image */
+.diagram-page__logo--placeholder {
+  border-style: dashed;
+  border-color: #CCCCCC;
+  background: #E8E8E8;
+}
+
+/* SVG overlay for connecting lines */
+.diagram-page__lines {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 960px;
+  height: 540px;
+  pointer-events: none;
+}
+
+/* Branch group — each contains a node dot + heading + body */
+.diagram-page__branch {
+  position: absolute;
+  left: 400px;
+}
+
+.diagram-page__branch--1 { top: 82px; }
+.diagram-page__branch--2 { top: 232px; }
+.diagram-page__branch--3 { top: 382px; }
+
+/* Gold connector dot */
+.diagram-page__node {
+  position: absolute;
+  left: -28px;
+  top: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #FBB931;
+}
+
+.diagram-page__heading {
+  font-family: 'REM', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  color: #1A1A1A;
+  line-height: 1.3;
+  margin: 0 0 6px 0;
+}
+
+.diagram-page__body {
+  font-family: 'REM', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #333333;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 500px;
+  white-space: pre-line;
+}
+
+.diagram-page__body strong {
+  font-weight: 700;
+}

@@ -5,6 +5,7 @@ import CoverPage from '../templates/CoverPage';
 import ValuePropositionPage from '../templates/ValuePropositionPage';
 import SectionDividerPage from '../templates/SectionDividerPage';
 import ContactPage from '../templates/ContactPage';
+import DiagramPage from '../templates/DiagramPage';
 import DisclaimerPage from '../templates/DisclaimerPage';
 
 interface SlidePreviewProps {
@@ -86,6 +87,29 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           badge3Icon: badge3IconData || undefined,
           accentBarVisible,
           accentBarColor,
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'diagram') {
+    const branch1Heading = page.content.branch1Heading as TranslatableField;
+    const branch1Body = page.content.branch1Body as TranslatableField;
+    const branch2Heading = page.content.branch2Heading as TranslatableField;
+    const branch2Body = page.content.branch2Body as TranslatableField;
+    const branch3Heading = page.content.branch3Heading as TranslatableField;
+    const branch3Body = page.content.branch3Body as TranslatableField;
+
+    return (
+      <DiagramPage
+        content={{
+          logoImage: logoImageData || undefined,
+          branches: [
+            { heading: branch1Heading?.[language] || branch1Heading?.en || '', body: branch1Body?.[language] || branch1Body?.en || '' },
+            { heading: branch2Heading?.[language] || branch2Heading?.en || '', body: branch2Body?.[language] || branch2Body?.en || '' },
+            { heading: branch3Heading?.[language] || branch3Heading?.en || '', body: branch3Body?.[language] || branch3Body?.en || '' },
+          ],
         }}
         language={language}
       />
