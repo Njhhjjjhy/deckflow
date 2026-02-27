@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Page, Language, TranslatableField } from '../../types/presentation';
 import { loadImage } from '../../lib/images/imageStore';
 import CoverPage from '../templates/CoverPage';
+import ValuePropositionPage from '../templates/ValuePropositionPage';
 import SectionDividerPage from '../templates/SectionDividerPage';
 import ContactPage from '../templates/ContactPage';
 import DisclaimerPage from '../templates/DisclaimerPage';
@@ -14,24 +15,39 @@ interface SlidePreviewProps {
 export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const [heroImageData, setHeroImageData] = useState<string | null>(null);
   const [logoImageData, setLogoImageData] = useState<string | null>(null);
+  const [badge1IconData, setBadge1IconData] = useState<string | null>(null);
+  const [badge2IconData, setBadge2IconData] = useState<string | null>(null);
+  const [badge3IconData, setBadge3IconData] = useState<string | null>(null);
   const heroImageKey = (page.content.heroImage as string) || '';
   const logoImageKey = (page.content.logoImage as string) || '';
+  const badge1IconKey = (page.content.badge1Icon as string) || '';
+  const badge2IconKey = (page.content.badge2Icon as string) || '';
+  const badge3IconKey = (page.content.badge3Icon as string) || '';
 
   useEffect(() => {
-    if (!heroImageKey) {
-      setHeroImageData(null);
-      return;
-    }
+    if (!heroImageKey) { setHeroImageData(null); return; }
     loadImage(heroImageKey).then((data) => setHeroImageData(data));
   }, [heroImageKey]);
 
   useEffect(() => {
-    if (!logoImageKey) {
-      setLogoImageData(null);
-      return;
-    }
+    if (!logoImageKey) { setLogoImageData(null); return; }
     loadImage(logoImageKey).then((data) => setLogoImageData(data));
   }, [logoImageKey]);
+
+  useEffect(() => {
+    if (!badge1IconKey) { setBadge1IconData(null); return; }
+    loadImage(badge1IconKey).then((data) => setBadge1IconData(data));
+  }, [badge1IconKey]);
+
+  useEffect(() => {
+    if (!badge2IconKey) { setBadge2IconData(null); return; }
+    loadImage(badge2IconKey).then((data) => setBadge2IconData(data));
+  }, [badge2IconKey]);
+
+  useEffect(() => {
+    if (!badge3IconKey) { setBadge3IconData(null); return; }
+    loadImage(badge3IconKey).then((data) => setBadge3IconData(data));
+  }, [badge3IconKey]);
 
   if (page.type === 'cover') {
     const headline = page.content.headline as TranslatableField;
@@ -44,6 +60,32 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           headline: headlineText,
           year,
           heroImage: heroImageData || undefined,
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'value-proposition') {
+    const badge1Label = page.content.badge1Label as TranslatableField;
+    const badge2Label = page.content.badge2Label as TranslatableField;
+    const badge3Label = page.content.badge3Label as TranslatableField;
+    const bodyText = page.content.bodyText as TranslatableField;
+    const accentBarVisible = (page.content.accentBarVisible as string) !== 'false';
+    const accentBarColor = (page.content.accentBarColor as string) || '#FBB931';
+
+    return (
+      <ValuePropositionPage
+        content={{
+          badge1Label: badge1Label?.[language] || badge1Label?.en || '',
+          badge2Label: badge2Label?.[language] || badge2Label?.en || '',
+          badge3Label: badge3Label?.[language] || badge3Label?.en || '',
+          bodyText: bodyText?.[language] || bodyText?.en || '',
+          badge1Icon: badge1IconData || undefined,
+          badge2Icon: badge2IconData || undefined,
+          badge3Icon: badge3IconData || undefined,
+          accentBarVisible,
+          accentBarColor,
         }}
         language={language}
       />

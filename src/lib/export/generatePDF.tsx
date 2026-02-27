@@ -1,6 +1,7 @@
 import { Document, Page, pdf } from '@react-pdf/renderer';
 import type { Presentation, TranslatableField } from '../../types/presentation';
 import CoverPagePDF from './CoverPagePDF';
+import ValuePropositionPDF from './ValuePropositionPDF';
 import SectionDividerPDF from './SectionDividerPDF';
 import ContactPagePDF from './ContactPagePDF';
 import DisclaimerPagePDF from './DisclaimerPagePDF';
@@ -18,23 +19,32 @@ async function buildDocument(presentation: Presentation) {
     presentation.pages.map(async (page) => {
       const heroImageKey = page.type === 'cover' ? (page.content.heroImage as string) : '';
       const logoImageKey = page.type === 'contact' ? (page.content.logoImage as string) : '';
+      const badge1IconKey = page.type === 'value-proposition' ? (page.content.badge1Icon as string) : '';
+      const badge2IconKey = page.type === 'value-proposition' ? (page.content.badge2Icon as string) : '';
+      const badge3IconKey = page.type === 'value-proposition' ? (page.content.badge3Icon as string) : '';
 
-      const [heroImage, logoImage] = await Promise.all([
+      const [heroImage, logoImage, badge1Icon, badge2Icon, badge3Icon] = await Promise.all([
         heroImageKey ? loadImage(heroImageKey) : Promise.resolve(undefined),
         logoImageKey ? loadImage(logoImageKey) : Promise.resolve(undefined),
+        badge1IconKey ? loadImage(badge1IconKey) : Promise.resolve(undefined),
+        badge2IconKey ? loadImage(badge2IconKey) : Promise.resolve(undefined),
+        badge3IconKey ? loadImage(badge3IconKey) : Promise.resolve(undefined),
       ]);
 
       return {
         page,
         heroImage: heroImage ?? undefined,
         logoImage: logoImage ?? undefined,
+        badge1Icon: badge1Icon ?? undefined,
+        badge2Icon: badge2Icon ?? undefined,
+        badge3Icon: badge3Icon ?? undefined,
       };
     })
   );
 
   return (
     <Document>
-      {pages.map(({ page, heroImage, logoImage }) => {
+      {pages.map(({ page, heroImage, logoImage, badge1Icon, badge2Icon, badge3Icon }) => {
         if (page.type === 'cover') {
           const headline = page.content.headline as TranslatableField;
           const year = (page.content.year as string) || new Date().getFullYear().toString();
@@ -49,6 +59,35 @@ async function buildDocument(presentation: Presentation) {
                 headline={headline.en}
                 year={year}
                 heroImage={heroImage}
+              />
+            </Page>
+          );
+        }
+
+        if (page.type === 'value-proposition') {
+          const badge1Label = page.content.badge1Label as TranslatableField;
+          const badge2Label = page.content.badge2Label as TranslatableField;
+          const badge3Label = page.content.badge3Label as TranslatableField;
+          const bodyText = page.content.bodyText as TranslatableField;
+          const accentBarVisible = (page.content.accentBarVisible as string) !== 'false';
+          const accentBarColor = (page.content.accentBarColor as string) || '#FBB931';
+
+          return (
+            <Page
+              key={page.id}
+              size={[width, height]}
+              style={{ width, height }}
+            >
+              <ValuePropositionPDF
+                badge1Label={badge1Label?.en || ''}
+                badge2Label={badge2Label?.en || ''}
+                badge3Label={badge3Label?.en || ''}
+                bodyText={bodyText?.en || ''}
+                badge1Icon={badge1Icon}
+                badge2Icon={badge2Icon}
+                badge3Icon={badge3Icon}
+                accentBarVisible={accentBarVisible}
+                accentBarColor={accentBarColor}
               />
             </Page>
           );

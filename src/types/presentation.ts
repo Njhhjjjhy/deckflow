@@ -119,6 +119,26 @@ export function createDisclaimerPage(order: number): Page {
   };
 }
 
+/** Helper to create a new value proposition page */
+export function createValuePropositionPage(order: number): Page {
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'value-proposition',
+    content: {
+      badge1Label: createTranslatableField(''),
+      badge2Label: createTranslatableField(''),
+      badge3Label: createTranslatableField(''),
+      bodyText: createTranslatableField(''),
+      badge1Icon: '',
+      badge2Icon: '',
+      badge3Icon: '',
+      accentBarVisible: 'true',
+      accentBarColor: '#FBB931',
+    },
+  };
+}
+
 /** Helper to create a new contact/closing page */
 export function createContactPage(order: number): Page {
   return {
