@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Presentation, Page, Language, TranslatableField } from '../../types/presentation';
-import { createCoverPage, createValuePropositionPage, createDiagramPage, createIndexPage, createSectionDividerPage, createDisclaimerPage, createContactPage, createMultiCardGridPage, createTextChartPage, createDataTablePage, createComparisonTablePage, createTimelineImagePage, createTextImagesPage } from '../../types/presentation';
+import { createCoverPage, createValuePropositionPage, createDiagramPage, createIndexPage, createSectionDividerPage, createDisclaimerPage, createContactPage, createMultiCardGridPage, createTextChartPage, createDataTablePage, createComparisonTablePage, createTimelineImagePage, createTextImagesPage, createBeforeAfterPage } from '../../types/presentation';
 
 function createDefaultPresentation(): Presentation {
   return {
@@ -131,7 +131,9 @@ export const usePresentationStore = create<PresentationState>()(
                                     ? createTimelineImagePage(order)
                                     : type === 'text-images'
                                       ? createTextImagesPage(order)
-                                      : createCoverPage(order);
+                                      : type === 'before-after'
+                                        ? createBeforeAfterPage(order)
+                                        : createCoverPage(order);
             newPage.type = type;
             return {
               presentation: {

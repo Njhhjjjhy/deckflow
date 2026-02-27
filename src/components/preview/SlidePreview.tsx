@@ -14,6 +14,7 @@ import DataTablePage from '../templates/DataTablePage';
 import ComparisonTablePage from '../templates/ComparisonTablePage';
 import TimelineImagePage from '../templates/TimelineImagePage';
 import TextImagesPage from '../templates/TextImagesPage';
+import BeforeAfterPage from '../templates/BeforeAfterPage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -32,6 +33,7 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const [tiLogoData, setTiLogoData] = useState<string | null>(null);
   const [tiPhoto1Data, setTiPhoto1Data] = useState<string | null>(null);
   const [tiPhoto2Data, setTiPhoto2Data] = useState<string | null>(null);
+  const [baPairImages, setBaPairImages] = useState<Record<string, { before: string | null; after: string | null }>>({});
   const heroImageKey = (page.content.heroImage as string) || '';
   const logoImageKey = (page.content.logoImage as string) || '';
   const badge1IconKey = (page.content.badge1Icon as string) || '';
@@ -43,6 +45,7 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const tiLogoKey = (page.content.logoImage as string) || '';
   const tiPhoto1Key = (page.content.photo1 as string) || '';
   const tiPhoto2Key = (page.content.photo2 as string) || '';
+  const baPairsDataRaw = (page.content.pairsData as string) || '[]';
 
   useEffect(() => {
     if (!heroImageKey) { setHeroImageData(null); return; }
@@ -119,6 +122,35 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
     });
     if (pending === 0) setCardIconMap({});
   }, [cardsDataRaw, page.type]);
+
+  // Load before-after pair images
+  useEffect(() => {
+    if (page.type !== 'before-after') { setBaPairImages({}); return; }
+    let pairsRaw: { id: string; beforeImage: string; afterImage: string }[] = [];
+    try { pairsRaw = JSON.parse(baPairsDataRaw); } catch { /* ignore */ }
+    const newMap: Record<string, { before: string | null; after: string | null }> = {};
+    let pending = 0;
+    pairsRaw.forEach((pair) => {
+      newMap[pair.id] = { before: null, after: null };
+      if (pair.beforeImage) {
+        pending++;
+        loadImage(pair.beforeImage).then((data) => {
+          newMap[pair.id] = { ...newMap[pair.id], before: data };
+          pending--;
+          if (pending === 0) setBaPairImages({ ...newMap });
+        });
+      }
+      if (pair.afterImage) {
+        pending++;
+        loadImage(pair.afterImage).then((data) => {
+          newMap[pair.id] = { ...newMap[pair.id], after: data };
+          pending--;
+          if (pending === 0) setBaPairImages({ ...newMap });
+        });
+      }
+    });
+    if (pending === 0) setBaPairImages({ ...newMap });
+  }, [baPairsDataRaw, page.type]);
 
   if (page.type === 'cover') {
     const headline = page.content.headline as TranslatableField;
@@ -495,6 +527,55 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           photo2: tiPhoto2Data,
           photo2ShowCaption,
           photo2Caption: photo2Caption?.[language] || photo2Caption?.en || '',
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'before-after') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const beforeLabel = page.content.beforeLabel as TranslatableField;
+    const afterLabel = page.content.afterLabel as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+    const layoutMode = (page.content.layoutMode as string) || '2x2';
+    const badgeBackgroundColor = (page.content.badgeBackgroundColor as string) || '#FBB931';
+    const badgeTextColor = (page.content.badgeTextColor as string) || '#FFFFFF';
+    const badgeFontSize = parseInt((page.content.badgeFontSize as string) || '11', 10);
+    const arrowColor = (page.content.arrowColor as string) || '#FBB931';
+    const arrowSize = parseInt((page.content.arrowSize as string) || '41', 10);
+    const gapColor = (page.content.gapColor as string) || '#FFFFFF';
+
+    let pairsRaw: { id: string; beforeImage: string; afterImage: string; beforeLabel: Record<string, string>; afterLabel: Record<string, string>; showBeforeLabel: boolean; showAfterLabel: boolean; showArrow: boolean }[] = [];
+    try { pairsRaw = JSON.parse(baPairsDataRaw); } catch { /* ignore */ }
+
+    const resolvedPairs = pairsRaw.map((pair) => ({
+      beforeImage: pair.beforeImage ? (baPairImages[pair.id]?.before || null) : null,
+      afterImage: pair.afterImage ? (baPairImages[pair.id]?.after || null) : null,
+      beforeLabel: pair.beforeLabel?.[language] || pair.beforeLabel?.en || '',
+      afterLabel: pair.afterLabel?.[language] || pair.afterLabel?.en || '',
+      showBeforeLabel: pair.showBeforeLabel !== false,
+      showAfterLabel: pair.showAfterLabel !== false,
+      showArrow: pair.showArrow !== false,
+    }));
+
+    return (
+      <BeforeAfterPage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          layoutMode: layoutMode as '2x2' | '1x2' | '2x1' | 'freeform',
+          beforeLabel: beforeLabel?.[language] || beforeLabel?.en || 'Before',
+          afterLabel: afterLabel?.[language] || afterLabel?.en || 'After',
+          badgeBackgroundColor,
+          badgeTextColor,
+          badgeFontSize,
+          arrowColor,
+          arrowSize,
+          gapColor,
+          pairs: resolvedPairs,
         }}
         language={language}
       />

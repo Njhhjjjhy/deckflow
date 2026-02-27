@@ -538,6 +538,73 @@ export function createTextImagesPage(order: number): Page {
   };
 }
 
+/** Helper to create a new before/after grid page */
+export function createBeforeAfterPage(order: number): Page {
+  const defaultPairs = [
+    {
+      id: crypto.randomUUID(),
+      beforeImage: '',
+      afterImage: '',
+      beforeLabel: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      afterLabel: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      showBeforeLabel: true,
+      showAfterLabel: true,
+      showArrow: true,
+    },
+    {
+      id: crypto.randomUUID(),
+      beforeImage: '',
+      afterImage: '',
+      beforeLabel: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      afterLabel: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      showBeforeLabel: true,
+      showAfterLabel: true,
+      showArrow: true,
+    },
+    {
+      id: crypto.randomUUID(),
+      beforeImage: '',
+      afterImage: '',
+      beforeLabel: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      afterLabel: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      showBeforeLabel: true,
+      showAfterLabel: true,
+      showArrow: true,
+    },
+    {
+      id: crypto.randomUUID(),
+      beforeImage: '',
+      afterImage: '',
+      beforeLabel: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      afterLabel: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      showBeforeLabel: true,
+      showAfterLabel: true,
+      showArrow: true,
+    },
+  ];
+
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'before-after',
+    content: {
+      sectionLabel: createTranslatableField('02 | J Estate & Château Life'),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '14',
+      layoutMode: '2x2',
+      beforeLabel: createTranslatableField('Before'),
+      afterLabel: createTranslatableField('After'),
+      badgeBackgroundColor: '#FBB931',
+      badgeTextColor: '#FFFFFF',
+      badgeFontSize: '11',
+      arrowColor: '#FBB931',
+      arrowSize: '41',
+      gapColor: '#FFFFFF',
+      pairsData: JSON.stringify(defaultPairs),
+    },
+  };
+}
+
 /** Helper to create a new contact/closing page */
 export function createContactPage(order: number): Page {
   return {

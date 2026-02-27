@@ -16,18 +16,6 @@ function createEmptyLang(): Record<string, string> {
   return { en: '', 'zh-tw': '', 'zh-cn': '' };
 }
 
-function asTranslatableField(rec: Record<string, string>) {
-  return {
-    en: rec.en || '',
-    'zh-tw': rec['zh-tw'] || '',
-    'zh-cn': rec['zh-cn'] || '',
-    translationStatus: {
-      'zh-tw': 'empty' as const,
-      'zh-cn': 'empty' as const,
-    },
-  };
-}
-
 interface ComparisonTableEditorProps {
   page: Page;
 }

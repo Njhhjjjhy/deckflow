@@ -16,6 +16,7 @@ import DataTableEditor from './DataTableEditor';
 import ComparisonTableEditor from './ComparisonTableEditor';
 import TimelineImageEditor from './TimelineImageEditor';
 import TextImagesEditor from './TextImagesEditor';
+import BeforeAfterEditor from './BeforeAfterEditor';
 import SlidePreview from '../preview/SlidePreview';
 import DebugOverlay from '../templates/DebugOverlay';
 
@@ -141,6 +142,8 @@ export default function PresentationEditor() {
               <TimelineImageEditor page={selectedPage} />
             ) : selectedPage.type === 'text-images' ? (
               <TextImagesEditor page={selectedPage} />
+            ) : selectedPage.type === 'before-after' ? (
+              <BeforeAfterEditor page={selectedPage} />
             ) : (
               <p className="text-sm text-[#999]">
                 Editor not available for "{selectedPage.type}"

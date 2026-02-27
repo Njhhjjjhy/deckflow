@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { Page, PageType } from '../../types/presentation';
 import { usePresentationStore } from '../../lib/store/presentationStore';
 
@@ -37,6 +38,7 @@ const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
   { type: 'data-table', label: 'Data Table' },
   { type: 'comparison-table', label: 'Comparison Table' },
   { type: 'text-images', label: 'Text + Images' },
+  { type: 'before-after', label: 'Before/After Grid' },
   { type: 'disclaimer', label: 'Disclaimer' },
   { type: 'contact', label: 'Contact / Closing' },
 ];
@@ -50,44 +52,91 @@ export default function PageList() {
   const reorderPage = usePresentationStore((s) => s.reorderPage);
   const movePage = usePresentationStore((s) => s.movePage);
   const [showMenu, setShowMenu] = useState(false);
+  const [menuPos, setMenuPos] = useState({ top: 0, left: 0 });
+  const addBtnRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
   const dragCounter = useRef(0);
+
+  const openMenu = () => {
+    if (addBtnRef.current) {
+      const rect = addBtnRef.current.getBoundingClientRect();
+      setMenuPos({ top: rect.bottom + 4, left: rect.left });
+    }
+    setShowMenu(true);
+  };
+
+  useEffect(() => {
+    if (!showMenu) return;
+    const handleClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node) &&
+          addBtnRef.current && !addBtnRef.current.contains(e.target as Node)) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showMenu]);
 
   return (
     <div className="flex flex-col h-full">
       <div className="px-3 py-3 border-b border-[#E5E5E5] flex items-center justify-between">
         <h3 className="text-xs font-semibold text-[#1A1A1A] uppercase tracking-wide">Pages</h3>
-        <div className="relative">
-          <button
-            onClick={() => setShowMenu(!showMenu)}
-            className="w-6 h-6 flex items-center justify-center rounded text-xs font-bold transition-colors"
-            style={{ background: '#FBB931', color: '#1A1A1A' }}
-            title="Add page"
+        <button
+          ref={addBtnRef}
+          onClick={openMenu}
+          className="w-6 h-6 flex items-center justify-center rounded text-xs font-bold transition-colors"
+          style={{ background: '#FBB931', color: '#1A1A1A' }}
+          title="Add page"
+        >
+          +
+        </button>
+        {showMenu && createPortal(
+          <div
+            ref={menuRef}
+            style={{
+              position: 'fixed',
+              zIndex: 9999,
+              background: '#fff',
+              border: '1px solid #E5E5E5',
+              borderRadius: 6,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              padding: '4px 0',
+              overflowY: 'auto',
+              minWidth: 180,
+              maxHeight: 'calc(100vh - 100px)',
+              top: menuPos.top,
+              left: menuPos.left,
+            }}
           >
-            +
-          </button>
-          {showMenu && (
-            <div
-              className="absolute right-0 top-7 z-10 rounded border shadow-lg py-1"
-              style={{ background: '#fff', borderColor: '#E5E5E5', minWidth: 150 }}
-            >
-              {ADD_PAGE_OPTIONS.map((opt) => (
-                <button
-                  key={opt.type}
-                  onClick={() => {
-                    addPage(opt.type);
-                    setShowMenu(false);
-                  }}
-                  className="w-full text-left px-3 py-1.5 text-xs transition-colors hover:bg-[#F2F2F2]"
-                  style={{ color: '#1A1A1A' }}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+            {ADD_PAGE_OPTIONS.map((opt) => (
+              <button
+                key={opt.type}
+                onClick={() => {
+                  addPage(opt.type);
+                  setShowMenu(false);
+                }}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  textAlign: 'left',
+                  padding: '6px 12px',
+                  fontSize: 12,
+                  color: '#1A1A1A',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = '#F2F2F2'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'none'; }}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>,
+          document.body
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto py-2">
