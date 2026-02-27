@@ -17,10 +17,37 @@ interface DebugOverlayProps {
   containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const ITEMS = [
-  { selector: '.cover-page__headline', label: 'Headline', color: '#E74C3C' },
-  { selector: '.cover-page__hero', label: 'Hero image', color: '#2980B9' },
+const COLORS = [
+  '#E74C3C', '#2980B9', '#27AE60', '#8E44AD', '#E67E22',
+  '#1ABC9C', '#C0392B', '#2C3E50', '#D4AC0D', '#7D3C98',
 ];
+
+/** Auto-discover all elements with a BEM-style class (e.g. cover-page__*) */
+function discoverItems(container: HTMLElement): { selector: string; label: string; color: string }[] {
+  const seen = new Set<string>();
+  const items: { selector: string; label: string; color: string }[] = [];
+  const allElements = container.querySelectorAll('[class]');
+
+  for (const el of allElements) {
+    for (const cls of el.classList) {
+      // Match BEM element classes like "cover-page__header", "cover-page__logo"
+      const match = cls.match(/^([a-z-]+)__([a-z-]+)$/);
+      if (match) {
+        const selector = `.${cls}`;
+        if (seen.has(selector)) continue;
+        seen.add(selector);
+        // Turn "cover-page__header" into "Header", "hero--placeholder" stays as parent
+        const label = match[2]
+          .replace(/--.*$/, '') // strip modifier
+          .split('-')
+          .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+          .join(' ');
+        items.push({ selector, label, color: COLORS[items.length % COLORS.length] });
+      }
+    }
+  }
+  return items;
+}
 
 export default function DebugOverlay({ containerRef }: DebugOverlayProps) {
   const [elements, setElements] = useState<DraggableElement[]>([]);
@@ -38,9 +65,11 @@ export default function DebugOverlay({ containerRef }: DebugOverlayProps) {
     const cRect = container.getBoundingClientRect();
     setPageSize({ w: Math.round(cRect.width), h: Math.round(cRect.height) });
 
+    const discovered = discoverItems(container);
+
     setElements(prev => {
       const next: DraggableElement[] = [];
-      for (const item of ITEMS) {
+      for (const item of discovered) {
         const el = container.querySelector(item.selector);
         if (!el) continue;
         const r = el.getBoundingClientRect();
@@ -163,7 +192,7 @@ export default function DebugOverlay({ containerRef }: DebugOverlayProps) {
                 width: el.width,
                 height: el.height,
                 border: `2px solid ${el.color}`,
-                borderRadius: el.id.includes('hero') ? '50%' : 0,
+                borderRadius: el.id.includes('hero') || el.id.includes('logo-icon') ? '50%' : 0,
                 boxSizing: 'border-box',
                 cursor: isActive ? 'grabbing' : 'grab',
                 background: isActive ? `${el.color}11` : 'transparent',
