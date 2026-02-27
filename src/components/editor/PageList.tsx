@@ -36,6 +36,8 @@ export default function PageList() {
   const selectedPageId = usePresentationStore((s) => s.selectedPageId);
   const selectPage = usePresentationStore((s) => s.selectPage);
   const addPage = usePresentationStore((s) => s.addPage);
+  const deletePage = usePresentationStore((s) => s.deletePage);
+  const reorderPage = usePresentationStore((s) => s.reorderPage);
   const [showMenu, setShowMenu] = useState(false);
 
   return (
@@ -99,6 +101,38 @@ export default function PageList() {
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium" style={{ color: '#1A1A1A' }}>
                   {page.order + 1}. {PAGE_TYPE_LABELS[page.type] || page.type}
+                </span>
+                <span className="flex items-center gap-0.5" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    onClick={() => reorderPage(page.id, 'up')}
+                    disabled={page.order === 0}
+                    className="w-5 h-5 flex items-center justify-center rounded text-[10px] transition-colors hover:bg-[#E5E5E5] disabled:opacity-25 disabled:pointer-events-none"
+                    style={{ color: '#333' }}
+                    title="Move up"
+                  >
+                    ▲
+                  </button>
+                  <button
+                    onClick={() => reorderPage(page.id, 'down')}
+                    disabled={page.order === pages.length - 1}
+                    className="w-5 h-5 flex items-center justify-center rounded text-[10px] transition-colors hover:bg-[#E5E5E5] disabled:opacity-25 disabled:pointer-events-none"
+                    style={{ color: '#333' }}
+                    title="Move down"
+                  >
+                    ▼
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (window.confirm(`Delete page ${page.order + 1} (${PAGE_TYPE_LABELS[page.type] || page.type})?`)) {
+                        deletePage(page.id);
+                      }
+                    }}
+                    className="w-5 h-5 flex items-center justify-center rounded text-[10px] transition-colors hover:bg-red-100"
+                    style={{ color: '#999' }}
+                    title="Delete page"
+                  >
+                    ✕
+                  </button>
                 </span>
               </div>
             </button>
