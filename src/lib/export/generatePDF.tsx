@@ -8,6 +8,8 @@ import { loadImage } from '../images/imageStore';
  * Currently only the cover page template is implemented.
  */
 async function buildDocument(presentation: Presentation) {
+  const { width, height } = presentation.dimensions;
+
   // Resolve hero images from IndexedDB
   const pages = await Promise.all(
     presentation.pages.map(async (page) => {
@@ -29,9 +31,8 @@ async function buildDocument(presentation: Presentation) {
           return (
             <Page
               key={page.id}
-              size={[960, 540]}
-              orientation="landscape"
-              style={{ width: 960, height: 540 }}
+              size={[width, height]}
+              style={{ width, height }}
             >
               <CoverPagePDF
                 headline={headline.en}
@@ -46,9 +47,8 @@ async function buildDocument(presentation: Presentation) {
         return (
           <Page
             key={page.id}
-            size={[960, 540]}
-            orientation="landscape"
-            style={{ width: 960, height: 540 }}
+            size={[width, height]}
+            style={{ width, height }}
           />
         );
       })}
