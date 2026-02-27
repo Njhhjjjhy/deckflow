@@ -205,7 +205,7 @@ Each template is a React component accepting `content` and `language` props, ren
 | 7 | Timeline + image | Vertical timeline with dated entries left, large captioned photo right | p.7 |
 | 8 | Text + chart | Bold heading and bullet list left, bar/line chart right with labeled axes | p.8 |
 | 9 | Multi-card grid | 2-column grid, each card has gold icon + bold heading + bullets, 4-6 per page | p.9-10 |
-| 10 | Map + text | Illustrated Japan map with markers left, text/org diagram right | p.12,18,30 |
+| 10 | Map + text | Three modes: (A) map left + stacked org cards right with gold arrow connectors between cards, (B) map left + two-column property list + summary table right, (C) map full-width with floating label callouts overlaid on the image. Mode selected via radio control in the editor. Map is always a user-uploaded image, never a live map. | p.12, 18, 30 |
 | 11 | Text + images | Text with headings/bullets left, logo/photos with captions right | p.13 |
 | 12 | Before/after grid | 2x2 image pairs with "before"/"after" labels and arrows | p.14 |
 | 13 | Photo gallery | 3x3 or similar photo grid, no body text, header only | p.15 |
