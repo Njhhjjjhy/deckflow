@@ -437,3 +437,117 @@ Per cell:
 - Pasted column count mismatches defined columns: show error toast, leave grid unchanged.
 - Rows overflow content area: reduce row height proportionally (min 20px), never clip.
 - Empty cell value for a language: show "[no translation]" in light gray (#CCCCCC).
+
+## Template 15: comparison table
+
+Canvas: 960 x 540px
+Background: #F2F2F2
+Oakwater reference: pages 19, 23–25
+
+### Header area (shared pattern)
+
+**MoreHarvest logo**
+- Position: x=30, y=14, height=22px, width auto
+
+**Year**
+- Position: right-aligned, right=30, y=14
+- Font: Noto Sans JP Regular 13px, #1A1A1A
+
+**Section label**
+- Position: x=30, y=38
+- Font: Noto Sans JP Regular 11px, #333333
+
+**Horizontal rule**
+- Position: x=30, y=54, width=900px, 1px solid #E5E5E5
+
+**Page number**
+- Position: horizontally centered, y=524
+- Font: Noto Sans JP Regular 11px, #333333
+
+### Content area
+
+- Position: x=30, y=68, width=900px
+
+**Heading**
+- Font: REM Bold 18px (EN) / Noto Sans TC or SC 700 (Chinese), #1A1A1A
+- Line-height: 1.4
+- Margin-bottom: 10px
+
+**Table**
+- Width: 900px, table-layout: fixed, border-collapse: collapse
+- Three columns:
+  - Row label column: 15% (135px) — left-aligned text, no background on header, white on data rows, border=1px solid #E5E5E5
+  - MoreHarvest column: 42.5% (382px) — background=#FDF3D0, centered text, border=1px solid #E5E5E5
+  - Competitor column: 42.5% (383px) — background=#FFFFFF, centered text, border=1px solid #E5E5E5
+
+Header row (height=60px):
+- Row label cell: empty, no background
+- MoreHarvest cell: background=#FDF3D0, contains MoreHarvest logo centered (height=32px)
+- Competitor cell: background=#FFFFFF, text is competitor.headerLabel, font-weight=700, font-size=14px, color=#1A1A1A, centered
+
+Data rows (min-height 40px, text centered vertically):
+- Row label cell: font-size=12px, color=#1A1A1A, centered, background=#FFFFFF
+- MoreHarvest cell: font-size=12px, color=#1A1A1A, centered, background=#FDF3D0
+- Competitor cell: font-size=12px, color=#1A1A1A, centered, background=#FFFFFF
+- All cells: border=1px solid #E5E5E5, padding=8px
+
+**Source citation**
+- Position: below table, margin-top: 8px
+- Font: Noto Sans JP Regular 10px, #333333, line-height: 1.5
+- Optional — if empty, render nothing
+
+### Content model
+
+```ts
+interface ComparisonTableContent {
+  sectionLabel: TranslatableField;
+  year: string;
+  pageNumber: number;
+  heading: TranslatableField;
+  competitor: {
+    headerLabel: TranslatableField;   // e.g. "Typical foreign investor"
+  };
+  rows: ComparisonRowDef[];           // min 1, max 10
+  sourceCitation: TranslatableField;  // optional, shown below table
+}
+
+interface ComparisonRowDef {
+  label: TranslatableField;           // row label, left column
+  moreHarvestValue: TranslatableField;
+  competitorValue: TranslatableField;
+}
+```
+
+### Fields
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| sectionLabel | single-line text (trilingual) | no | e.g. "04 \| Financing" |
+| year | single-line text | no | defaults to current year |
+| pageNumber | number | no | displayed at bottom center |
+| heading | single-line text (trilingual) | yes | bold heading above table |
+| competitorHeaderLabel | single-line text (trilingual) | yes | competitor column header text |
+| rows | comparison row list (1–10) | yes | each has label, MH value, competitor value |
+| sourceCitation | multi-line text (trilingual) | no | source reference below table |
+
+Per row:
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| label | single-line text (trilingual) | yes | row label in left column |
+| moreHarvestValue | single-line text (trilingual) | yes | MoreHarvest column value |
+| competitorValue | single-line text (trilingual) | yes | competitor column value |
+
+### Editor features
+
+- Spreadsheet-style grid with three columns: row label, MoreHarvest value, competitor value
+- Grid language tabs (EN / zh-TW / zh-CN) to switch which language is shown in the grid
+- Add / remove / reorder rows (min 1, max 10)
+- Drag-to-reorder rows
+- "Paste from Excel" button: opens textarea modal, parses tab-separated text, validates exactly 3 columns per row, imports rows. If any row has a different number of columns, shows error toast and leaves grid unchanged.
+
+### Edge cases
+- Row label column wraps text if label is long — row height expands to fit, all cells in that row match height.
+- If cell value is empty for a language, show "[no translation]" in light gray (#CCCCCC).
+- Source citation is optional — if empty, render nothing below the table.
+- If rows overflow the content area, reduce font size proportionally (min 9px) rather than clipping.

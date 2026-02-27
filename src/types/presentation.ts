@@ -378,6 +378,52 @@ export function createDataTablePage(order: number): Page {
   };
 }
 
+/** Helper to create a new comparison table page */
+export function createComparisonTablePage(order: number): Page {
+  const defaultRows = [
+    {
+      label: { en: 'Interest rate', 'zh-tw': '', 'zh-cn': '' },
+      moreHarvestValue: { en: '1 to 1.5%', 'zh-tw': '', 'zh-cn': '' },
+      competitorValue: { en: '2.3% to 3%', 'zh-tw': '', 'zh-cn': '' },
+    },
+    {
+      label: { en: 'LTV ratio', 'zh-tw': '', 'zh-cn': '' },
+      moreHarvestValue: { en: 'up to 80%', 'zh-tw': '', 'zh-cn': '' },
+      competitorValue: { en: '40–70%', 'zh-tw': '', 'zh-cn': '' },
+    },
+    {
+      label: { en: 'Loan term', 'zh-tw': '', 'zh-cn': '' },
+      moreHarvestValue: { en: 'up to 35 years', 'zh-tw': '', 'zh-cn': '' },
+      competitorValue: { en: '15–20 years', 'zh-tw': '', 'zh-cn': '' },
+    },
+    {
+      label: { en: 'Property restrictions', 'zh-tw': '', 'zh-cn': '' },
+      moreHarvestValue: { en: 'Our most commonly seen property construction materials are reinforced concrete and wood', 'zh-tw': '', 'zh-cn': '' },
+      competitorValue: { en: 'Very old properties or wooden structures are generally difficult to get approved for a loan', 'zh-tw': '', 'zh-cn': '' },
+    },
+    {
+      label: { en: 'Banking relations', 'zh-tw': '', 'zh-cn': '' },
+      moreHarvestValue: { en: 'Long-term partnerships with leading local banks that specialize in real estate and mortgages', 'zh-tw': '', 'zh-cn': '' },
+      competitorValue: { en: 'None', 'zh-tw': '', 'zh-cn': '' },
+    },
+  ];
+
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'comparison-table',
+    content: {
+      sectionLabel: createTranslatableField(''),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '19',
+      heading: createTranslatableField('Comparison of financing options: MoreHarvest vs. typical foreign investors'),
+      competitorHeaderLabel: createTranslatableField('Typical foreign investor'),
+      rowsData: JSON.stringify(defaultRows),
+      sourceCitation: createTranslatableField('Source: https://www.tokyostarbank.co.jp/foreign/en/products/loan/homeloan_star/'),
+    },
+  };
+}
+
 /** Helper to create a new contact/closing page */
 export function createContactPage(order: number): Page {
   return {

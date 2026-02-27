@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Presentation, Page, Language, TranslatableField } from '../../types/presentation';
-import { createCoverPage, createValuePropositionPage, createDiagramPage, createIndexPage, createSectionDividerPage, createDisclaimerPage, createContactPage, createMultiCardGridPage, createTextChartPage, createDataTablePage } from '../../types/presentation';
+import { createCoverPage, createValuePropositionPage, createDiagramPage, createIndexPage, createSectionDividerPage, createDisclaimerPage, createContactPage, createMultiCardGridPage, createTextChartPage, createDataTablePage, createComparisonTablePage } from '../../types/presentation';
 
 function createDefaultPresentation(): Presentation {
   return {
@@ -125,7 +125,9 @@ export const usePresentationStore = create<PresentationState>()(
                               ? createTextChartPage(order)
                               : type === 'data-table'
                                 ? createDataTablePage(order)
-                                : createCoverPage(order);
+                                : type === 'comparison-table'
+                                  ? createComparisonTablePage(order)
+                                  : createCoverPage(order);
             newPage.type = type;
             return {
               presentation: {

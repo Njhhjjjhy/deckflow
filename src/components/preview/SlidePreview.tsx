@@ -11,6 +11,7 @@ import DisclaimerPage from '../templates/DisclaimerPage';
 import MultiCardGridPage from '../templates/MultiCardGridPage';
 import TextChartPage from '../templates/TextChartPage';
 import DataTablePage from '../templates/DataTablePage';
+import ComparisonTablePage from '../templates/ComparisonTablePage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -339,6 +340,40 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           columns: resolvedColumns,
           rows: resolvedRows,
           footnotes: resolvedFootnotes,
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'comparison-table') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const heading = page.content.heading as TranslatableField;
+    const competitorHeaderLabel = page.content.competitorHeaderLabel as TranslatableField;
+    const sourceCitation = page.content.sourceCitation as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+    const rowsDataRaw = (page.content.rowsData as string) || '[]';
+
+    let rowsRaw: { label: Record<string, string>; moreHarvestValue: Record<string, string>; competitorValue: Record<string, string> }[] = [];
+    try { rowsRaw = JSON.parse(rowsDataRaw); } catch { /* ignore */ }
+
+    const resolvedRows = rowsRaw.map((r) => ({
+      label: r.label?.[language] || r.label?.en || '',
+      moreHarvestValue: r.moreHarvestValue?.[language] || r.moreHarvestValue?.en || '',
+      competitorValue: r.competitorValue?.[language] || r.competitorValue?.en || '',
+    }));
+
+    return (
+      <ComparisonTablePage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          heading: heading?.[language] || heading?.en || '',
+          competitorHeaderLabel: competitorHeaderLabel?.[language] || competitorHeaderLabel?.en || '',
+          rows: resolvedRows,
+          sourceCitation: sourceCitation?.[language] || sourceCitation?.en || '',
         }}
         language={language}
       />
