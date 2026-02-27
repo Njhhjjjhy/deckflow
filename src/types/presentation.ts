@@ -687,6 +687,28 @@ export function createMapTextPage(order: number): Page {
   };
 }
 
+/** Helper to create a new three circles page */
+export function createThreeCirclesPage(order: number): Page {
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'three-circles',
+    content: {
+      sectionLabel: createTranslatableField(''),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '22',
+      heading: createTranslatableField(''),
+      circle1Heading: createTranslatableField(''),
+      circle1Body: createTranslatableField(''),
+      circle2Heading: createTranslatableField(''),
+      circle2Body: createTranslatableField(''),
+      circle3Heading: createTranslatableField(''),
+      circle3Body: createTranslatableField(''),
+      circleBorderColor: '#FBB931',
+    },
+  };
+}
+
 /** Helper to create a new contact/closing page */
 export function createContactPage(order: number): Page {
   return {

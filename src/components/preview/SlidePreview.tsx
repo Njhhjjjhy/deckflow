@@ -18,6 +18,7 @@ import BeforeAfterPage from '../templates/BeforeAfterPage';
 import MapTextCardPage from '../templates/MapTextCardPage';
 import MapTextListPage from '../templates/MapTextListPage';
 import MapTextOverlayPage from '../templates/MapTextOverlayPage';
+import ThreeCirclesPage from '../templates/ThreeCirclesPage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -700,6 +701,47 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           mapImage: mapImageData,
           cards: resolvedCards,
           arrows: mapArrows,
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'three-circles') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const heading = page.content.heading as TranslatableField;
+    const circle1Heading = page.content.circle1Heading as TranslatableField;
+    const circle1Body = page.content.circle1Body as TranslatableField;
+    const circle2Heading = page.content.circle2Heading as TranslatableField;
+    const circle2Body = page.content.circle2Body as TranslatableField;
+    const circle3Heading = page.content.circle3Heading as TranslatableField;
+    const circle3Body = page.content.circle3Body as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+    const circleBorderColor = (page.content.circleBorderColor as string) || '#FBB931';
+
+    return (
+      <ThreeCirclesPage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          heading: heading?.[language] || heading?.en || '',
+          circles: [
+            {
+              heading: circle1Heading?.[language] || circle1Heading?.en || '',
+              body: circle1Body?.[language] || circle1Body?.en || '',
+            },
+            {
+              heading: circle2Heading?.[language] || circle2Heading?.en || '',
+              body: circle2Body?.[language] || circle2Body?.en || '',
+            },
+            {
+              heading: circle3Heading?.[language] || circle3Heading?.en || '',
+              body: circle3Body?.[language] || circle3Body?.en || '',
+            },
+          ],
+          circleBorderColor,
         }}
         language={language}
       />

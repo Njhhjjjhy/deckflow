@@ -18,6 +18,7 @@ import TimelineImageEditor from './TimelineImageEditor';
 import TextImagesEditor from './TextImagesEditor';
 import BeforeAfterEditor from './BeforeAfterEditor';
 import MapTextCardEditor from './MapTextCardEditor';
+import ThreeCirclesEditor from './ThreeCirclesEditor';
 import SlidePreview from '../preview/SlidePreview';
 import DebugOverlay from '../templates/DebugOverlay';
 
@@ -147,6 +148,8 @@ export default function PresentationEditor() {
               <BeforeAfterEditor page={selectedPage} />
             ) : selectedPage.type === 'map-text' ? (
               <MapTextCardEditor page={selectedPage} />
+            ) : selectedPage.type === 'three-circles' ? (
+              <ThreeCirclesEditor page={selectedPage} />
             ) : (
               <p className="text-sm text-[#999]">
                 Editor not available for "{selectedPage.type}"
