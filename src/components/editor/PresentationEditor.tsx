@@ -11,6 +11,7 @@ import DiagramPageEditor from './DiagramPageEditor';
 import IndexTOCEditor from './IndexTOCEditor';
 import DisclaimerPageEditor from './DisclaimerPageEditor';
 import MultiCardGridEditor from './MultiCardGridEditor';
+import TextChartEditor from './TextChartEditor';
 import SlidePreview from '../preview/SlidePreview';
 import DebugOverlay from '../templates/DebugOverlay';
 
@@ -30,8 +31,36 @@ export default function PresentationEditor() {
 
   // PDF export state
   const [exporting, setExporting] = useState(false);
+  const [exportMenuOpen, setExportMenuOpen] = useState(false);
+  const exportMenuRef = useRef<HTMLDivElement>(null);
 
-  const handleExportPDF = useCallback(async () => {
+  // Close export menu when clicking outside
+  useEffect(() => {
+    if (!exportMenuOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (exportMenuRef.current && !exportMenuRef.current.contains(e.target as Node)) {
+        setExportMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [exportMenuOpen]);
+
+  const handleExportPage = useCallback(async () => {
+    if (!selectedPageId) return;
+    setExportMenuOpen(false);
+    setExporting(true);
+    try {
+      await exportPDF(presentation, selectedPageId);
+    } catch (err) {
+      console.error('PDF export failed:', err);
+    } finally {
+      setExporting(false);
+    }
+  }, [presentation, selectedPageId]);
+
+  const handleExportAll = useCallback(async () => {
+    setExportMenuOpen(false);
     setExporting(true);
     try {
       await exportPDF(presentation);
@@ -98,6 +127,8 @@ export default function PresentationEditor() {
               <ContactPageEditor page={selectedPage} />
             ) : selectedPage.type === 'multi-card-grid' ? (
               <MultiCardGridEditor page={selectedPage} />
+            ) : selectedPage.type === 'text-chart' ? (
+              <TextChartEditor page={selectedPage} />
             ) : (
               <p className="text-sm text-[#999]">
                 Editor not available for "{selectedPage.type}"
@@ -145,19 +176,58 @@ export default function PresentationEditor() {
             >
               {debug ? 'DEBUG ON' : 'DEBUG'}
             </button>
-            <button
-              onClick={handleExportPDF}
-              disabled={exporting}
-              className="px-3 py-1 text-xs font-medium rounded transition-colors"
-              style={{
-                background: exporting ? '#E5E5E5' : '#FBB931',
-                color: '#1A1A1A',
-                opacity: exporting ? 0.6 : 1,
-                cursor: exporting ? 'not-allowed' : 'pointer',
-              }}
-            >
-              {exporting ? 'Exporting…' : 'Export PDF'}
-            </button>
+            <div ref={exportMenuRef} style={{ position: 'relative' }}>
+              <button
+                onClick={() => setExportMenuOpen((v) => !v)}
+                disabled={exporting}
+                className="px-3 py-1 text-xs font-medium rounded transition-colors"
+                style={{
+                  background: exporting ? '#E5E5E5' : '#FBB931',
+                  color: '#1A1A1A',
+                  opacity: exporting ? 0.6 : 1,
+                  cursor: exporting ? 'not-allowed' : 'pointer',
+                }}
+              >
+                {exporting ? 'Exporting…' : 'Export PDF ▾'}
+              </button>
+              {exportMenuOpen && !exporting && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    top: '100%',
+                    marginTop: 4,
+                    background: '#fff',
+                    border: '1px solid #E5E5E5',
+                    borderRadius: 6,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    zIndex: 50,
+                    minWidth: 160,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <button
+                    onClick={handleExportPage}
+                    disabled={!selectedPageId}
+                    className="w-full text-left px-3 py-2 text-xs transition-colors hover:bg-[#F2F2F2]"
+                    style={{
+                      color: selectedPageId ? '#1A1A1A' : '#999',
+                      cursor: selectedPageId ? 'pointer' : 'not-allowed',
+                    }}
+                  >
+                    Export This Page
+                  </button>
+                  <div style={{ height: 1, background: '#E5E5E5' }} />
+                  <button
+                    onClick={handleExportAll}
+                    className="w-full text-left px-3 py-2 text-xs transition-colors hover:bg-[#F2F2F2]"
+                    style={{ color: '#1A1A1A', cursor: 'pointer' }}
+                  >
+                    Export All Pages
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

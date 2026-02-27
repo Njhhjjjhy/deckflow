@@ -8,6 +8,7 @@ import DiagramPagePDF from './DiagramPagePDF';
 import IndexTOCPagePDF from './IndexTOCPagePDF';
 import DisclaimerPagePDF from './DisclaimerPagePDF';
 import MultiCardGridPDF from './MultiCardGridPDF';
+import TextChartPDF from './TextChartPDF';
 import { loadImage } from '../images/imageStore';
 
 /**
@@ -25,13 +26,15 @@ async function buildDocument(presentation: Presentation) {
       const badge1IconKey = page.type === 'value-proposition' ? (page.content.badge1Icon as string) : '';
       const badge2IconKey = page.type === 'value-proposition' ? (page.content.badge2Icon as string) : '';
       const badge3IconKey = page.type === 'value-proposition' ? (page.content.badge3Icon as string) : '';
+      const chartImageKey = page.type === 'text-chart' ? (page.content.chartImage as string) : '';
 
-      const [heroImage, logoImage, badge1Icon, badge2Icon, badge3Icon] = await Promise.all([
+      const [heroImage, logoImage, badge1Icon, badge2Icon, badge3Icon, chartImage] = await Promise.all([
         heroImageKey ? loadImage(heroImageKey) : Promise.resolve(undefined),
         logoImageKey ? loadImage(logoImageKey) : Promise.resolve(undefined),
         badge1IconKey ? loadImage(badge1IconKey) : Promise.resolve(undefined),
         badge2IconKey ? loadImage(badge2IconKey) : Promise.resolve(undefined),
         badge3IconKey ? loadImage(badge3IconKey) : Promise.resolve(undefined),
+        chartImageKey ? loadImage(chartImageKey) : Promise.resolve(undefined),
       ]);
 
       // Pre-resolve multi-card-grid card icons
@@ -66,6 +69,7 @@ async function buildDocument(presentation: Presentation) {
         badge1Icon: badge1Icon ?? undefined,
         badge2Icon: badge2Icon ?? undefined,
         badge3Icon: badge3Icon ?? undefined,
+        chartImage: chartImage ?? undefined,
         resolvedCardGrid,
       };
     })
@@ -73,7 +77,7 @@ async function buildDocument(presentation: Presentation) {
 
   return (
     <Document>
-      {pages.map(({ page, heroImage, logoImage, badge1Icon, badge2Icon, badge3Icon, resolvedCardGrid }) => {
+      {pages.map(({ page, heroImage, logoImage, badge1Icon, badge2Icon, badge3Icon, chartImage, resolvedCardGrid }) => {
         if (page.type === 'cover') {
           const headline = page.content.headline as TranslatableField;
           const year = (page.content.year as string) || new Date().getFullYear().toString();
@@ -243,6 +247,53 @@ async function buildDocument(presentation: Presentation) {
           );
         }
 
+        if (page.type === 'text-chart') {
+          const sectionLabel = page.content.sectionLabel as TranslatableField;
+          const headingField = page.content.heading as TranslatableField;
+          const year = (page.content.year as string) || new Date().getFullYear().toString();
+          const pageNumber = (page.content.pageNumber as string) || '';
+          const chartMode = (page.content.chartMode as string) || 'data';
+          const chartTitleField = page.content.chartTitle as TranslatableField;
+          const xAxisLabelField = page.content.xAxisLabel as TranslatableField;
+          const yAxisLabelField = page.content.yAxisLabel as TranslatableField;
+          const yAxisUnit = (page.content.yAxisUnit as string) || '';
+          const yAxisMax = (page.content.yAxisMax as string) || '';
+          const chartImageCaptionField = page.content.chartImageCaption as TranslatableField;
+          const bulletsDataRaw = (page.content.bulletsData as string) || '[]';
+          const barsDataRaw = (page.content.barsData as string) || '[]';
+
+          let bulletsRaw: Record<string, string>[] = [];
+          try { bulletsRaw = JSON.parse(bulletsDataRaw); } catch { /* ignore */ }
+
+          let barsRaw: { label: string; value: number }[] = [];
+          try { barsRaw = JSON.parse(barsDataRaw); } catch { /* ignore */ }
+
+          return (
+            <Page
+              key={page.id}
+              size={[width, height]}
+              style={{ width, height }}
+            >
+              <TextChartPDF
+                sectionLabel={sectionLabel?.en || ''}
+                year={year}
+                pageNumber={pageNumber ? parseInt(pageNumber, 10) : undefined}
+                heading={headingField?.en || ''}
+                bullets={bulletsRaw.map((b) => b?.en || '')}
+                chartMode={chartMode as 'data' | 'image'}
+                chartTitle={chartTitleField?.en || ''}
+                xAxisLabel={xAxisLabelField?.en || ''}
+                yAxisLabel={yAxisLabelField?.en || ''}
+                yAxisUnit={yAxisUnit}
+                yAxisMax={yAxisMax ? parseFloat(yAxisMax) : undefined}
+                bars={barsRaw}
+                chartImage={chartImage}
+                chartImageCaption={chartImageCaptionField?.en || ''}
+              />
+            </Page>
+          );
+        }
+
         if (page.type === 'contact') {
           const companyName = page.content.companyName as TranslatableField;
           const phone = page.content.phone as TranslatableField;
@@ -285,15 +336,23 @@ async function buildDocument(presentation: Presentation) {
 
 /**
  * Generate a PDF blob from a Presentation and trigger a download.
+ * If pageId is provided, only that page is exported.
+ * If pageId is omitted, all pages are exported as a single multi-page PDF.
  */
-export async function exportPDF(presentation: Presentation): Promise<void> {
-  const doc = await buildDocument(presentation);
+export async function exportPDF(presentation: Presentation, pageId?: string): Promise<void> {
+  // Build a filtered presentation if a single page is requested
+  const target = pageId
+    ? { ...presentation, pages: presentation.pages.filter((p) => p.id === pageId) }
+    : presentation;
+
+  const doc = await buildDocument(target);
   const blob = await pdf(doc).toBlob();
 
+  const suffix = pageId ? '-page' : '';
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${presentation.name || 'presentation'}.pdf`;
+  a.download = `${presentation.name || 'presentation'}${suffix}.pdf`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

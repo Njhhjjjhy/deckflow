@@ -1,0 +1,149 @@
+.text-chart-page {
+  position: relative;
+  width: 960px;
+  height: 540px;
+  background: #F2F2F2;
+  overflow: hidden;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.text-chart-page__wordmark {
+  position: absolute;
+  left: 30px;
+  top: 14px;
+  height: 22px;
+  width: auto;
+}
+
+.text-chart-page__year {
+  position: absolute;
+  right: 30px;
+  top: 14px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #1A1A1A;
+  text-align: right;
+}
+
+.text-chart-page__label {
+  position: absolute;
+  left: 30px;
+  top: 38px;
+  font-size: 11px;
+  font-weight: 400;
+  color: #333333;
+  margin: 0;
+}
+
+.text-chart-page__rule {
+  position: absolute;
+  top: 54px;
+  left: 30px;
+  width: 900px;
+  border: none;
+  border-top: 1px solid #E5E5E5;
+  margin: 0;
+  padding: 0;
+}
+
+.text-chart-page__page-number {
+  position: absolute;
+  top: 524px;
+  left: 0;
+  width: 960px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 400;
+  color: #333333;
+  margin: 0;
+}
+
+/* Left column */
+.text-chart-page__left {
+  position: absolute;
+  left: 30px;
+  top: 80px;
+  width: 430px;
+}
+
+.text-chart-page__heading {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+}
+
+.text-chart-page__bullet-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.text-chart-page__bullet-item {
+  position: relative;
+  padding-left: 16px;
+  font-size: 13px;
+  color: #333333;
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+
+.text-chart-page__bullet-dot {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #333333;
+}
+
+/* Right column */
+.text-chart-page__right {
+  position: absolute;
+  left: 500px;
+  top: 80px;
+  width: 430px;
+  height: 400px;
+}
+
+.text-chart-page__chart-title {
+  font-size: 13px;
+  font-weight: 400;
+  color: #1A1A1A;
+  margin: 0 0 8px 0;
+}
+
+.text-chart-page__image-container {
+  width: 430px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-chart-page__chart-image {
+  max-width: 430px;
+  max-height: 380px;
+  object-fit: contain;
+}
+
+.text-chart-page__image-placeholder {
+  width: 430px;
+  height: 400px;
+  border: 2px dashed #CCCCCC;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 13px;
+}
+
+.text-chart-page__image-caption {
+  font-size: 11px;
+  color: #333333;
+  margin: 6px 0 0 0;
+  text-align: center;
+}

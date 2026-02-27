@@ -9,6 +9,7 @@ import DiagramPage from '../templates/DiagramPage';
 import IndexTOCPage from '../templates/IndexTOCPage';
 import DisclaimerPage from '../templates/DisclaimerPage';
 import MultiCardGridPage from '../templates/MultiCardGridPage';
+import TextChartPage from '../templates/TextChartPage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -22,12 +23,14 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const [badge2IconData, setBadge2IconData] = useState<string | null>(null);
   const [badge3IconData, setBadge3IconData] = useState<string | null>(null);
   const [cardIconMap, setCardIconMap] = useState<Record<string, string | null>>({});
+  const [chartImageData, setChartImageData] = useState<string | null>(null);
   const heroImageKey = (page.content.heroImage as string) || '';
   const logoImageKey = (page.content.logoImage as string) || '';
   const badge1IconKey = (page.content.badge1Icon as string) || '';
   const badge2IconKey = (page.content.badge2Icon as string) || '';
   const badge3IconKey = (page.content.badge3Icon as string) || '';
   const cardsDataRaw = (page.content.cardsData as string) || '[]';
+  const chartImageKey = (page.content.chartImage as string) || '';
 
   useEffect(() => {
     if (!heroImageKey) { setHeroImageData(null); return; }
@@ -53,6 +56,12 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
     if (!badge3IconKey) { setBadge3IconData(null); return; }
     loadImage(badge3IconKey).then((data) => setBadge3IconData(data));
   }, [badge3IconKey]);
+
+  // Load chart image for text-chart pages
+  useEffect(() => {
+    if (!chartImageKey) { setChartImageData(null); return; }
+    loadImage(chartImageKey).then((data) => setChartImageData(data));
+  }, [chartImageKey]);
 
   // Load card icons for multi-card-grid pages
   useEffect(() => {
@@ -199,6 +208,52 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           disclaimerText: disclaimerText?.[language] || disclaimerText?.en || '',
           sectionLabel: sectionLabel?.[language] || sectionLabel?.en || 'Disclaimer',
           year,
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'text-chart') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const heading = page.content.heading as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+    const chartMode = (page.content.chartMode as string) || 'data';
+    const chartTitle = page.content.chartTitle as TranslatableField;
+    const xAxisLabelField = page.content.xAxisLabel as TranslatableField;
+    const yAxisLabelField = page.content.yAxisLabel as TranslatableField;
+    const yAxisUnit = (page.content.yAxisUnit as string) || '';
+    const yAxisMax = (page.content.yAxisMax as string) || '';
+    const chartImageCaption = page.content.chartImageCaption as TranslatableField;
+    const bulletsDataRaw = (page.content.bulletsData as string) || '[]';
+    const barsDataRaw = (page.content.barsData as string) || '[]';
+
+    let bulletsRaw: Record<string, string>[] = [];
+    try { bulletsRaw = JSON.parse(bulletsDataRaw); } catch { /* ignore */ }
+
+    let barsRaw: { label: string; value: number }[] = [];
+    try { barsRaw = JSON.parse(barsDataRaw); } catch { /* ignore */ }
+
+    const resolvedBullets = bulletsRaw.map((b) => b?.[language] || b?.en || '');
+
+    return (
+      <TextChartPage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          heading: heading?.[language] || heading?.en || '',
+          bullets: resolvedBullets,
+          chartMode: chartMode as 'data' | 'image',
+          chartTitle: chartTitle?.[language] || chartTitle?.en || '',
+          xAxisLabel: xAxisLabelField?.[language] || xAxisLabelField?.en || '',
+          yAxisLabel: yAxisLabelField?.[language] || yAxisLabelField?.en || '',
+          yAxisUnit,
+          yAxisMax: yAxisMax ? parseFloat(yAxisMax) : undefined,
+          bars: barsRaw,
+          chartImage: chartImageData,
+          chartImageCaption: chartImageCaption?.[language] || chartImageCaption?.en || '',
         }}
         language={language}
       />

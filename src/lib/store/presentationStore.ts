@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Presentation, Page, Language, TranslatableField } from '../../types/presentation';
-import { createCoverPage, createValuePropositionPage, createDiagramPage, createIndexPage, createSectionDividerPage, createDisclaimerPage, createContactPage, createMultiCardGridPage } from '../../types/presentation';
+import { createCoverPage, createValuePropositionPage, createDiagramPage, createIndexPage, createSectionDividerPage, createDisclaimerPage, createContactPage, createMultiCardGridPage, createTextChartPage } from '../../types/presentation';
 
 function createDefaultPresentation(): Presentation {
   return {
@@ -121,7 +121,9 @@ export const usePresentationStore = create<PresentationState>()(
                           ? createContactPage(order)
                           : type === 'multi-card-grid'
                             ? createMultiCardGridPage(order)
-                            : createCoverPage(order);
+                            : type === 'text-chart'
+                              ? createTextChartPage(order)
+                              : createCoverPage(order);
             newPage.type = type;
             return {
               presentation: {

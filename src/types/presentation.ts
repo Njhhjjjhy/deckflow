@@ -246,6 +246,47 @@ export function createMultiCardGridPage(order: number): Page {
   };
 }
 
+/** Helper to create a new text-chart page */
+export function createTextChartPage(order: number): Page {
+  const defaultBullets = [
+    { en: 'We invest in prime locations like Tokyo, Osaka, Sapporo, and emerging areas like Kumamoto, balancing growth and cost for stable returns.', 'zh-tw': '', 'zh-cn': '' },
+    { en: 'Our 20+ year experienced team provides local expertise in land sourcing, building development, and rental services.', 'zh-tw': '', 'zh-cn': '' },
+    { en: 'We maintain over 96% occupancy rates with contingency plans if occupancy falls below 90%.', 'zh-tw': '', 'zh-cn': '' },
+    { en: 'Properties align with local demand and market rents for rental stability and value.', 'zh-tw': '', 'zh-cn': '' },
+  ];
+
+  const defaultBars = [
+    { label: '2020', value: 95 },
+    { label: '2021', value: 96 },
+    { label: '2022', value: 95 },
+    { label: '2023', value: 95 },
+    { label: '2024', value: 97 },
+    { label: '2025', value: 94 },
+  ];
+
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'text-chart',
+    content: {
+      sectionLabel: createTranslatableField(''),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '8',
+      heading: createTranslatableField('About MoreHarvest'),
+      bulletsData: JSON.stringify(defaultBullets),
+      chartMode: 'data',
+      chartTitle: createTranslatableField('2020 - 2025 Average occupancy across properties'),
+      xAxisLabel: createTranslatableField('Year'),
+      yAxisLabel: createTranslatableField('Occupancy %'),
+      yAxisUnit: '%',
+      yAxisMax: '100',
+      barsData: JSON.stringify(defaultBars),
+      chartImage: '',
+      chartImageCaption: createTranslatableField(''),
+    },
+  };
+}
+
 /** Helper to create a new contact/closing page */
 export function createContactPage(order: number): Page {
   return {
