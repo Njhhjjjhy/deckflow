@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Page, Language, TranslatableField } from '../../types/presentation';
 import { loadImage } from '../../lib/images/imageStore';
 import CoverPage from '../templates/CoverPage';
+import SectionDividerPage from '../templates/SectionDividerPage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -31,6 +32,23 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           headline: headlineText,
           year,
           heroImage: heroImageData || undefined,
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'section-divider') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const sectionNumber = page.content.sectionNumber as TranslatableField;
+    const sectionTitle = page.content.sectionTitle as TranslatableField;
+
+    return (
+      <SectionDividerPage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          sectionNumber: sectionNumber?.[language] || sectionNumber?.en || '',
+          sectionTitle: sectionTitle?.[language] || sectionTitle?.en || '',
         }}
         language={language}
       />

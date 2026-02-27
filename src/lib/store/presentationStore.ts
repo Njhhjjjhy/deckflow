@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Presentation, Page, Language, TranslatableField } from '../../types/presentation';
-import { createCoverPage } from '../../types/presentation';
+import { createCoverPage, createSectionDividerPage } from '../../types/presentation';
 
 function createDefaultPresentation(): Presentation {
   return {
@@ -103,7 +103,11 @@ export const usePresentationStore = create<PresentationState>()(
 
         addPage: (type) =>
           set((state) => {
-            const newPage = createCoverPage(state.presentation.pages.length);
+            const order = state.presentation.pages.length;
+            const newPage =
+              type === 'section-divider'
+                ? createSectionDividerPage(order)
+                : createCoverPage(order);
             newPage.type = type;
             return {
               presentation: {

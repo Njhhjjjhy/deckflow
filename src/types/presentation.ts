@@ -90,3 +90,17 @@ export function createCoverPage(order: number): Page {
     },
   };
 }
+
+/** Helper to create a new section divider page */
+export function createSectionDividerPage(order: number): Page {
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'section-divider',
+    content: {
+      sectionLabel: createTranslatableField(''),
+      sectionNumber: createTranslatableField(''),
+      sectionTitle: createTranslatableField(''),
+    },
+  };
+}

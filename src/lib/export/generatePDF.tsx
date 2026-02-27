@@ -1,6 +1,7 @@
 import { Document, Page, pdf } from '@react-pdf/renderer';
 import type { Presentation, TranslatableField } from '../../types/presentation';
 import CoverPagePDF from './CoverPagePDF';
+import SectionDividerPDF from './SectionDividerPDF';
 import { loadImage } from '../images/imageStore';
 
 /**
@@ -38,6 +39,26 @@ async function buildDocument(presentation: Presentation) {
                 headline={headline.en}
                 year={year}
                 heroImage={heroImage}
+              />
+            </Page>
+          );
+        }
+
+        if (page.type === 'section-divider') {
+          const sectionLabel = page.content.sectionLabel as TranslatableField;
+          const sectionNumber = page.content.sectionNumber as TranslatableField;
+          const sectionTitle = page.content.sectionTitle as TranslatableField;
+
+          return (
+            <Page
+              key={page.id}
+              size={[width, height]}
+              style={{ width, height }}
+            >
+              <SectionDividerPDF
+                sectionLabel={sectionLabel?.en || ''}
+                sectionNumber={sectionNumber?.en || ''}
+                sectionTitle={sectionTitle?.en || ''}
               />
             </Page>
           );

@@ -1,0 +1,65 @@
+.section-divider {
+  position: relative;
+  width: 960px;
+  height: 540px;
+  background: #F2F2F2;
+  overflow: hidden;
+}
+
+/* Left block — right-aligned, ending at x ~300 */
+.section-divider__left {
+  position: absolute;
+  right: 660px; /* 960 - 300 = 660 from right edge */
+  top: 200px;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.section-divider__label {
+  font-family: 'REM', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #1A1A1A;
+  margin: 0;
+}
+
+.section-divider__number {
+  font-family: 'REM', sans-serif;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 1.1;
+  color: #1A1A1A;
+  margin: 0;
+}
+
+/* Gold vertical bar */
+.section-divider__bar {
+  position: absolute;
+  left: 310px;
+  top: 200px;
+  width: 6px;
+  height: 130px;
+  background: #FBB931;
+}
+
+/* Right block — starts at x ~340 */
+.section-divider__title {
+  position: absolute;
+  left: 340px;
+  top: 200px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  max-width: 560px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1.2;
+  color: #1A1A1A;
+  margin: 0;
+}

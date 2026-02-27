@@ -4,6 +4,7 @@ import type { Language } from '../../types/presentation';
 import { exportPDF } from '../../lib/export/generatePDF';
 import PageList from './PageList';
 import CoverPageEditor from './CoverPageEditor';
+import SectionDividerEditor from './SectionDividerEditor';
 import SlidePreview from '../preview/SlidePreview';
 import DebugOverlay from '../templates/DebugOverlay';
 
@@ -77,6 +78,8 @@ export default function PresentationEditor() {
           {selectedPage ? (
             selectedPage.type === 'cover' ? (
               <CoverPageEditor page={selectedPage} />
+            ) : selectedPage.type === 'section-divider' ? (
+              <SectionDividerEditor page={selectedPage} />
             ) : (
               <p className="text-sm text-[#999]">
                 Editor not available for "{selectedPage.type}"
