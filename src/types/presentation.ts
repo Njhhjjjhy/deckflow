@@ -183,6 +183,69 @@ export function createIndexPage(order: number): Page {
   };
 }
 
+/** Helper to create a new multi-card-grid page */
+export function createMultiCardGridPage(order: number): Page {
+  const defaultCards = [
+    {
+      id: crypto.randomUUID(),
+      icon: '',
+      heading: { en: 'Localized investment model', 'zh-tw': '', 'zh-cn': '' },
+      bodyType: 'bullets' as const,
+      bullets: [
+        { en: 'Properties designed for long-term local living, ensuring stability.', 'zh-tw': '', 'zh-cn': '' },
+        { en: 'Strong bank relationships offer low-interest financing.', 'zh-tw': '', 'zh-cn': '' },
+        { en: 'Local construction partners optimize zoning and control costs.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+      paragraph: { en: '', 'zh-tw': '', 'zh-cn': '' },
+    },
+    {
+      id: crypto.randomUUID(),
+      icon: '',
+      heading: { en: 'Stable rental income and high occupancy', 'zh-tw': '', 'zh-cn': '' },
+      bodyType: 'bullets' as const,
+      bullets: [
+        { en: 'Professional management maintains 96% occupancy rate.', 'zh-tw': '', 'zh-cn': '' },
+        { en: 'Portfolios adjusted based on economic shifts to maximize returns.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+      paragraph: { en: '', 'zh-tw': '', 'zh-cn': '' },
+    },
+    {
+      id: crypto.randomUUID(),
+      icon: '',
+      heading: { en: 'Investor-focused strategy for returns and risk control', 'zh-tw': '', 'zh-cn': '' },
+      bodyType: 'bullets' as const,
+      bullets: [
+        { en: 'Tight budget and quality management ensure stable returns.', 'zh-tw': '', 'zh-cn': '' },
+        { en: 'Flexible exit timing and expansion to new markets.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+      paragraph: { en: '', 'zh-tw': '', 'zh-cn': '' },
+    },
+    {
+      id: crypto.randomUUID(),
+      icon: '',
+      heading: { en: 'MoreHarvest team and flexible investment model', 'zh-tw': '', 'zh-cn': '' },
+      bodyType: 'bullets' as const,
+      bullets: [
+        { en: '20 years of real estate and fintech experience.', 'zh-tw': '', 'zh-cn': '' },
+        { en: 'Long-term or short-to-mid-term plans (2–5 years) balancing security and growth.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+      paragraph: { en: '', 'zh-tw': '', 'zh-cn': '' },
+    },
+  ];
+
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'multi-card-grid',
+    content: {
+      sectionLabel: createTranslatableField(''),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '9',
+      cardsData: JSON.stringify(defaultCards),
+    },
+  };
+}
+
 /** Helper to create a new contact/closing page */
 export function createContactPage(order: number): Page {
   return {

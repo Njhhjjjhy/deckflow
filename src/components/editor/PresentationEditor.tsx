@@ -10,6 +10,7 @@ import ValuePropositionEditor from './ValuePropositionEditor';
 import DiagramPageEditor from './DiagramPageEditor';
 import IndexTOCEditor from './IndexTOCEditor';
 import DisclaimerPageEditor from './DisclaimerPageEditor';
+import MultiCardGridEditor from './MultiCardGridEditor';
 import SlidePreview from '../preview/SlidePreview';
 import DebugOverlay from '../templates/DebugOverlay';
 
@@ -95,6 +96,8 @@ export default function PresentationEditor() {
               <DisclaimerPageEditor page={selectedPage} />
             ) : selectedPage.type === 'contact' ? (
               <ContactPageEditor page={selectedPage} />
+            ) : selectedPage.type === 'multi-card-grid' ? (
+              <MultiCardGridEditor page={selectedPage} />
             ) : (
               <p className="text-sm text-[#999]">
                 Editor not available for "{selectedPage.type}"

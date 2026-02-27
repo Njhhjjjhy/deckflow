@@ -7,6 +7,7 @@ import ContactPagePDF from './ContactPagePDF';
 import DiagramPagePDF from './DiagramPagePDF';
 import IndexTOCPagePDF from './IndexTOCPagePDF';
 import DisclaimerPagePDF from './DisclaimerPagePDF';
+import MultiCardGridPDF from './MultiCardGridPDF';
 import { loadImage } from '../images/imageStore';
 
 /**
@@ -33,6 +34,31 @@ async function buildDocument(presentation: Presentation) {
         badge3IconKey ? loadImage(badge3IconKey) : Promise.resolve(undefined),
       ]);
 
+      // Pre-resolve multi-card-grid card icons
+      let resolvedCardGrid: { icon: string | null; heading: string; bodyType: 'bullets' | 'paragraph'; bullets?: string[]; paragraph?: string }[] | undefined;
+      if (page.type === 'multi-card-grid') {
+        const cardsDataRaw = (page.content.cardsData as string) || '[]';
+        let cardsRaw: { id: string; icon: string; heading: Record<string, string>; bodyType: 'bullets' | 'paragraph'; bullets: Record<string, string>[]; paragraph: Record<string, string> }[] = [];
+        try { cardsRaw = JSON.parse(cardsDataRaw); } catch { /* ignore */ }
+
+        resolvedCardGrid = await Promise.all(
+          cardsRaw.map(async (card) => {
+            const iconData = card.icon ? await loadImage(card.icon) : null;
+            return {
+              icon: iconData ?? null,
+              heading: card.heading?.en || '',
+              bodyType: card.bodyType,
+              bullets: card.bodyType === 'bullets'
+                ? (card.bullets || []).map((b) => b?.en || '')
+                : undefined,
+              paragraph: card.bodyType === 'paragraph'
+                ? (card.paragraph?.en || '')
+                : undefined,
+            };
+          })
+        );
+      }
+
       return {
         page,
         heroImage: heroImage ?? undefined,
@@ -40,13 +66,14 @@ async function buildDocument(presentation: Presentation) {
         badge1Icon: badge1Icon ?? undefined,
         badge2Icon: badge2Icon ?? undefined,
         badge3Icon: badge3Icon ?? undefined,
+        resolvedCardGrid,
       };
     })
   );
 
   return (
     <Document>
-      {pages.map(({ page, heroImage, logoImage, badge1Icon, badge2Icon, badge3Icon }) => {
+      {pages.map(({ page, heroImage, logoImage, badge1Icon, badge2Icon, badge3Icon, resolvedCardGrid }) => {
         if (page.type === 'cover') {
           const headline = page.content.headline as TranslatableField;
           const year = (page.content.year as string) || new Date().getFullYear().toString();
@@ -190,6 +217,27 @@ async function buildDocument(presentation: Presentation) {
                 disclaimerText={disclaimerText?.en || ''}
                 sectionLabel={sectionLabel?.en || 'Disclaimer'}
                 year={year}
+              />
+            </Page>
+          );
+        }
+
+        if (page.type === 'multi-card-grid' && resolvedCardGrid) {
+          const sectionLabel = page.content.sectionLabel as TranslatableField;
+          const year = (page.content.year as string) || new Date().getFullYear().toString();
+          const pageNumber = (page.content.pageNumber as string) || '';
+
+          return (
+            <Page
+              key={page.id}
+              size={[width, height]}
+              style={{ width, height }}
+            >
+              <MultiCardGridPDF
+                sectionLabel={sectionLabel?.en || ''}
+                year={year}
+                pageNumber={pageNumber ? parseInt(pageNumber, 10) : undefined}
+                cards={resolvedCardGrid}
               />
             </Page>
           );

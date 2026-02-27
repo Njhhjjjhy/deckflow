@@ -8,6 +8,7 @@ import ContactPage from '../templates/ContactPage';
 import DiagramPage from '../templates/DiagramPage';
 import IndexTOCPage from '../templates/IndexTOCPage';
 import DisclaimerPage from '../templates/DisclaimerPage';
+import MultiCardGridPage from '../templates/MultiCardGridPage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -20,11 +21,13 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const [badge1IconData, setBadge1IconData] = useState<string | null>(null);
   const [badge2IconData, setBadge2IconData] = useState<string | null>(null);
   const [badge3IconData, setBadge3IconData] = useState<string | null>(null);
+  const [cardIconMap, setCardIconMap] = useState<Record<string, string | null>>({});
   const heroImageKey = (page.content.heroImage as string) || '';
   const logoImageKey = (page.content.logoImage as string) || '';
   const badge1IconKey = (page.content.badge1Icon as string) || '';
   const badge2IconKey = (page.content.badge2Icon as string) || '';
   const badge3IconKey = (page.content.badge3Icon as string) || '';
+  const cardsDataRaw = (page.content.cardsData as string) || '[]';
 
   useEffect(() => {
     if (!heroImageKey) { setHeroImageData(null); return; }
@@ -50,6 +53,26 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
     if (!badge3IconKey) { setBadge3IconData(null); return; }
     loadImage(badge3IconKey).then((data) => setBadge3IconData(data));
   }, [badge3IconKey]);
+
+  // Load card icons for multi-card-grid pages
+  useEffect(() => {
+    if (page.type !== 'multi-card-grid') { setCardIconMap({}); return; }
+    let cardsRaw: { id: string; icon: string }[] = [];
+    try { cardsRaw = JSON.parse(cardsDataRaw); } catch { /* ignore */ }
+    const newMap: Record<string, string | null> = {};
+    let pending = 0;
+    cardsRaw.forEach((card) => {
+      if (card.icon) {
+        pending++;
+        loadImage(card.icon).then((data) => {
+          newMap[card.id] = data;
+          pending--;
+          if (pending === 0) setCardIconMap({ ...newMap });
+        });
+      }
+    });
+    if (pending === 0) setCardIconMap({});
+  }, [cardsDataRaw, page.type]);
 
   if (page.type === 'cover') {
     const headline = page.content.headline as TranslatableField;
@@ -176,6 +199,39 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           disclaimerText: disclaimerText?.[language] || disclaimerText?.en || '',
           sectionLabel: sectionLabel?.[language] || sectionLabel?.en || 'Disclaimer',
           year,
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'multi-card-grid') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+
+    let cardsRaw: { id: string; icon: string; heading: Record<string, string>; bodyType: 'bullets' | 'paragraph'; bullets: Record<string, string>[]; paragraph: Record<string, string> }[] = [];
+    try { cardsRaw = JSON.parse(cardsDataRaw); } catch { /* ignore */ }
+
+    const resolvedCards = cardsRaw.map((card) => ({
+      icon: card.icon ? (cardIconMap[card.id] || null) : null,
+      heading: card.heading?.[language] || card.heading?.en || '',
+      bodyType: card.bodyType,
+      bullets: card.bodyType === 'bullets'
+        ? (card.bullets || []).map((b) => b?.[language] || b?.en || '')
+        : undefined,
+      paragraph: card.bodyType === 'paragraph'
+        ? (card.paragraph?.[language] || card.paragraph?.en || '')
+        : undefined,
+    }));
+
+    return (
+      <MultiCardGridPage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          cards: resolvedCards,
         }}
         language={language}
       />
