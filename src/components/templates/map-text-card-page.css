@@ -1,0 +1,142 @@
+.map-text-card-page {
+  position: relative;
+  width: 960px;
+  height: 540px;
+  background: #F2F2F2;
+  overflow: hidden;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+/* MoreHarvest wordmark — top-left */
+.map-text-card-page__wordmark {
+  position: absolute;
+  left: 30px;
+  top: 14px;
+  height: 22px;
+  width: auto;
+  display: block;
+}
+
+/* Year — top-right */
+.map-text-card-page__year {
+  position: absolute;
+  right: 30px;
+  top: 14px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  color: #1A1A1A;
+  line-height: 1;
+  text-align: right;
+}
+
+/* Section label */
+.map-text-card-page__label {
+  position: absolute;
+  left: 30px;
+  top: 38px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  font-size: 11px;
+  color: #333333;
+  line-height: 1;
+  margin: 0;
+}
+
+/* Horizontal rule */
+.map-text-card-page__rule {
+  position: absolute;
+  top: 54px;
+  left: 30px;
+  width: 900px;
+  height: 0;
+  border: none;
+  border-top: 1px solid #E5E5E5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Page number — bottom center */
+.map-text-card-page__page-number {
+  position: absolute;
+  top: 524px;
+  left: 0;
+  width: 960px;
+  text-align: center;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  font-size: 11px;
+  color: #333333;
+  line-height: 1;
+  margin: 0;
+}
+
+/* Map image — left column */
+.map-text-card-page__map {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Map placeholder */
+.map-text-card-page__map-placeholder {
+  width: 100%;
+  height: 100%;
+  border: 2px dashed #CCCCCC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #CCCCCC;
+  font-size: 13px;
+}
+
+/* Card */
+.map-text-card-page__card {
+  border: 1.5px solid #FBB931;
+  border-radius: 6px;
+  padding: 10px 14px;
+}
+
+/* Card heading */
+.map-text-card-page__card-heading {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A1A1A;
+  line-height: 1.4;
+  margin: 0 0 4px 0;
+}
+
+/* Bullet list */
+.map-text-card-page__bullet-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.map-text-card-page__bullet-item {
+  position: relative;
+  padding-left: 12px;
+  font-size: 11px;
+  font-weight: 400;
+  color: #333333;
+  line-height: 1.5;
+}
+
+.map-text-card-page__bullet-dash {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/* Arrow connector between cards */
+.map-text-card-page__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+}
+
+.map-text-card-page__arrow svg {
+  display: block;
+}

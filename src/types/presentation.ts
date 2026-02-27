@@ -605,6 +605,88 @@ export function createBeforeAfterPage(order: number): Page {
   };
 }
 
+/** Helper to create a new map + text (Mode A) page */
+export function createMapTextPage(order: number): Page {
+  const defaultCards = [
+    {
+      id: crypto.randomUUID(),
+      heading: { en: 'MoreHarvest Real Estate', 'zh-tw': '', 'zh-cn': '' },
+      bullets: [
+        { en: 'Acquisitions and asset management.', 'zh-tw': '', 'zh-cn': '' },
+        { en: 'Investor-focused strategy.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+    },
+    {
+      id: crypto.randomUUID(),
+      heading: { en: 'J Estate', 'zh-tw': '', 'zh-cn': '' },
+      bullets: [
+        { en: 'Buying and leasing brokerage services.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+    },
+    {
+      id: crypto.randomUUID(),
+      heading: { en: 'Château Life', 'zh-tw': '', 'zh-cn': '' },
+      bullets: [
+        { en: 'New-build supervision and value-add.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+    },
+  ];
+
+  const defaultArrows = [true, true]; // arrows between card 1-2 and 2-3
+
+  // Mode B defaults
+  const defaultLeftGroups = [
+    {
+      id: crypto.randomUUID(),
+      label: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      items: [{ en: '', 'zh-tw': '', 'zh-cn': '' }],
+    },
+  ];
+  const defaultRightGroups = [
+    {
+      id: crypto.randomUUID(),
+      label: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      items: [{ en: '', 'zh-tw': '', 'zh-cn': '' }],
+    },
+  ];
+  const defaultSummaryRows = [
+    {
+      label: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      value: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      subValue: { en: '', 'zh-tw': '', 'zh-cn': '' },
+    },
+    {
+      label: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      value: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      subValue: { en: '', 'zh-tw': '', 'zh-cn': '' },
+    },
+  ];
+
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'map-text',
+    content: {
+      sectionLabel: createTranslatableField(''),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '12',
+      mapTextMode: 'A',
+      mapImage: '',
+      // Mode A fields
+      cardsData: JSON.stringify(defaultCards),
+      arrowsData: JSON.stringify(defaultArrows),
+      // Mode B fields
+      listHeading: createTranslatableField(''),
+      leftColumnGroups: JSON.stringify(defaultLeftGroups),
+      rightColumnGroups: JSON.stringify(defaultRightGroups),
+      showSummaryTable: 'false',
+      summaryRowsData: JSON.stringify(defaultSummaryRows),
+      // Mode C fields
+      calloutsData: JSON.stringify([]),
+    },
+  };
+}
+
 /** Helper to create a new contact/closing page */
 export function createContactPage(order: number): Page {
   return {

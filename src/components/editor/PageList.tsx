@@ -39,6 +39,7 @@ const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
   { type: 'comparison-table', label: 'Comparison Table' },
   { type: 'text-images', label: 'Text + Images' },
   { type: 'before-after', label: 'Before/After Grid' },
+  { type: 'map-text', label: 'Map + Text' },
   { type: 'disclaimer', label: 'Disclaimer' },
   { type: 'contact', label: 'Contact / Closing' },
 ];

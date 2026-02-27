@@ -15,6 +15,9 @@ import ComparisonTablePage from '../templates/ComparisonTablePage';
 import TimelineImagePage from '../templates/TimelineImagePage';
 import TextImagesPage from '../templates/TextImagesPage';
 import BeforeAfterPage from '../templates/BeforeAfterPage';
+import MapTextCardPage from '../templates/MapTextCardPage';
+import MapTextListPage from '../templates/MapTextListPage';
+import MapTextOverlayPage from '../templates/MapTextOverlayPage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -34,6 +37,7 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const [tiPhoto1Data, setTiPhoto1Data] = useState<string | null>(null);
   const [tiPhoto2Data, setTiPhoto2Data] = useState<string | null>(null);
   const [baPairImages, setBaPairImages] = useState<Record<string, { before: string | null; after: string | null }>>({});
+  const [mapImageData, setMapImageData] = useState<string | null>(null);
   const heroImageKey = (page.content.heroImage as string) || '';
   const logoImageKey = (page.content.logoImage as string) || '';
   const badge1IconKey = (page.content.badge1Icon as string) || '';
@@ -46,6 +50,9 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const tiPhoto1Key = (page.content.photo1 as string) || '';
   const tiPhoto2Key = (page.content.photo2 as string) || '';
   const baPairsDataRaw = (page.content.pairsData as string) || '[]';
+  const mapImageKey = page.type === 'map-text' ? ((page.content.mapImage as string) || '') : '';
+  const mapCardsDataRaw = page.type === 'map-text' ? ((page.content.cardsData as string) || '[]') : '[]';
+  const mapArrowsDataRaw = page.type === 'map-text' ? ((page.content.arrowsData as string) || '[]') : '[]';
 
   useEffect(() => {
     if (!heroImageKey) { setHeroImageData(null); return; }
@@ -122,6 +129,13 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
     });
     if (pending === 0) setCardIconMap({});
   }, [cardsDataRaw, page.type]);
+
+  // Load map image for map-text pages
+  useEffect(() => {
+    if (page.type !== 'map-text') { setMapImageData(null); return; }
+    if (!mapImageKey) { setMapImageData(null); return; }
+    loadImage(mapImageKey).then((data) => setMapImageData(data));
+  }, [mapImageKey, page.type]);
 
   // Load before-after pair images
   useEffect(() => {
@@ -576,6 +590,116 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           arrowSize,
           gapColor,
           pairs: resolvedPairs,
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'map-text') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+    const mapTextMode = (page.content.mapTextMode as string) || 'A';
+
+    if (mapTextMode === 'C') {
+      const calloutsDataRaw = (page.content.calloutsData as string) || '[]';
+
+      let calloutsRaw: { id: string; label: Record<string, string>; x: number; y: number; color: string; visible: boolean }[] = [];
+      try { calloutsRaw = JSON.parse(calloutsDataRaw); } catch { /* ignore */ }
+
+      const resolvedCallouts = calloutsRaw.map((c) => ({
+        label: c.label?.[language] || c.label?.en || '',
+        x: c.x,
+        y: c.y,
+        color: c.color,
+        visible: c.visible !== false,
+      }));
+
+      return (
+        <MapTextOverlayPage
+          content={{
+            sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+            year,
+            pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+            mapImage: mapImageData,
+            callouts: resolvedCallouts,
+          }}
+          language={language}
+        />
+      );
+    }
+
+    if (mapTextMode === 'B') {
+      const listHeading = page.content.listHeading as TranslatableField;
+      const leftGroupsRaw = (page.content.leftColumnGroups as string) || '[]';
+      const rightGroupsRaw = (page.content.rightColumnGroups as string) || '[]';
+      const showSummaryTable = (page.content.showSummaryTable as string) === 'true';
+      const summaryRowsRaw = (page.content.summaryRowsData as string) || '[]';
+
+      let leftGroups: { id: string; label: Record<string, string>; items: Record<string, string>[] }[] = [];
+      try { leftGroups = JSON.parse(leftGroupsRaw); } catch { /* ignore */ }
+
+      let rightGroups: { id: string; label: Record<string, string>; items: Record<string, string>[] }[] = [];
+      try { rightGroups = JSON.parse(rightGroupsRaw); } catch { /* ignore */ }
+
+      let summaryRowsData: { label: Record<string, string>; value: Record<string, string>; subValue: Record<string, string> }[] = [];
+      try { summaryRowsData = JSON.parse(summaryRowsRaw); } catch { /* ignore */ }
+
+      const resolvedLeftGroups = leftGroups.map((g) => ({
+        label: g.label?.[language] || g.label?.en || '',
+        items: (g.items || []).map((item) => item?.[language] || item?.en || ''),
+      }));
+
+      const resolvedRightGroups = rightGroups.map((g) => ({
+        label: g.label?.[language] || g.label?.en || '',
+        items: (g.items || []).map((item) => item?.[language] || item?.en || ''),
+      }));
+
+      const resolvedSummaryRows = summaryRowsData.map((row) => ({
+        label: row.label?.[language] || row.label?.en || '',
+        value: row.value?.[language] || row.value?.en || '',
+        subValue: row.subValue?.[language] || row.subValue?.en || '',
+      }));
+
+      return (
+        <MapTextListPage
+          content={{
+            sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+            year,
+            pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+            mapImage: mapImageData,
+            heading: listHeading?.[language] || listHeading?.en || '',
+            leftGroups: resolvedLeftGroups,
+            rightGroups: resolvedRightGroups,
+            showSummaryTable,
+            summaryRows: resolvedSummaryRows,
+          }}
+          language={language}
+        />
+      );
+    }
+
+    let mapCards: { id: string; heading: Record<string, string>; bullets: Record<string, string>[] }[] = [];
+    try { mapCards = JSON.parse(mapCardsDataRaw); } catch { /* ignore */ }
+
+    let mapArrows: boolean[] = [];
+    try { mapArrows = JSON.parse(mapArrowsDataRaw); } catch { /* ignore */ }
+
+    const resolvedCards = mapCards.map((card) => ({
+      heading: card.heading?.[language] || card.heading?.en || '',
+      bullets: (card.bullets || []).map((b) => b?.[language] || b?.en || ''),
+    }));
+
+    return (
+      <MapTextCardPage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          mapImage: mapImageData,
+          cards: resolvedCards,
+          arrows: mapArrows,
         }}
         language={language}
       />
