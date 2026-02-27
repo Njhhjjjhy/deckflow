@@ -1,0 +1,144 @@
+.text-images-page {
+  position: relative;
+  width: 960px;
+  height: 540px;
+  background: #F2F2F2;
+  overflow: hidden;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.text-images-page__wordmark {
+  position: absolute;
+  left: 30px;
+  top: 14px;
+  height: 22px;
+  width: auto;
+}
+
+.text-images-page__year {
+  position: absolute;
+  right: 30px;
+  top: 14px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #1A1A1A;
+  text-align: right;
+}
+
+.text-images-page__label {
+  position: absolute;
+  left: 30px;
+  top: 38px;
+  font-size: 11px;
+  font-weight: 400;
+  color: #333333;
+  margin: 0;
+}
+
+.text-images-page__rule {
+  position: absolute;
+  top: 54px;
+  left: 30px;
+  width: 900px;
+  border: none;
+  border-top: 1px solid #E5E5E5;
+  margin: 0;
+  padding: 0;
+}
+
+.text-images-page__page-number {
+  position: absolute;
+  top: 524px;
+  left: 0;
+  width: 960px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 400;
+  color: #333333;
+  margin: 0;
+}
+
+/* Left column */
+.text-images-page__left {
+  position: absolute;
+  left: 40px;
+  top: 95px;
+  width: 464px;
+  max-height: 344px;
+  overflow: hidden;
+}
+
+.text-images-page__section {
+  /* margin-bottom set via inline style */
+}
+
+.text-images-page__section-heading {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 4px 0;
+}
+
+.text-images-page__section-bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.text-images-page__bullet {
+  position: relative;
+  padding-left: 14px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-bottom: 2px;
+}
+
+.text-images-page__bullet-dot {
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+
+/* Right column: logo */
+.text-images-page__logo {
+  position: absolute;
+  left: 520px;
+  top: 95px;
+  width: 267px;
+  height: 77px;
+  object-fit: contain;
+}
+
+/* Right column: photos container */
+.text-images-page__photos {
+  position: absolute;
+  left: 520px;
+  /* top and height set via inline style */
+  display: flex;
+  align-items: flex-start;
+}
+
+.text-images-page__photo-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text-images-page__photo {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.text-images-page__caption {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 4px 0 0 0;
+  text-align: center;
+  width: 100%;
+}

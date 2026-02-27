@@ -424,6 +424,120 @@ export function createComparisonTablePage(order: number): Page {
   };
 }
 
+/** Helper to create a new timeline + image page */
+export function createTimelineImagePage(order: number): Page {
+  const defaultEntries = [
+    {
+      id: crypto.randomUUID(),
+      year: '2005',
+      heading: { en: 'Company founded', 'zh-tw': '', 'zh-cn': '' },
+      bullets: [
+        { en: 'Started operations in Tokyo with a focus on residential properties.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+      yearColor: '#1A1A1A',
+      headingColor: '#1A1A1A',
+      bodyColor: '#333333',
+    },
+    {
+      id: crypto.randomUUID(),
+      year: '2015',
+      heading: { en: 'Expanded to regional cities', 'zh-tw': '', 'zh-cn': '' },
+      bullets: [
+        { en: 'Entered Osaka, Sapporo, and Kumamoto markets.', 'zh-tw': '', 'zh-cn': '' },
+        { en: 'Established partnerships with local banks.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+      yearColor: '#1A1A1A',
+      headingColor: '#1A1A1A',
+      bodyColor: '#333333',
+    },
+    {
+      id: crypto.randomUUID(),
+      year: '2023',
+      heading: { en: 'Portfolio milestone', 'zh-tw': '', 'zh-cn': '' },
+      bullets: [
+        { en: 'Over 500 properties under management.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+      yearColor: '#1A1A1A',
+      headingColor: '#1A1A1A',
+      bodyColor: '#333333',
+    },
+  ];
+
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'timeline-image',
+    content: {
+      sectionLabel: createTranslatableField(''),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '7',
+      timelineLineColor: '#1A1A1A',
+      bulletColor: '#333333',
+      entriesData: JSON.stringify(defaultEntries),
+      photo: '',
+      caption: createTranslatableField(''),
+      captionColor: '#333333',
+    },
+  };
+}
+
+/** Helper to create a new text + images page */
+export function createTextImagesPage(order: number): Page {
+  const defaultSections = [
+    {
+      id: crypto.randomUUID(),
+      heading: { en: 'J Estate \u2013 Buying & leasing brokerage services', 'zh-tw': '', 'zh-cn': '' },
+      bullets: [
+        { en: 'Investment management and real estate consulting for overseas investors.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+    },
+    {
+      id: crypto.randomUUID(),
+      heading: { en: 'Ch\u00e2teau Life \u2013 New-build supervision / value-add', 'zh-tw': '', 'zh-cn': '' },
+      bullets: [
+        { en: '10b yen+ cumulative investment experience.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+    },
+    {
+      id: crypto.randomUUID(),
+      heading: { en: 'Concept', 'zh-tw': '', 'zh-cn': '' },
+      bullets: [
+        { en: 'Fusion-European homes using imported materials, antique-style finishes, and modern layouts for safe, comfortable living.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+    },
+    {
+      id: crypto.randomUUID(),
+      heading: { en: 'Value', 'zh-tw': '', 'zh-cn': '' },
+      bullets: [
+        { en: 'Investor-aligned developer delivering cost-efficient, high-quality assets with durable exteriors, refined interiors, practical equipment, and steady performance.', 'zh-tw': '', 'zh-cn': '' },
+      ],
+    },
+  ];
+
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'text-images',
+    content: {
+      sectionLabel: createTranslatableField('02 | J Estate & Ch\u00e2teau Life'),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '13',
+      sectionsData: JSON.stringify(defaultSections),
+      headingColor: '#1A1A1A',
+      bodyColor: '#1A1A1A',
+      bulletColor: '#FBB931',
+      captionColor: '#333333',
+      logoImage: '',
+      photo1: '',
+      photo1ShowCaption: 'true',
+      photo1Caption: createTranslatableField('Ch\u00e2teau Life Jiyugaoka 1'),
+      photo2: '',
+      photo2ShowCaption: 'true',
+      photo2Caption: createTranslatableField('Ch\u00e2teau Life Sagamihara 2'),
+    },
+  };
+}
+
 /** Helper to create a new contact/closing page */
 export function createContactPage(order: number): Page {
   return {

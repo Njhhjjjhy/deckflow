@@ -31,10 +31,12 @@ const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
   { type: 'diagram', label: 'Diagram / Branching' },
   { type: 'index', label: 'Index / TOC' },
   { type: 'section-divider', label: 'Section Divider' },
+  { type: 'timeline-image', label: 'Timeline + Image' },
   { type: 'multi-card-grid', label: 'Multi-Card Grid' },
   { type: 'text-chart', label: 'Text + Chart' },
   { type: 'data-table', label: 'Data Table' },
   { type: 'comparison-table', label: 'Comparison Table' },
+  { type: 'text-images', label: 'Text + Images' },
   { type: 'disclaimer', label: 'Disclaimer' },
   { type: 'contact', label: 'Contact / Closing' },
 ];

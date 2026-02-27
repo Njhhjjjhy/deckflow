@@ -14,6 +14,8 @@ import MultiCardGridEditor from './MultiCardGridEditor';
 import TextChartEditor from './TextChartEditor';
 import DataTableEditor from './DataTableEditor';
 import ComparisonTableEditor from './ComparisonTableEditor';
+import TimelineImageEditor from './TimelineImageEditor';
+import TextImagesEditor from './TextImagesEditor';
 import SlidePreview from '../preview/SlidePreview';
 import DebugOverlay from '../templates/DebugOverlay';
 
@@ -135,6 +137,10 @@ export default function PresentationEditor() {
               <DataTableEditor page={selectedPage} />
             ) : selectedPage.type === 'comparison-table' ? (
               <ComparisonTableEditor page={selectedPage} />
+            ) : selectedPage.type === 'timeline-image' ? (
+              <TimelineImageEditor page={selectedPage} />
+            ) : selectedPage.type === 'text-images' ? (
+              <TextImagesEditor page={selectedPage} />
             ) : (
               <p className="text-sm text-[#999]">
                 Editor not available for "{selectedPage.type}"

@@ -12,6 +12,8 @@ import MultiCardGridPage from '../templates/MultiCardGridPage';
 import TextChartPage from '../templates/TextChartPage';
 import DataTablePage from '../templates/DataTablePage';
 import ComparisonTablePage from '../templates/ComparisonTablePage';
+import TimelineImagePage from '../templates/TimelineImagePage';
+import TextImagesPage from '../templates/TextImagesPage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -26,6 +28,10 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const [badge3IconData, setBadge3IconData] = useState<string | null>(null);
   const [cardIconMap, setCardIconMap] = useState<Record<string, string | null>>({});
   const [chartImageData, setChartImageData] = useState<string | null>(null);
+  const [timelinePhotoData, setTimelinePhotoData] = useState<string | null>(null);
+  const [tiLogoData, setTiLogoData] = useState<string | null>(null);
+  const [tiPhoto1Data, setTiPhoto1Data] = useState<string | null>(null);
+  const [tiPhoto2Data, setTiPhoto2Data] = useState<string | null>(null);
   const heroImageKey = (page.content.heroImage as string) || '';
   const logoImageKey = (page.content.logoImage as string) || '';
   const badge1IconKey = (page.content.badge1Icon as string) || '';
@@ -33,6 +39,10 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const badge3IconKey = (page.content.badge3Icon as string) || '';
   const cardsDataRaw = (page.content.cardsData as string) || '[]';
   const chartImageKey = (page.content.chartImage as string) || '';
+  const timelinePhotoKey = (page.content.photo as string) || '';
+  const tiLogoKey = (page.content.logoImage as string) || '';
+  const tiPhoto1Key = (page.content.photo1 as string) || '';
+  const tiPhoto2Key = (page.content.photo2 as string) || '';
 
   useEffect(() => {
     if (!heroImageKey) { setHeroImageData(null); return; }
@@ -64,6 +74,31 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
     if (!chartImageKey) { setChartImageData(null); return; }
     loadImage(chartImageKey).then((data) => setChartImageData(data));
   }, [chartImageKey]);
+
+  // Load timeline photo
+  useEffect(() => {
+    if (!timelinePhotoKey) { setTimelinePhotoData(null); return; }
+    loadImage(timelinePhotoKey).then((data) => setTimelinePhotoData(data));
+  }, [timelinePhotoKey]);
+
+  // Load text-images page images
+  useEffect(() => {
+    if (page.type !== 'text-images') { setTiLogoData(null); return; }
+    if (!tiLogoKey) { setTiLogoData(null); return; }
+    loadImage(tiLogoKey).then((data) => setTiLogoData(data));
+  }, [tiLogoKey, page.type]);
+
+  useEffect(() => {
+    if (page.type !== 'text-images') { setTiPhoto1Data(null); return; }
+    if (!tiPhoto1Key) { setTiPhoto1Data(null); return; }
+    loadImage(tiPhoto1Key).then((data) => setTiPhoto1Data(data));
+  }, [tiPhoto1Key, page.type]);
+
+  useEffect(() => {
+    if (page.type !== 'text-images') { setTiPhoto2Data(null); return; }
+    if (!tiPhoto2Key) { setTiPhoto2Data(null); return; }
+    loadImage(tiPhoto2Key).then((data) => setTiPhoto2Data(data));
+  }, [tiPhoto2Key, page.type]);
 
   // Load card icons for multi-card-grid pages
   useEffect(() => {
@@ -374,6 +409,92 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           competitorHeaderLabel: competitorHeaderLabel?.[language] || competitorHeaderLabel?.en || '',
           rows: resolvedRows,
           sourceCitation: sourceCitation?.[language] || sourceCitation?.en || '',
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'timeline-image') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const caption = page.content.caption as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+    const timelineLineColor = (page.content.timelineLineColor as string) || '#1A1A1A';
+    const bulletColor = (page.content.bulletColor as string) || '#333333';
+    const captionColor = (page.content.captionColor as string) || '#333333';
+    const entriesDataRaw = (page.content.entriesData as string) || '[]';
+
+    let entriesRaw: { id: string; year: string; heading: Record<string, string>; bullets: Record<string, string>[]; yearColor: string; headingColor: string; bodyColor: string }[] = [];
+    try { entriesRaw = JSON.parse(entriesDataRaw); } catch { /* ignore */ }
+
+    const resolvedEntries = entriesRaw.map((entry) => ({
+      year: entry.year || '',
+      heading: entry.heading?.[language] || entry.heading?.en || '',
+      bullets: (entry.bullets || []).map((b) => b?.[language] || b?.en || ''),
+      yearColor: entry.yearColor || '#1A1A1A',
+      headingColor: entry.headingColor || '#1A1A1A',
+      bodyColor: entry.bodyColor || '#333333',
+    }));
+
+    return (
+      <TimelineImagePage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          timelineLineColor,
+          bulletColor,
+          entries: resolvedEntries,
+          photo: timelinePhotoData,
+          caption: caption?.[language] || caption?.en || '',
+          captionColor,
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'text-images') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const photo1Caption = page.content.photo1Caption as TranslatableField;
+    const photo2Caption = page.content.photo2Caption as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+    const headingColor = (page.content.headingColor as string) || '#1A1A1A';
+    const bodyColor = (page.content.bodyColor as string) || '#1A1A1A';
+    const bulletColor = (page.content.bulletColor as string) || '#FBB931';
+    const captionColor = (page.content.captionColor as string) || '#333333';
+    const photo1ShowCaption = (page.content.photo1ShowCaption as string) !== 'false';
+    const photo2ShowCaption = (page.content.photo2ShowCaption as string) !== 'false';
+    const sectionsDataRaw = (page.content.sectionsData as string) || '[]';
+
+    let sectionsRaw: { id: string; heading: Record<string, string>; bullets: Record<string, string>[] }[] = [];
+    try { sectionsRaw = JSON.parse(sectionsDataRaw); } catch { /* ignore */ }
+
+    const resolvedSections = sectionsRaw.map((s) => ({
+      heading: s.heading?.[language] || s.heading?.en || '',
+      bullets: (s.bullets || []).map((b) => b?.[language] || b?.en || ''),
+    }));
+
+    return (
+      <TextImagesPage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          sections: resolvedSections,
+          headingColor,
+          bodyColor,
+          bulletColor,
+          captionColor,
+          logoImage: tiLogoData,
+          photo1: tiPhoto1Data,
+          photo1ShowCaption,
+          photo1Caption: photo1Caption?.[language] || photo1Caption?.en || '',
+          photo2: tiPhoto2Data,
+          photo2ShowCaption,
+          photo2Caption: photo2Caption?.[language] || photo2Caption?.en || '',
         }}
         language={language}
       />
