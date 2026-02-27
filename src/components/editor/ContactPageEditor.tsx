@@ -1,7 +1,9 @@
-import { useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { Page, Language, TranslatableField } from '../../types/presentation';
 import { usePresentationStore } from '../../lib/store/presentationStore';
+import { loadImage } from '../../lib/images/imageStore';
 import LanguageTabs from './LanguageTabs';
+import ImageUpload from './ImageUpload';
 
 interface ContactPageEditorProps {
   page: Page;
@@ -17,6 +19,30 @@ export default function ContactPageEditor({ page }: ContactPageEditorProps) {
   const address = page.content.address as TranslatableField;
   const url = page.content.url as TranslatableField;
   const year = (page.content.year as string) || '';
+  const logoImageKey = (page.content.logoImage as string) || '';
+
+  const [logoImageData, setLogoImageData] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!logoImageKey) {
+      setLogoImageData(null);
+      return;
+    }
+    loadImage(logoImageKey).then((data) => setLogoImageData(data));
+  }, [logoImageKey]);
+
+  const onLogoUpload = useCallback(
+    (imageKey: string, base64: string) => {
+      updateStringField(page.id, 'logoImage', imageKey);
+      setLogoImageData(base64);
+    },
+    [page.id, updateStringField]
+  );
+
+  const onLogoClear = useCallback(() => {
+    updateStringField(page.id, 'logoImage', '');
+    setLogoImageData(null);
+  }, [page.id, updateStringField]);
 
   const onCompanyNameChange = useCallback(
     (lang: Language, value: string) => {
@@ -58,6 +84,20 @@ export default function ContactPageEditor({ page }: ContactPageEditorProps) {
       <h2 className="text-sm font-semibold text-[#1A1A1A] uppercase tracking-wide">
         Contact / Closing
       </h2>
+
+      {/* Logo Image */}
+      <fieldset>
+        <label className="block text-xs font-medium text-[#333] mb-1">Logo Image</label>
+        <ImageUpload
+          value={logoImageKey}
+          imageData={logoImageData}
+          onUpload={onLogoUpload}
+          onClear={onLogoClear}
+        />
+        <span className="text-[10px] text-[#999] mt-0.5 block">
+          Replaces the default MoreHarvest icon. Leave empty for default.
+        </span>
+      </fieldset>
 
       {/* Company Name */}
       <fieldset>

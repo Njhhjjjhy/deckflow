@@ -12,7 +12,9 @@ interface SlidePreviewProps {
 
 export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const [heroImageData, setHeroImageData] = useState<string | null>(null);
+  const [logoImageData, setLogoImageData] = useState<string | null>(null);
   const heroImageKey = (page.content.heroImage as string) || '';
+  const logoImageKey = (page.content.logoImage as string) || '';
 
   useEffect(() => {
     if (!heroImageKey) {
@@ -21,6 +23,14 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
     }
     loadImage(heroImageKey).then((data) => setHeroImageData(data));
   }, [heroImageKey]);
+
+  useEffect(() => {
+    if (!logoImageKey) {
+      setLogoImageData(null);
+      return;
+    }
+    loadImage(logoImageKey).then((data) => setLogoImageData(data));
+  }, [logoImageKey]);
 
   if (page.type === 'cover') {
     const headline = page.content.headline as TranslatableField;
@@ -63,6 +73,7 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
     const address = page.content.address as TranslatableField;
     const url = page.content.url as TranslatableField;
     const year = (page.content.year as string) || '';
+    const logoImageKey = (page.content.logoImage as string) || '';
 
     return (
       <ContactPage
@@ -73,6 +84,7 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           address: address?.[language] || address?.en || '',
           url: url?.[language] || url?.en || '',
           year,
+          logoImage: logoImageKey ? (logoImageData ?? undefined) : undefined,
         }}
         language={language}
       />

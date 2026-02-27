@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Font, Link } from '@react-pdf/renderer';
+import { View, Text, Image, StyleSheet, Font, Link } from '@react-pdf/renderer';
 import LogoPDF from './LogoPDF';
 import LogoIconPDF from './LogoIconPDF';
 
@@ -75,6 +75,13 @@ const s = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
+  },
+
+  logoImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
   },
 
   /* Bottom-left contact block */
@@ -129,6 +136,7 @@ interface ContactPagePDFProps {
   address: string;
   url: string;
   year: string;
+  logoImage?: string;
 }
 
 export default function ContactPagePDF({
@@ -138,6 +146,7 @@ export default function ContactPagePDF({
   address,
   url,
   year,
+  logoImage,
 }: ContactPagePDFProps) {
   return (
     <View style={s.page}>
@@ -154,7 +163,11 @@ export default function ContactPagePDF({
 
       {/* Logo circle */}
       <View style={s.logoCircle}>
-        <LogoIconPDF size={120} />
+        {logoImage ? (
+          <Image src={logoImage} style={s.logoImage} />
+        ) : (
+          <LogoIconPDF size={120} />
+        )}
       </View>
 
       {/* Bottom-left contact block */}

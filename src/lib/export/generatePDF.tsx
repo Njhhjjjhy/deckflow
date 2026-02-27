@@ -12,20 +12,28 @@ import { loadImage } from '../images/imageStore';
 async function buildDocument(presentation: Presentation) {
   const { width, height } = presentation.dimensions;
 
-  // Resolve hero images from IndexedDB
+  // Resolve images from IndexedDB
   const pages = await Promise.all(
     presentation.pages.map(async (page) => {
-      if (page.type !== 'cover') return { page, heroImage: undefined };
+      const heroImageKey = page.type === 'cover' ? (page.content.heroImage as string) : '';
+      const logoImageKey = page.type === 'contact' ? (page.content.logoImage as string) : '';
 
-      const imageKey = page.content.heroImage as string;
-      const heroImage = imageKey ? await loadImage(imageKey) : undefined;
-      return { page, heroImage: heroImage ?? undefined };
+      const [heroImage, logoImage] = await Promise.all([
+        heroImageKey ? loadImage(heroImageKey) : Promise.resolve(undefined),
+        logoImageKey ? loadImage(logoImageKey) : Promise.resolve(undefined),
+      ]);
+
+      return {
+        page,
+        heroImage: heroImage ?? undefined,
+        logoImage: logoImage ?? undefined,
+      };
     })
   );
 
   return (
     <Document>
-      {pages.map(({ page, heroImage }) => {
+      {pages.map(({ page, heroImage, logoImage }) => {
         if (page.type === 'cover') {
           const headline = page.content.headline as TranslatableField;
           const year = (page.content.year as string) || new Date().getFullYear().toString();
@@ -86,6 +94,7 @@ async function buildDocument(presentation: Presentation) {
                 address={address?.en || ''}
                 url={url?.en || ''}
                 year={year}
+                logoImage={logoImage}
               />
             </Page>
           );

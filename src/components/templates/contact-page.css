@@ -63,6 +63,12 @@
   height: 120px;
 }
 
+.contact-page__logo-custom {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* Bottom-left contact block */
 .contact-page__contact {
   position: absolute;

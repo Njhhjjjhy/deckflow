@@ -118,6 +118,7 @@ export function createContactPage(order: number): Page {
       address: createTranslatableField(''),
       url: createTranslatableField(''),
       year: new Date().getFullYear().toString(),
+      logoImage: '',
     },
   };
 }

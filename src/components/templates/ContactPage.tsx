@@ -7,6 +7,7 @@ interface ContactPageContent {
   address: string;
   url: string;
   year?: string;
+  logoImage?: string; // base64 data URL — falls back to default SVG icon
 }
 
 interface ContactPageProps {
@@ -34,11 +35,19 @@ export default function ContactPage({ content }: ContactPageProps) {
 
       {/* Logo circle — centered */}
       <div className="contact-page__logo-circle">
-        <img
-          className="contact-page__logo-icon"
-          src="/assets/logo-moreharvest-icon.svg"
-          alt="MoreHarvest icon"
-        />
+        {content.logoImage ? (
+          <img
+            className="contact-page__logo-custom"
+            src={content.logoImage}
+            alt="Logo"
+          />
+        ) : (
+          <img
+            className="contact-page__logo-icon"
+            src="/assets/logo-moreharvest-icon.svg"
+            alt="MoreHarvest icon"
+          />
+        )}
       </div>
 
       {/* Bottom-left contact block */}
