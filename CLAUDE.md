@@ -8,7 +8,7 @@ A web app that turns structured content into brand-consistent MoreHarvest presen
 
 Three layers, always separated:
 1. Content layer: structured JSON with trilingual text, image refs, table data.
-2. Template layer: 20 React components that render presentation pages from content data.
+2. Template layer: 22 React components that render presentation pages from content data.
 3. Output layer: PDF (primary, pixel-perfect) and PPTX (secondary, editable).
 
 Content never contains formatting. Templates never contain content. This separation is the core invariant -- never break it.
@@ -190,7 +190,7 @@ interface Asset {
 }
 ```
 
-## Page types (20 templates)
+## Page types (22 templates)
 
 Each template is a React component accepting `content` and `language` props, rendering at 960x540px with absolute positioning.
 
@@ -227,7 +227,7 @@ Detailed element specs (positions, sizes, fonts, required/optional fields) are i
 
 1. **Content editor.** Structured form per page type. Plain text fields with trilingual tabs. Image picker (upload or choose from library). Chart/table data entry via spreadsheet-like grid. No rich text. No formatting controls.
 2. **Translation engine.** Anthropic API with term glossary. Per-field status tracking (auto-translated / reviewed / outdated / empty). Global "translate all" button. Individual field translate button.
-3. **Template renderer.** 20 React components rendering at 960x540. Live preview updates on keystroke. Absolute positioning. Brand-enforced styling.
+3. **Template renderer.** 22 React components rendering at 960x540. Live preview updates on keystroke. Absolute positioning. Brand-enforced styling.
 4. **PDF export.** Single language or all-languages zip. Fonts embedded, images sharp, dimensions correct. Must be indistinguishable from hand-crafted output.
 5. **PPTX export.** Single language or all-languages zip. Opens cleanly in Google Slides. Professional, not pixel-perfect. Embedded fonts and images.
 6. **Asset library.** Upload once, reference everywhere. Categories: photos, logos, icons, charts, maps. Usage tracking per asset.
