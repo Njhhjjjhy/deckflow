@@ -28,6 +28,7 @@ const PAGE_TYPE_LABELS: Record<string, string> = {
 const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
   { type: 'cover', label: 'Cover' },
   { type: 'section-divider', label: 'Section Divider' },
+  { type: 'contact', label: 'Contact / Closing' },
 ];
 
 export default function PageList() {

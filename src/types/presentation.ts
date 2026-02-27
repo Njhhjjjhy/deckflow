@@ -104,3 +104,20 @@ export function createSectionDividerPage(order: number): Page {
     },
   };
 }
+
+/** Helper to create a new contact/closing page */
+export function createContactPage(order: number): Page {
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'contact',
+    content: {
+      companyName: createTranslatableField(''),
+      phone: createTranslatableField(''),
+      email: createTranslatableField(''),
+      address: createTranslatableField(''),
+      url: createTranslatableField(''),
+      year: new Date().getFullYear().toString(),
+    },
+  };
+}

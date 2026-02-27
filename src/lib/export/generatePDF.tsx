@@ -2,6 +2,7 @@ import { Document, Page, pdf } from '@react-pdf/renderer';
 import type { Presentation, TranslatableField } from '../../types/presentation';
 import CoverPagePDF from './CoverPagePDF';
 import SectionDividerPDF from './SectionDividerPDF';
+import ContactPagePDF from './ContactPagePDF';
 import { loadImage } from '../images/imageStore';
 
 /**
@@ -59,6 +60,32 @@ async function buildDocument(presentation: Presentation) {
                 sectionLabel={sectionLabel?.en || ''}
                 sectionNumber={sectionNumber?.en || ''}
                 sectionTitle={sectionTitle?.en || ''}
+              />
+            </Page>
+          );
+        }
+
+        if (page.type === 'contact') {
+          const companyName = page.content.companyName as TranslatableField;
+          const phone = page.content.phone as TranslatableField;
+          const email = page.content.email as TranslatableField;
+          const address = page.content.address as TranslatableField;
+          const url = page.content.url as TranslatableField;
+          const year = (page.content.year as string) || new Date().getFullYear().toString();
+
+          return (
+            <Page
+              key={page.id}
+              size={[width, height]}
+              style={{ width, height }}
+            >
+              <ContactPagePDF
+                companyName={companyName?.en || ''}
+                phone={phone?.en || ''}
+                email={email?.en || ''}
+                address={address?.en || ''}
+                url={url?.en || ''}
+                year={year}
               />
             </Page>
           );

@@ -3,6 +3,7 @@ import type { Page, Language, TranslatableField } from '../../types/presentation
 import { loadImage } from '../../lib/images/imageStore';
 import CoverPage from '../templates/CoverPage';
 import SectionDividerPage from '../templates/SectionDividerPage';
+import ContactPage from '../templates/ContactPage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -49,6 +50,29 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
           sectionNumber: sectionNumber?.[language] || sectionNumber?.en || '',
           sectionTitle: sectionTitle?.[language] || sectionTitle?.en || '',
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'contact') {
+    const companyName = page.content.companyName as TranslatableField;
+    const phone = page.content.phone as TranslatableField;
+    const email = page.content.email as TranslatableField;
+    const address = page.content.address as TranslatableField;
+    const url = page.content.url as TranslatableField;
+    const year = (page.content.year as string) || '';
+
+    return (
+      <ContactPage
+        content={{
+          companyName: companyName?.[language] || companyName?.en || '',
+          phone: phone?.[language] || phone?.en || '',
+          email: email?.[language] || email?.en || '',
+          address: address?.[language] || address?.en || '',
+          url: url?.[language] || url?.en || '',
+          year,
         }}
         language={language}
       />
