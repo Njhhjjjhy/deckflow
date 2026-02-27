@@ -297,15 +297,34 @@ export default function MultiCardGridEditor({ page }: MultiCardGridEditorProps) 
       {/* Page number */}
       <fieldset>
         <label className="block text-xs font-medium text-[#333] mb-1">Page Number</label>
-        <input
-          type="text"
-          value={pageNumber}
-          onChange={onPageNumberChange}
-          placeholder="e.g. 9"
-          maxLength={4}
-          className="w-24 px-3 py-2 text-sm rounded border border-[#E5E5E5] bg-white focus:outline-none focus:border-[#FBB931] focus:ring-1 focus:ring-[#FBB931]"
-          style={{ color: '#1A1A1A' }}
-        />
+        {pageNumber ? (
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              value={pageNumber}
+              onChange={onPageNumberChange}
+              maxLength={4}
+              className="w-24 px-3 py-2 text-sm rounded border border-[#E5E5E5] bg-white focus:outline-none focus:border-[#FBB931] focus:ring-1 focus:ring-[#FBB931]"
+              style={{ color: '#1A1A1A' }}
+            />
+            <button
+              onClick={() => updateStringField(page.id, 'pageNumber', '')}
+              className="px-2 py-2 text-xs rounded border border-[#E5E5E5] hover:bg-red-50 hover:border-red-200 transition-colors"
+              style={{ color: '#999' }}
+              title="Remove page number"
+            >
+              ✕
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => updateStringField(page.id, 'pageNumber', String(page.order + 1))}
+            className="px-3 py-2 text-xs rounded border border-dashed border-[#CCCCCC] hover:border-[#FBB931] transition-colors"
+            style={{ color: '#666' }}
+          >
+            + Add page number
+          </button>
+        )}
       </fieldset>
 
       {/* Cards */}
