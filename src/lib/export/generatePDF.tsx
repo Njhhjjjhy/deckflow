@@ -3,6 +3,7 @@ import type { Presentation, TranslatableField } from '../../types/presentation';
 import CoverPagePDF from './CoverPagePDF';
 import SectionDividerPDF from './SectionDividerPDF';
 import ContactPagePDF from './ContactPagePDF';
+import DisclaimerPagePDF from './DisclaimerPagePDF';
 import { loadImage } from '../images/imageStore';
 
 /**
@@ -68,6 +69,26 @@ async function buildDocument(presentation: Presentation) {
                 sectionLabel={sectionLabel?.en || ''}
                 sectionNumber={sectionNumber?.en || ''}
                 sectionTitle={sectionTitle?.en || ''}
+              />
+            </Page>
+          );
+        }
+
+        if (page.type === 'disclaimer') {
+          const disclaimerText = page.content.disclaimerText as TranslatableField;
+          const sectionLabel = page.content.sectionLabel as TranslatableField;
+          const year = (page.content.year as string) || new Date().getFullYear().toString();
+
+          return (
+            <Page
+              key={page.id}
+              size={[width, height]}
+              style={{ width, height }}
+            >
+              <DisclaimerPagePDF
+                disclaimerText={disclaimerText?.en || ''}
+                sectionLabel={sectionLabel?.en || 'Disclaimer'}
+                year={year}
               />
             </Page>
           );

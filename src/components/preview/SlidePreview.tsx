@@ -4,6 +4,7 @@ import { loadImage } from '../../lib/images/imageStore';
 import CoverPage from '../templates/CoverPage';
 import SectionDividerPage from '../templates/SectionDividerPage';
 import ContactPage from '../templates/ContactPage';
+import DisclaimerPage from '../templates/DisclaimerPage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -60,6 +61,23 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
           sectionNumber: sectionNumber?.[language] || sectionNumber?.en || '',
           sectionTitle: sectionTitle?.[language] || sectionTitle?.en || '',
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'disclaimer') {
+    const disclaimerText = page.content.disclaimerText as TranslatableField;
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const year = (page.content.year as string) || '';
+
+    return (
+      <DisclaimerPage
+        content={{
+          disclaimerText: disclaimerText?.[language] || disclaimerText?.en || '',
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || 'Disclaimer',
+          year,
         }}
         language={language}
       />

@@ -105,6 +105,20 @@ export function createSectionDividerPage(order: number): Page {
   };
 }
 
+/** Helper to create a new disclaimer page */
+export function createDisclaimerPage(order: number): Page {
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'disclaimer',
+    content: {
+      disclaimerText: createTranslatableField(''),
+      sectionLabel: createTranslatableField('Disclaimer'),
+      year: new Date().getFullYear().toString(),
+    },
+  };
+}
+
 /** Helper to create a new contact/closing page */
 export function createContactPage(order: number): Page {
   return {

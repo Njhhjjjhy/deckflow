@@ -6,6 +6,7 @@ import PageList from './PageList';
 import CoverPageEditor from './CoverPageEditor';
 import SectionDividerEditor from './SectionDividerEditor';
 import ContactPageEditor from './ContactPageEditor';
+import DisclaimerPageEditor from './DisclaimerPageEditor';
 import SlidePreview from '../preview/SlidePreview';
 import DebugOverlay from '../templates/DebugOverlay';
 
@@ -81,6 +82,8 @@ export default function PresentationEditor() {
               <CoverPageEditor page={selectedPage} />
             ) : selectedPage.type === 'section-divider' ? (
               <SectionDividerEditor page={selectedPage} />
+            ) : selectedPage.type === 'disclaimer' ? (
+              <DisclaimerPageEditor page={selectedPage} />
             ) : selectedPage.type === 'contact' ? (
               <ContactPageEditor page={selectedPage} />
             ) : (
