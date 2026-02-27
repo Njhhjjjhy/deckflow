@@ -40,11 +40,12 @@ export default function CoverPage({ content, language = 'en' }: CoverPageProps) 
     <div className="cover-page">
       {/* Header bar */}
       <div className="cover-page__header">
-        {/* Logo placeholder */}
-        <div className="cover-page__logo">
-          <div className="cover-page__logo-icon">M</div>
-          MoreHarvest
-        </div>
+        {/* Logo */}
+        <img
+          className="cover-page__logo"
+          src="/assets/logo-moreharvest.svg"
+          alt="MoreHarvest"
+        />
 
         {/* Year */}
         <div className="cover-page__year">{year}</div>

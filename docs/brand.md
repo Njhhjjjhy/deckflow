@@ -16,4 +16,6 @@
 - All text must pass WCAG AA contrast (4.5:1 normal, 3:1 large)
 
 ## Logo files
-- MoreHarvest logo: (upload when available)
+- Full logo (icon + text): `/public/assets/logo-moreharvest.svg` (444x52, SVG)
+- Icon only (circular): `/public/assets/logo-moreharvest-icon.svg` (168x168, SVG)
+- Logo colors: gradient from #FBB931 (gold) to #FF8660 (orange), text #1E1F20
