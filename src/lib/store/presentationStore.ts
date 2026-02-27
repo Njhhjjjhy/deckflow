@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Presentation, Page, Language, TranslatableField } from '../../types/presentation';
-import { createCoverPage, createValuePropositionPage, createDiagramPage, createIndexPage, createSectionDividerPage, createDisclaimerPage, createContactPage, createMultiCardGridPage, createTextChartPage, createDataTablePage, createComparisonTablePage, createTimelineImagePage, createTextImagesPage, createBeforeAfterPage, createMapTextPage, createThreeCirclesPage } from '../../types/presentation';
+import { createCoverPage, createValuePropositionPage, createDiagramPage, createIndexPage, createSectionDividerPage, createDisclaimerPage, createContactPage, createMultiCardGridPage, createTextChartPage, createDataTablePage, createComparisonTablePage, createTimelineImagePage, createTextImagesPage, createBeforeAfterPage, createMapTextPage, createThreeCirclesPage, createFlowChartPage } from '../../types/presentation';
 
 function createDefaultPresentation(): Presentation {
   return {
@@ -137,7 +137,9 @@ export const usePresentationStore = create<PresentationState>()(
                                           ? createMapTextPage(order)
                                           : type === 'three-circles'
                                             ? createThreeCirclesPage(order)
-                                            : createCoverPage(order);
+                                            : type === 'flow-chart'
+                                              ? createFlowChartPage(order)
+                                              : createCoverPage(order);
             newPage.type = type;
             return {
               presentation: {

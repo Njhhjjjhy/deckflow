@@ -41,6 +41,7 @@ const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
   { type: 'before-after', label: 'Before/After Grid' },
   { type: 'map-text', label: 'Map + Text' },
   { type: 'three-circles', label: 'Three Circles' },
+  { type: 'flow-chart', label: 'Flow Chart / Org Structure' },
   { type: 'disclaimer', label: 'Disclaimer' },
   { type: 'contact', label: 'Contact / Closing' },
 ];

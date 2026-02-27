@@ -709,6 +709,61 @@ export function createThreeCirclesPage(order: number): Page {
   };
 }
 
+/** Helper to create a new flow chart / org structure page */
+export function createFlowChartPage(order: number): Page {
+  const n1 = crypto.randomUUID();
+  const n2 = crypto.randomUUID();
+  const n3 = crypto.randomUUID();
+  const n4 = crypto.randomUUID();
+  const n5 = crypto.randomUUID();
+
+  const el = () => ({ en: '', 'zh-tw': '', 'zh-cn': '' });
+
+  const defaultNodes = [
+    { id: n1, heading: { en: 'Overseas Investor', 'zh-tw': '', 'zh-cn': '' }, body: el(), fillColor: '#E8E8E8', x: 35, y: 2, width: 200, height: 48, borderRadius: 16 },
+    { id: n2, heading: { en: 'Taiwan Holding Co.', 'zh-tw': '', 'zh-cn': '' }, body: { en: 'Investment vehicle', 'zh-tw': '', 'zh-cn': '' }, fillColor: '#D6E4F0', x: 5, y: 32, width: 180, height: 55, borderRadius: 16 },
+    { id: n3, heading: { en: 'Japan GK (\u5408\u540C\u4F1A\u793E)', 'zh-tw': '', 'zh-cn': '' }, body: { en: 'Operating entity', 'zh-tw': '', 'zh-cn': '' }, fillColor: '#D4EDDA', x: 57, y: 32, width: 180, height: 55, borderRadius: 16 },
+    { id: n4, heading: { en: 'MoreHarvest Real Estate', 'zh-tw': '', 'zh-cn': '' }, body: { en: 'Asset management', 'zh-tw': '', 'zh-cn': '' }, fillColor: '#FEF3C7', x: 5, y: 68, width: 180, height: 65, borderRadius: 16 },
+    { id: n5, heading: { en: 'Property Portfolio', 'zh-tw': '', 'zh-cn': '' }, body: { en: 'Residential assets', 'zh-tw': '', 'zh-cn': '' }, fillColor: '#D4EDDA', x: 57, y: 68, width: 180, height: 65, borderRadius: 16 },
+  ];
+
+  const defaultArrows = [
+    { id: crypto.randomUUID(), sourceId: n1, targetId: n2, bidirectional: false, label: { en: 'Capital', 'zh-tw': '', 'zh-cn': '' }, labelPosition: 'left' },
+    { id: crypto.randomUUID(), sourceId: n1, targetId: n3, bidirectional: false, label: { en: 'Capital', 'zh-tw': '', 'zh-cn': '' }, labelPosition: 'right' },
+    { id: crypto.randomUUID(), sourceId: n2, targetId: n4, bidirectional: false, label: { en: 'Ownership', 'zh-tw': '', 'zh-cn': '' }, labelPosition: 'left' },
+    { id: crypto.randomUUID(), sourceId: n3, targetId: n5, bidirectional: false, label: { en: 'Management', 'zh-tw': '', 'zh-cn': '' }, labelPosition: 'right' },
+    { id: crypto.randomUUID(), sourceId: n4, targetId: n5, bidirectional: true, label: { en: 'Services', 'zh-tw': '', 'zh-cn': '' }, labelPosition: 'below' },
+  ];
+
+  const defaultLegend = [
+    { id: crypto.randomUUID(), color: '#D6E4F0', label: { en: 'Taiwan jurisdiction', 'zh-tw': '', 'zh-cn': '' } },
+    { id: crypto.randomUUID(), color: '#D4EDDA', label: { en: 'Japan jurisdiction', 'zh-tw': '', 'zh-cn': '' } },
+    { id: crypto.randomUUID(), color: '#E8E8E8', label: { en: 'Overseas', 'zh-tw': '', 'zh-cn': '' } },
+  ];
+
+  const defaultFootnotes = [
+    { id: crypto.randomUUID(), text: { en: 'This structure is for illustrative purposes only. Actual legal structures may vary based on jurisdiction and investor requirements.', 'zh-tw': '', 'zh-cn': '' }, visible: true },
+    { id: crypto.randomUUID(), text: { en: 'MoreHarvest provides end-to-end support for investment structuring and management.', 'zh-tw': '', 'zh-cn': '' }, visible: true },
+    { id: crypto.randomUUID(), text: el(), visible: false },
+  ];
+
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'flow-chart',
+    content: {
+      sectionLabel: createTranslatableField('06 | Corporate Structure'),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '28',
+      arrowColor: '#1A1A1A',
+      nodesData: JSON.stringify(defaultNodes),
+      arrowsData: JSON.stringify(defaultArrows),
+      legendData: JSON.stringify(defaultLegend),
+      footnotesData: JSON.stringify(defaultFootnotes),
+    },
+  };
+}
+
 /** Helper to create a new contact/closing page */
 export function createContactPage(order: number): Page {
   return {

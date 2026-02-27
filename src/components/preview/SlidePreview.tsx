@@ -19,6 +19,7 @@ import MapTextCardPage from '../templates/MapTextCardPage';
 import MapTextListPage from '../templates/MapTextListPage';
 import MapTextOverlayPage from '../templates/MapTextOverlayPage';
 import ThreeCirclesPage from '../templates/ThreeCirclesPage';
+import FlowChartPage from '../templates/FlowChartPage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -767,6 +768,76 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           url: url?.[language] || url?.en || '',
           year,
           logoImage: logoImageKey ? (logoImageData ?? undefined) : undefined,
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'flow-chart') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+    const arrowColor = (page.content.arrowColor as string) || '#1A1A1A';
+    const nodesDataRaw = (page.content.nodesData as string) || '[]';
+    const arrowsDataRaw = (page.content.arrowsData as string) || '[]';
+    const legendDataRaw = (page.content.legendData as string) || '[]';
+    const footnotesDataRaw = (page.content.footnotesData as string) || '[]';
+
+    let nodesRaw: { id: string; heading: Record<string, string>; body: Record<string, string>; fillColor: string; x: number; y: number; width: number; height: number; borderRadius: number }[] = [];
+    try { nodesRaw = JSON.parse(nodesDataRaw); } catch { /* ignore */ }
+
+    let arrowsRaw: { id: string; sourceId: string; targetId: string; bidirectional: boolean; label: Record<string, string>; labelPosition: string }[] = [];
+    try { arrowsRaw = JSON.parse(arrowsDataRaw); } catch { /* ignore */ }
+
+    let legendRaw: { color: string; label: Record<string, string> }[] = [];
+    try { legendRaw = JSON.parse(legendDataRaw); } catch { /* ignore */ }
+
+    let footnotesRaw: { text: Record<string, string>; visible: boolean }[] = [];
+    try { footnotesRaw = JSON.parse(footnotesDataRaw); } catch { /* ignore */ }
+
+    const resolvedNodes = nodesRaw.map((n) => ({
+      id: n.id,
+      heading: n.heading?.[language] || n.heading?.en || '',
+      body: n.body?.[language] || n.body?.en || '',
+      fillColor: n.fillColor,
+      x: n.x,
+      y: n.y,
+      width: n.width,
+      height: n.height,
+      borderRadius: n.borderRadius ?? 16,
+    }));
+
+    const resolvedArrows = arrowsRaw.map((a) => ({
+      id: a.id,
+      sourceId: a.sourceId,
+      targetId: a.targetId,
+      bidirectional: a.bidirectional,
+      label: a.label?.[language] || a.label?.en || '',
+      labelPosition: (a.labelPosition || 'above') as 'above' | 'below' | 'left' | 'right',
+    }));
+
+    const resolvedLegend = legendRaw.map((l) => ({
+      color: l.color,
+      label: l.label?.[language] || l.label?.en || '',
+    }));
+
+    const resolvedFootnotes = footnotesRaw.map((fn) => ({
+      text: fn.text?.[language] || fn.text?.en || '',
+      visible: fn.visible,
+    }));
+
+    return (
+      <FlowChartPage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          nodes: resolvedNodes,
+          arrows: resolvedArrows,
+          arrowColor,
+          legend: resolvedLegend,
+          footnotes: resolvedFootnotes,
         }}
         language={language}
       />
