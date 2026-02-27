@@ -216,6 +216,8 @@ Each template is a React component accepting `content` and `language` props, ren
 | 18 | Flow chart / org structure | Color-coded jurisdiction boxes, relationship arrows, legend, footnotes | p.28 |
 | 19 | Disclaimer | Long-form legal text, smaller font, multiple paragraphs, header bar only | p.33 |
 | 20 | Contact / closing | Large centered circular logo, company details bottom-left, URL bottom-right | p.34 |
+| 21 | Partner profile | Centered partner logo image top-center, body paragraph below with bold+inline text support, optional labeled link section (bold label + URL on its own line), contact block bottom-left (multiline plain text), URL bottom-right | p.32 |
+| 22 | Logos + text + table image | Left column: 2–4 partner entries each with an uploaded logo image + bold heading + bullet list. Right column: table title text, uploaded table image (screenshot), footnote text below table, source text below footnote | p.20 |
 
 Detailed element specs (positions, sizes, fonts, required/optional fields) are in `/docs/templates.md`.
 
