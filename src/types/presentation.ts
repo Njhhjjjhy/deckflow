@@ -33,7 +33,8 @@ export type PageType =
   | 'flow-chart'
   | 'disclaimer'
   | 'contact'
-  | 'partner-profile';
+  | 'partner-profile'
+  | 'logos-text-table';
 
 export interface Page {
   id: string;
@@ -804,6 +805,54 @@ export function createPartnerProfilePage(order: number): Page {
       sectionLabel: createTranslatableField(''),
       year: new Date().getFullYear().toString(),
       pageNumber: '32',
+    },
+  };
+}
+
+/** Helper to create a new photo gallery page */
+export function createPhotoGalleryPage(order: number): Page {
+  const defaultPhotos = [
+    { id: crypto.randomUUID(), imageKey: '' },
+  ];
+
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'photo-gallery',
+    content: {
+      sectionLabel: createTranslatableField(''),
+      year: new Date().getFullYear().toString(),
+      photosData: JSON.stringify(defaultPhotos),
+    },
+  };
+}
+
+/** Helper to create a new logos + text + table image page */
+export function createLogosTextTablePage(order: number): Page {
+  const defaultEntries = [
+    {
+      id: crypto.randomUUID(),
+      logoImage: '',
+      heading: { en: '', 'zh-tw': '', 'zh-cn': '' },
+      bullets: [{ en: '', 'zh-tw': '', 'zh-cn': '' }],
+    },
+  ];
+
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'logos-text-table',
+    content: {
+      sectionLabel: createTranslatableField(''),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '20',
+      entriesData: JSON.stringify(defaultEntries),
+      tableTitle: createTranslatableField(''),
+      tableImage: '',
+      showFootnote: 'false',
+      footnote: createTranslatableField(''),
+      showSource: 'false',
+      source: createTranslatableField(''),
     },
   };
 }

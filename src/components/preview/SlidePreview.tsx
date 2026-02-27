@@ -21,6 +21,8 @@ import MapTextOverlayPage from '../templates/MapTextOverlayPage';
 import ThreeCirclesPage from '../templates/ThreeCirclesPage';
 import FlowChartPage from '../templates/FlowChartPage';
 import PartnerProfilePage from '../templates/PartnerProfilePage';
+import LogosTextTablePage from '../templates/LogosTextTablePage';
+import PhotoGalleryPage from '../templates/PhotoGalleryPage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -42,6 +44,9 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const [baPairImages, setBaPairImages] = useState<Record<string, { before: string | null; after: string | null }>>({});
   const [mapImageData, setMapImageData] = useState<string | null>(null);
   const [partnerLogoData, setPartnerLogoData] = useState<string | null>(null);
+  const [lttEntryLogoMap, setLttEntryLogoMap] = useState<Record<string, string | null>>({});
+  const [lttTableImageData, setLttTableImageData] = useState<string | null>(null);
+  const [galleryPhotos, setGalleryPhotos] = useState<Record<string, string | null>>({});
   const heroImageKey = (page.content.heroImage as string) || '';
   const logoImageKey = (page.content.logoImage as string) || '';
   const badge1IconKey = (page.content.badge1Icon as string) || '';
@@ -56,6 +61,9 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const baPairsDataRaw = (page.content.pairsData as string) || '[]';
   const mapImageKey = page.type === 'map-text' ? ((page.content.mapImage as string) || '') : '';
   const partnerLogoKey = page.type === 'partner-profile' ? ((page.content.partnerLogoImage as string) || '') : '';
+  const lttEntriesDataRaw = page.type === 'logos-text-table' ? ((page.content.entriesData as string) || '[]') : '[]';
+  const lttTableImageKey = page.type === 'logos-text-table' ? ((page.content.tableImage as string) || '') : '';
+  const galleryPhotosDataRaw = page.type === 'photo-gallery' ? ((page.content.photosData as string) || '[]') : '[]';
   const mapCardsDataRaw = page.type === 'map-text' ? ((page.content.cardsData as string) || '[]') : '[]';
   const mapArrowsDataRaw = page.type === 'map-text' ? ((page.content.arrowsData as string) || '[]') : '[]';
 
@@ -148,6 +156,55 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
     if (!partnerLogoKey) { setPartnerLogoData(null); return; }
     loadImage(partnerLogoKey).then((data) => setPartnerLogoData(data));
   }, [partnerLogoKey, page.type]);
+
+  // Load logos-text-table entry logos
+  useEffect(() => {
+    if (page.type !== 'logos-text-table') { setLttEntryLogoMap({}); return; }
+    let entriesRaw: { id: string; logoImage: string }[] = [];
+    try { entriesRaw = JSON.parse(lttEntriesDataRaw); } catch { /* ignore */ }
+    const newMap: Record<string, string | null> = {};
+    let pending = 0;
+    entriesRaw.forEach((entry) => {
+      if (entry.logoImage) {
+        pending++;
+        loadImage(entry.logoImage).then((data) => {
+          newMap[entry.id] = data;
+          pending--;
+          if (pending === 0) setLttEntryLogoMap({ ...newMap });
+        });
+      }
+    });
+    if (pending === 0) setLttEntryLogoMap({});
+  }, [lttEntriesDataRaw, page.type]);
+
+  // Load logos-text-table table image
+  useEffect(() => {
+    if (page.type !== 'logos-text-table') { setLttTableImageData(null); return; }
+    if (!lttTableImageKey) { setLttTableImageData(null); return; }
+    loadImage(lttTableImageKey).then((data) => setLttTableImageData(data));
+  }, [lttTableImageKey, page.type]);
+
+  // Load photo gallery images
+  useEffect(() => {
+    if (page.type !== 'photo-gallery') { setGalleryPhotos({}); return; }
+    let photosRaw: { id: string; imageKey: string }[] = [];
+    try { photosRaw = JSON.parse(galleryPhotosDataRaw); } catch { /* ignore */ }
+    const newMap: Record<string, string | null> = {};
+    let pending = 0;
+    photosRaw.forEach((photo) => {
+      if (photo.imageKey) {
+        pending++;
+        loadImage(photo.imageKey).then((data) => {
+          newMap[photo.id] = data;
+          pending--;
+          if (pending === 0) setGalleryPhotos({ ...newMap });
+        });
+      } else {
+        newMap[photo.id] = null;
+      }
+    });
+    if (pending === 0) setGalleryPhotos({ ...newMap });
+  }, [galleryPhotosDataRaw, page.type]);
 
   // Load before-after pair images
   useEffect(() => {
@@ -886,6 +943,67 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           contactLine4: contactLine4?.[language] || contactLine4?.en || '',
           contactLine5: contactLine5?.[language] || contactLine5?.en || '',
           bottomUrl: bottomUrl?.[language] || bottomUrl?.en || '',
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'logos-text-table') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const tableTitle = page.content.tableTitle as TranslatableField;
+    const footnote = page.content.footnote as TranslatableField;
+    const source = page.content.source as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+    const showFootnote = (page.content.showFootnote as string) === 'true';
+    const showSource = (page.content.showSource as string) === 'true';
+
+    let entriesRaw: { id: string; logoImage: string; heading: Record<string, string>; bullets: Record<string, string>[] }[] = [];
+    try { entriesRaw = JSON.parse(lttEntriesDataRaw); } catch { /* ignore */ }
+
+    const resolvedEntries = entriesRaw.map((entry) => ({
+      logoImage: entry.logoImage ? (lttEntryLogoMap[entry.id] || null) : null,
+      heading: entry.heading?.[language] || entry.heading?.en || '',
+      bullets: (entry.bullets || []).map((b) => b?.[language] || b?.en || ''),
+    }));
+
+    return (
+      <LogosTextTablePage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          entries: resolvedEntries,
+          tableTitle: tableTitle?.[language] || tableTitle?.en || '',
+          tableImage: lttTableImageData,
+          showFootnote,
+          footnote: footnote?.[language] || footnote?.en || '',
+          showSource,
+          source: source?.[language] || source?.en || '',
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'photo-gallery') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const year = (page.content.year as string) || '';
+
+    let photosRaw: { id: string; imageKey: string }[] = [];
+    try { photosRaw = JSON.parse(galleryPhotosDataRaw); } catch { /* ignore */ }
+
+    const resolvedPhotos = photosRaw.map((photo) =>
+      photo.imageKey ? (galleryPhotos[photo.id] || null) : null
+    );
+
+    return (
+      <PhotoGalleryPage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          photos: resolvedPhotos,
         }}
         language={language}
       />

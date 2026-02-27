@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Presentation, Page, Language, TranslatableField } from '../../types/presentation';
-import { createCoverPage, createValuePropositionPage, createDiagramPage, createIndexPage, createSectionDividerPage, createDisclaimerPage, createContactPage, createMultiCardGridPage, createTextChartPage, createDataTablePage, createComparisonTablePage, createTimelineImagePage, createTextImagesPage, createBeforeAfterPage, createMapTextPage, createThreeCirclesPage, createFlowChartPage, createPartnerProfilePage } from '../../types/presentation';
+import { createCoverPage, createValuePropositionPage, createDiagramPage, createIndexPage, createSectionDividerPage, createDisclaimerPage, createContactPage, createMultiCardGridPage, createTextChartPage, createDataTablePage, createComparisonTablePage, createTimelineImagePage, createTextImagesPage, createBeforeAfterPage, createMapTextPage, createThreeCirclesPage, createFlowChartPage, createPartnerProfilePage, createLogosTextTablePage, createPhotoGalleryPage } from '../../types/presentation';
 
 function createDefaultPresentation(): Presentation {
   return {
@@ -141,7 +141,11 @@ export const usePresentationStore = create<PresentationState>()(
                                               ? createFlowChartPage(order)
                                               : type === 'partner-profile'
                                                 ? createPartnerProfilePage(order)
-                                                : createCoverPage(order);
+                                                : type === 'logos-text-table'
+                                                  ? createLogosTextTablePage(order)
+                                                  : type === 'photo-gallery'
+                                                    ? createPhotoGalleryPage(order)
+                                                    : createCoverPage(order);
             newPage.type = type;
             return {
               presentation: {

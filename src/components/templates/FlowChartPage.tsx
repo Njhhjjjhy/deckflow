@@ -217,7 +217,7 @@ export default function FlowChartPage({ content, language = 'en' }: FlowChartPag
                 <text
                   x={a.labelX}
                   y={a.labelY}
-                  textAnchor={a.textAnchor}
+                  textAnchor={a.textAnchor as 'start' | 'middle' | 'end'}
                   style={{
                     fontFamily,
                     fontSize: '9px',

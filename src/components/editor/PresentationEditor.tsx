@@ -21,6 +21,8 @@ import MapTextCardEditor from './MapTextCardEditor';
 import ThreeCirclesEditor from './ThreeCirclesEditor';
 import FlowChartEditor from './FlowChartEditor';
 import PartnerProfileEditor from './PartnerProfileEditor';
+import LogosTextTableEditor from './LogosTextTableEditor';
+import PhotoGalleryEditor from './PhotoGalleryEditor';
 import SlidePreview from '../preview/SlidePreview';
 import DebugOverlay from '../templates/DebugOverlay';
 
@@ -156,6 +158,10 @@ export default function PresentationEditor() {
               <FlowChartEditor page={selectedPage} />
             ) : selectedPage.type === 'partner-profile' ? (
               <PartnerProfileEditor page={selectedPage} />
+            ) : selectedPage.type === 'logos-text-table' ? (
+              <LogosTextTableEditor page={selectedPage} />
+            ) : selectedPage.type === 'photo-gallery' ? (
+              <PhotoGalleryEditor page={selectedPage} />
             ) : (
               <p className="text-sm text-[#999]">
                 Editor not available for "{selectedPage.type}"

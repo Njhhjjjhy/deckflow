@@ -25,6 +25,7 @@ const PAGE_TYPE_LABELS: Record<string, string> = {
   disclaimer: 'Disclaimer',
   contact: 'Contact',
   'partner-profile': 'Partner Profile',
+  'logos-text-table': 'Logos+Table',
 };
 
 const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
@@ -46,6 +47,8 @@ const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
   { type: 'disclaimer', label: 'Disclaimer' },
   { type: 'contact', label: 'Contact / Closing' },
   { type: 'partner-profile', label: 'Partner Profile' },
+  { type: 'logos-text-table', label: 'Logos + Text + Table' },
+  { type: 'photo-gallery', label: 'Photo Gallery' },
 ];
 
 export default function PageList() {
