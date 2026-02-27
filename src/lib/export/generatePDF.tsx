@@ -5,6 +5,7 @@ import ValuePropositionPDF from './ValuePropositionPDF';
 import SectionDividerPDF from './SectionDividerPDF';
 import ContactPagePDF from './ContactPagePDF';
 import DiagramPagePDF from './DiagramPagePDF';
+import IndexTOCPagePDF from './IndexTOCPagePDF';
 import DisclaimerPagePDF from './DisclaimerPagePDF';
 import { loadImage } from '../images/imageStore';
 
@@ -18,7 +19,7 @@ async function buildDocument(presentation: Presentation) {
   // Resolve images from IndexedDB
   const pages = await Promise.all(
     presentation.pages.map(async (page) => {
-      const heroImageKey = page.type === 'cover' ? (page.content.heroImage as string) : '';
+      const heroImageKey = (page.type === 'cover' || page.type === 'index') ? (page.content.heroImage as string) : '';
       const logoImageKey = (page.type === 'contact' || page.type === 'diagram') ? (page.content.logoImage as string) : '';
       const badge1IconKey = page.type === 'value-proposition' ? (page.content.badge1Icon as string) : '';
       const badge2IconKey = page.type === 'value-proposition' ? (page.content.badge2Icon as string) : '';
@@ -115,6 +116,40 @@ async function buildDocument(presentation: Presentation) {
                   { heading: branch2Heading?.en || '', body: branch2Body?.en || '' },
                   { heading: branch3Heading?.en || '', body: branch3Body?.en || '' },
                 ]}
+              />
+            </Page>
+          );
+        }
+
+        if (page.type === 'index') {
+          const sectionLabel = page.content.sectionLabel as TranslatableField;
+          const year = (page.content.year as string) || new Date().getFullYear().toString();
+          const tocDataRaw = (page.content.tocData as string) || '[]';
+
+          let tocSections: { id: string; name: Record<string, string>; entries: { id: string; label: Record<string, string>; pageNumber: string }[] }[] = [];
+          try { tocSections = JSON.parse(tocDataRaw); } catch { /* ignore */ }
+
+          const resolvedSections = tocSections.map((s) => ({
+            id: s.id,
+            name: s.name?.en || '',
+            entries: (s.entries || []).map((e) => ({
+              id: e.id,
+              label: e.label?.en || '',
+              pageNumber: e.pageNumber || '',
+            })),
+          }));
+
+          return (
+            <Page
+              key={page.id}
+              size={[width, height]}
+              style={{ width, height }}
+            >
+              <IndexTOCPagePDF
+                sectionLabel={sectionLabel?.en || '00 | Index'}
+                year={year}
+                heroImage={heroImage}
+                sections={resolvedSections}
               />
             </Page>
           );

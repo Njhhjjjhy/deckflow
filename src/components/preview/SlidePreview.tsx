@@ -6,6 +6,7 @@ import ValuePropositionPage from '../templates/ValuePropositionPage';
 import SectionDividerPage from '../templates/SectionDividerPage';
 import ContactPage from '../templates/ContactPage';
 import DiagramPage from '../templates/DiagramPage';
+import IndexTOCPage from '../templates/IndexTOCPage';
 import DisclaimerPage from '../templates/DisclaimerPage';
 
 interface SlidePreviewProps {
@@ -110,6 +111,37 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
             { heading: branch2Heading?.[language] || branch2Heading?.en || '', body: branch2Body?.[language] || branch2Body?.en || '' },
             { heading: branch3Heading?.[language] || branch3Heading?.en || '', body: branch3Body?.[language] || branch3Body?.en || '' },
           ],
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'index') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const tocDataRaw = (page.content.tocData as string) || '[]';
+
+    let tocSections: { id: string; name: Record<string, string>; entries: { id: string; label: Record<string, string>; pageNumber: string }[] }[] = [];
+    try { tocSections = JSON.parse(tocDataRaw); } catch { /* ignore */ }
+
+    const resolvedSections = tocSections.map((s) => ({
+      id: s.id,
+      name: s.name?.[language] || s.name?.en || '',
+      entries: (s.entries || []).map((e) => ({
+        id: e.id,
+        label: e.label?.[language] || e.label?.en || '',
+        pageNumber: e.pageNumber || '',
+      })),
+    }));
+
+    return (
+      <IndexTOCPage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '00 | Index',
+          year,
+          heroImage: heroImageData || undefined,
+          sections: resolvedSections,
         }}
         language={language}
       />

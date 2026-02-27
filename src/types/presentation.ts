@@ -157,6 +157,32 @@ export function createDiagramPage(order: number): Page {
   };
 }
 
+/** Helper to create a new index/TOC page */
+export function createIndexPage(order: number): Page {
+  const defaultEntry = {
+    id: crypto.randomUUID(),
+    label: { en: '', 'zh-tw': '', 'zh-cn': '' },
+    pageNumber: '',
+  };
+  const defaultSection = {
+    id: crypto.randomUUID(),
+    name: { en: '', 'zh-tw': '', 'zh-cn': '' },
+    entries: [defaultEntry],
+  };
+
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'index',
+    content: {
+      sectionLabel: createTranslatableField('00 | Index'),
+      year: new Date().getFullYear().toString(),
+      heroImage: '',
+      tocData: JSON.stringify([defaultSection]),
+    },
+  };
+}
+
 /** Helper to create a new contact/closing page */
 export function createContactPage(order: number): Page {
   return {
