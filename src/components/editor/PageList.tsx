@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import type { Page, PageType } from '../../types/presentation';
 import { usePresentationStore } from '../../lib/store/presentationStore';
 
@@ -38,7 +38,11 @@ export default function PageList() {
   const addPage = usePresentationStore((s) => s.addPage);
   const deletePage = usePresentationStore((s) => s.deletePage);
   const reorderPage = usePresentationStore((s) => s.reorderPage);
+  const movePage = usePresentationStore((s) => s.movePage);
   const [showMenu, setShowMenu] = useState(false);
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
+  const dragCounter = useRef(0);
 
   return (
     <div className="flex flex-col h-full">
@@ -79,14 +83,47 @@ export default function PageList() {
       <div className="flex-1 overflow-y-auto py-2">
         {pages.map((page: Page) => {
           const isSelected = page.id === selectedPageId;
+          const isDragged = page.id === draggedId;
+          const isDragOver = page.id === dragOverId && draggedId !== page.id;
           return (
-            <button
+            <div
               key={page.id}
+              draggable
+              onDragStart={(e) => {
+                setDraggedId(page.id);
+                e.dataTransfer.effectAllowed = 'move';
+              }}
+              onDragEnter={() => {
+                dragCounter.current++;
+                setDragOverId(page.id);
+              }}
+              onDragLeave={() => {
+                dragCounter.current--;
+                if (dragCounter.current === 0) setDragOverId(null);
+              }}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                e.preventDefault();
+                dragCounter.current = 0;
+                if (draggedId && draggedId !== page.id) {
+                  movePage(draggedId, page.order);
+                }
+                setDraggedId(null);
+                setDragOverId(null);
+              }}
+              onDragEnd={() => {
+                dragCounter.current = 0;
+                setDraggedId(null);
+                setDragOverId(null);
+              }}
               onClick={() => selectPage(page.id)}
               className="w-full text-left px-3 py-2 transition-colors"
               style={{
                 background: isSelected ? '#FBB93122' : 'transparent',
                 borderLeft: isSelected ? '3px solid #FBB931' : '3px solid transparent',
+                opacity: isDragged ? 0.4 : 1,
+                borderTop: isDragOver ? '2px solid #FBB931' : '2px solid transparent',
+                cursor: isDragged ? 'grabbing' : 'grab',
               }}
             >
               {/* Thumbnail placeholder */}
@@ -135,7 +172,7 @@ export default function PageList() {
                   </button>
                 </span>
               </div>
-            </button>
+            </div>
           );
         })}
       </div>

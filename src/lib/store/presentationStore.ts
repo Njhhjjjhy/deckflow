@@ -37,6 +37,7 @@ interface PresentationState {
   addPage: (type: Page['type']) => void;
   deletePage: (pageId: string) => void;
   reorderPage: (pageId: string, direction: 'up' | 'down') => void;
+  movePage: (pageId: string, toIndex: number) => void;
 
   // Presentation metadata
   setName: (name: string) => void;
@@ -146,6 +147,24 @@ export const usePresentationStore = create<PresentationState>()(
             const swapIdx = direction === 'up' ? idx - 1 : idx + 1;
             if (swapIdx < 0 || swapIdx >= pages.length) return state;
             [pages[idx], pages[swapIdx]] = [pages[swapIdx], pages[idx]];
+            const reordered = pages.map((p, i) => ({ ...p, order: i }));
+            return {
+              presentation: {
+                ...state.presentation,
+                pages: reordered,
+                metadata: { ...state.presentation.metadata, updatedAt: new Date().toISOString() },
+              },
+            };
+          }),
+
+        movePage: (pageId, toIndex) =>
+          set((state) => {
+            const pages = [...state.presentation.pages];
+            const fromIndex = pages.findIndex((p) => p.id === pageId);
+            if (fromIndex === -1 || fromIndex === toIndex) return state;
+            const clamped = Math.max(0, Math.min(toIndex, pages.length - 1));
+            const [moved] = pages.splice(fromIndex, 1);
+            pages.splice(clamped, 0, moved);
             const reordered = pages.map((p, i) => ({ ...p, order: i }));
             return {
               presentation: {
