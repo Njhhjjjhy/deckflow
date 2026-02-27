@@ -1,4 +1,5 @@
-import type { Page } from '../../types/presentation';
+import { useState } from 'react';
+import type { Page, PageType } from '../../types/presentation';
 import { usePresentationStore } from '../../lib/store/presentationStore';
 
 const PAGE_TYPE_LABELS: Record<string, string> = {
@@ -24,15 +25,52 @@ const PAGE_TYPE_LABELS: Record<string, string> = {
   contact: 'Contact',
 };
 
+const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
+  { type: 'cover', label: 'Cover' },
+  { type: 'section-divider', label: 'Section Divider' },
+];
+
 export default function PageList() {
   const pages = usePresentationStore((s) => s.presentation.pages);
   const selectedPageId = usePresentationStore((s) => s.selectedPageId);
   const selectPage = usePresentationStore((s) => s.selectPage);
+  const addPage = usePresentationStore((s) => s.addPage);
+  const [showMenu, setShowMenu] = useState(false);
 
   return (
     <div className="flex flex-col h-full">
-      <div className="px-3 py-3 border-b border-[#E5E5E5]">
+      <div className="px-3 py-3 border-b border-[#E5E5E5] flex items-center justify-between">
         <h3 className="text-xs font-semibold text-[#1A1A1A] uppercase tracking-wide">Pages</h3>
+        <div className="relative">
+          <button
+            onClick={() => setShowMenu(!showMenu)}
+            className="w-6 h-6 flex items-center justify-center rounded text-xs font-bold transition-colors"
+            style={{ background: '#FBB931', color: '#1A1A1A' }}
+            title="Add page"
+          >
+            +
+          </button>
+          {showMenu && (
+            <div
+              className="absolute right-0 top-7 z-10 rounded border shadow-lg py-1"
+              style={{ background: '#fff', borderColor: '#E5E5E5', minWidth: 150 }}
+            >
+              {ADD_PAGE_OPTIONS.map((opt) => (
+                <button
+                  key={opt.type}
+                  onClick={() => {
+                    addPage(opt.type);
+                    setShowMenu(false);
+                  }}
+                  className="w-full text-left px-3 py-1.5 text-xs transition-colors hover:bg-[#F2F2F2]"
+                  style={{ color: '#1A1A1A' }}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto py-2">
