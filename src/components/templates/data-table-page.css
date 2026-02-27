@@ -1,0 +1,140 @@
+.data-table-page {
+  position: relative;
+  width: 960px;
+  height: 540px;
+  background: #F2F2F2;
+  overflow: hidden;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.data-table-page__wordmark {
+  position: absolute;
+  left: 30px;
+  top: 14px;
+  height: 22px;
+  width: auto;
+}
+
+.data-table-page__year {
+  position: absolute;
+  right: 30px;
+  top: 14px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #1A1A1A;
+  text-align: right;
+}
+
+.data-table-page__label {
+  position: absolute;
+  left: 30px;
+  top: 38px;
+  font-size: 11px;
+  font-weight: 400;
+  color: #333333;
+  margin: 0;
+}
+
+.data-table-page__rule {
+  position: absolute;
+  top: 54px;
+  left: 30px;
+  width: 900px;
+  border: none;
+  border-top: 1px solid #E5E5E5;
+  margin: 0;
+  padding: 0;
+}
+
+.data-table-page__page-number {
+  position: absolute;
+  top: 524px;
+  left: 0;
+  width: 960px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 400;
+  color: #333333;
+  margin: 0;
+}
+
+/* Content area */
+.data-table-page__content {
+  position: absolute;
+  left: 30px;
+  top: 68px;
+  width: 900px;
+}
+
+.data-table-page__heading {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+}
+
+.data-table-page__subtitle {
+  font-size: 13px;
+  font-weight: 400;
+  color: #1A1A1A;
+  margin: 0 0 10px 0;
+  line-height: 1.4;
+}
+
+/* Table */
+.data-table-page__table {
+  width: 900px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.data-table-page__table th {
+  background: #FDF3D0;
+  font-weight: 700;
+  font-size: 12px;
+  color: #1A1A1A;
+  text-align: center;
+  height: 34px;
+  border: 1px solid #E5E5E5;
+  padding: 0 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.data-table-page__table td {
+  background: #FFFFFF;
+  font-size: 12px;
+  font-weight: 400;
+  color: #1A1A1A;
+  text-align: center;
+  height: 34px;
+  border: 1px solid #E5E5E5;
+  padding: 0 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.data-table-page__table tr.data-table-page__row--highlighted td {
+  font-weight: 700;
+}
+
+.data-table-page__table td.data-table-page__cell--highlighted {
+  background: #FDF3D0;
+  font-weight: 700;
+}
+
+/* Footnotes */
+.data-table-page__footnotes {
+  margin-top: 8px;
+  max-width: 560px;
+}
+
+.data-table-page__footnote {
+  font-size: 10px;
+  color: #333333;
+  line-height: 1.5;
+  margin: 0 0 2px 0;
+}

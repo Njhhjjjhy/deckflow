@@ -10,6 +10,7 @@ import IndexTOCPage from '../templates/IndexTOCPage';
 import DisclaimerPage from '../templates/DisclaimerPage';
 import MultiCardGridPage from '../templates/MultiCardGridPage';
 import TextChartPage from '../templates/TextChartPage';
+import DataTablePage from '../templates/DataTablePage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -287,6 +288,57 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           year,
           pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
           cards: resolvedCards,
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'data-table') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const heading = page.content.heading as TranslatableField;
+    const subtitle = page.content.subtitle as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+    const columnsDataRaw = (page.content.columnsData as string) || '[]';
+    const rowsDataRaw = (page.content.rowsData as string) || '[]';
+    const footnotesDataRaw = (page.content.footnotesData as string) || '[]';
+
+    let columnsRaw: { label: Record<string, string>; widthPercent: number }[] = [];
+    try { columnsRaw = JSON.parse(columnsDataRaw); } catch { /* ignore */ }
+
+    let rowsRaw: { cells: { value: Record<string, string>; highlighted: boolean }[]; highlighted: boolean }[] = [];
+    try { rowsRaw = JSON.parse(rowsDataRaw); } catch { /* ignore */ }
+
+    let footnotesRaw: Record<string, string>[] = [];
+    try { footnotesRaw = JSON.parse(footnotesDataRaw); } catch { /* ignore */ }
+
+    const resolvedColumns = columnsRaw.map((c) => ({
+      label: c.label?.[language] || c.label?.en || '',
+      widthPercent: c.widthPercent,
+    }));
+
+    const resolvedRows = rowsRaw.map((r) => ({
+      cells: (r.cells || []).map((cell) => ({
+        value: cell.value?.[language] || cell.value?.en || '',
+        highlighted: cell.highlighted,
+      })),
+      highlighted: r.highlighted,
+    }));
+
+    const resolvedFootnotes = footnotesRaw.map((fn) => fn?.[language] || fn?.en || '');
+
+    return (
+      <DataTablePage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          heading: heading?.[language] || heading?.en || '',
+          subtitle: subtitle?.[language] || subtitle?.en || '',
+          columns: resolvedColumns,
+          rows: resolvedRows,
+          footnotes: resolvedFootnotes,
         }}
         language={language}
       />

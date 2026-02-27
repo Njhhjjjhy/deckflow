@@ -33,6 +33,7 @@ const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
   { type: 'section-divider', label: 'Section Divider' },
   { type: 'multi-card-grid', label: 'Multi-Card Grid' },
   { type: 'text-chart', label: 'Text + Chart' },
+  { type: 'data-table', label: 'Data Table' },
   { type: 'disclaimer', label: 'Disclaimer' },
   { type: 'contact', label: 'Contact / Closing' },
 ];

@@ -12,6 +12,7 @@ import IndexTOCEditor from './IndexTOCEditor';
 import DisclaimerPageEditor from './DisclaimerPageEditor';
 import MultiCardGridEditor from './MultiCardGridEditor';
 import TextChartEditor from './TextChartEditor';
+import DataTableEditor from './DataTableEditor';
 import SlidePreview from '../preview/SlidePreview';
 import DebugOverlay from '../templates/DebugOverlay';
 
@@ -129,6 +130,8 @@ export default function PresentationEditor() {
               <MultiCardGridEditor page={selectedPage} />
             ) : selectedPage.type === 'text-chart' ? (
               <TextChartEditor page={selectedPage} />
+            ) : selectedPage.type === 'data-table' ? (
+              <DataTableEditor page={selectedPage} />
             ) : (
               <p className="text-sm text-[#999]">
                 Editor not available for "{selectedPage.type}"

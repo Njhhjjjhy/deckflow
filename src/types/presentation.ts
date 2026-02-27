@@ -287,6 +287,97 @@ export function createTextChartPage(order: number): Page {
   };
 }
 
+/** Helper to create a new data table page */
+export function createDataTablePage(order: number): Page {
+  const defaultColumns = [
+    { label: { en: 'Area', 'zh-tw': '', 'zh-cn': '' }, widthPercent: 25 },
+    { label: { en: 'Index 2025 Q2', 'zh-tw': '', 'zh-cn': '' }, widthPercent: 18.75 },
+    { label: { en: 'QoQ Change %', 'zh-tw': '', 'zh-cn': '' }, widthPercent: 18.75 },
+    { label: { en: 'YoY Change %', 'zh-tw': '', 'zh-cn': '' }, widthPercent: 18.75 },
+    { label: { en: '2-Year Change %', 'zh-tw': '', 'zh-cn': '' }, widthPercent: 18.75 },
+  ];
+
+  const defaultRows = [
+    { cells: [
+      { value: { en: 'Kumamoto City', 'zh-tw': '', 'zh-cn': '' }, highlighted: true },
+      { value: { en: '111.5', 'zh-tw': '', 'zh-cn': '' }, highlighted: true },
+      { value: { en: '0.90', 'zh-tw': '', 'zh-cn': '' }, highlighted: true },
+      { value: { en: '3.24', 'zh-tw': '', 'zh-cn': '' }, highlighted: true },
+      { value: { en: '9.85', 'zh-tw': '', 'zh-cn': '' }, highlighted: true },
+    ], highlighted: true },
+    { cells: [
+      { value: { en: 'Sapporo City', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '128.02', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '1.26', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '2.9', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '6.9', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+    ], highlighted: false },
+    { cells: [
+      { value: { en: 'Sendai City', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '124.89', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '\u20131.05', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '0.38', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '5.32', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+    ], highlighted: false },
+    { cells: [
+      { value: { en: 'Kyoto City', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '124.02', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '2.12', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '2.36', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '5.01', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+    ], highlighted: false },
+    { cells: [
+      { value: { en: 'Osaka City', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '136.64', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '\u20131.70', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '4.82', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '10.27', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+    ], highlighted: false },
+    { cells: [
+      { value: { en: 'Greater Osaka Area', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '120.41', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '\u20131.65', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '5.87', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '10.55', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+    ], highlighted: false },
+    { cells: [
+      { value: { en: 'Fukuoka City', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '125.58', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '0.43', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '5.69', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '9.93', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+    ], highlighted: false },
+    { cells: [
+      { value: { en: 'Tokyo 23 Wards', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '128.2', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '1.84', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '7.99', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+      { value: { en: '11.44', 'zh-tw': '', 'zh-cn': '' }, highlighted: false },
+    ], highlighted: false },
+  ];
+
+  const defaultFootnotes = [
+    { en: 'Kumamoto City values are derived from the rent price trend index, used as a proxy due to the absence of publicly available 2025 Q2 home price index data for the city.', 'zh-tw': '', 'zh-cn': '' },
+    { en: 'Rent-based index reflects relative rental market dynamics and may differ from home sale price trends.', 'zh-tw': '', 'zh-cn': '' },
+  ];
+
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'data-table',
+    content: {
+      sectionLabel: createTranslatableField(''),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '17',
+      heading: createTranslatableField('Overall Overview \u2014 Regional Cities'),
+      subtitle: createTranslatableField('Current Rental Price Index'),
+      columnsData: JSON.stringify(defaultColumns),
+      rowsData: JSON.stringify(defaultRows),
+      footnotesData: JSON.stringify(defaultFootnotes),
+    },
+  };
+}
+
 /** Helper to create a new contact/closing page */
 export function createContactPage(order: number): Page {
   return {

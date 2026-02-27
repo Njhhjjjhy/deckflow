@@ -285,3 +285,155 @@ When chartMode = 'image':
 - chartMode='image' with no image uploaded: dashed gray placeholder in right column.
 - Empty bullet text for a language: show "[no translation]" in light gray (#CCCCCC).
 - Bar count exceeds 8: reduce bar width proportionally to fit.
+
+## Template 14: data table
+
+Canvas: 960 x 540px
+Background: #F2F2F2
+Oakwater reference: page 17
+
+### Header area (shared pattern)
+
+**MoreHarvest logo**
+- Position: x=30, y=14, height=22px, width auto
+
+**Year**
+- Position: right-aligned, right=30, y=14
+- Font: Noto Sans JP Regular 13px, #1A1A1A
+
+**Section label**
+- Position: x=30, y=38
+- Font: Noto Sans JP Regular 11px, #333333
+
+**Horizontal rule**
+- Position: x=30, y=54, width=900px, 1px solid #E5E5E5
+
+**Page number**
+- Position: horizontally centered, y=524
+- Font: Noto Sans JP Regular 11px, #333333
+
+### Content area
+
+- Position: x=30, y=68, width=900px
+
+**Heading**
+- Font: REM Bold 18px (EN) / Noto Sans TC or SC 700 (Chinese), #1A1A1A
+- Line-height: 1.4
+- Margin-bottom: 4px
+
+**Subtitle**
+- Font: Noto Sans JP Regular 13px, #1A1A1A
+- Line-height: 1.4
+- Margin-bottom: 10px
+
+**Table**
+- Width: 900px, table-layout: fixed
+- Border-collapse: collapse
+
+Header row:
+- Background: #FDF3D0
+- Font-weight: 700, font-size: 12px, color: #1A1A1A
+- Text-align: center, height: 34px
+- Border: 1px solid #E5E5E5
+
+Regular rows:
+- Background: #FFFFFF
+- Font-size: 12px, color: #1A1A1A
+- Text-align: center, height: 34px
+- Border: 1px solid #E5E5E5
+
+Highlighted row:
+- Same as regular but font-weight: 700
+
+Highlighted cell:
+- Background: #FDF3D0, font-weight: 700
+- A highlighted cell inside a highlighted row gets both bold and gold background
+
+Column widths:
+- Proportional based on columnDef.widthPercent values
+- If widths don't sum to 100%, remaining space is distributed evenly
+
+**Footnotes**
+- Position: below table, margin-top: 8px
+- Max width: 560px
+- Font: Noto Sans JP Regular 10px, #333333, line-height: 1.5
+
+### Content model
+
+```ts
+interface DataTableContent {
+  sectionLabel: TranslatableField;
+  year: string;
+  pageNumber: number;
+  heading: TranslatableField;
+  subtitle: TranslatableField;
+  columns: ColumnDef[];
+  rows: RowDef[];
+  footnotes: TranslatableField[];   // 0–5
+}
+
+interface ColumnDef {
+  label: TranslatableField;
+  widthPercent: number;
+}
+
+interface RowDef {
+  cells: CellDef[];
+  highlighted: boolean;
+}
+
+interface CellDef {
+  value: TranslatableField;
+  highlighted: boolean;
+}
+```
+
+### Fields
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| sectionLabel | single-line text (trilingual) | no | e.g. "03 \| Market Data" |
+| year | single-line text | no | defaults to current year |
+| pageNumber | number | no | displayed at bottom center |
+| heading | single-line text (trilingual) | yes | bold heading above table |
+| subtitle | single-line text (trilingual) | no | subtitle below heading |
+| columns | column list (1–8) | yes | each has label + widthPercent |
+| rows | row list | yes | each has cells array + highlighted flag |
+| footnotes | list of multi-line text (trilingual) | no | 0–5 footnotes below table |
+
+Per column:
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| label | single-line text (trilingual) | yes | header cell text |
+| widthPercent | number | yes | column width as percentage, all should sum to 100 |
+
+Per row:
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| highlighted | boolean | no | bolds entire row when true |
+| cells | cell list | yes | one per column |
+
+Per cell:
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| value | single-line text (trilingual) | yes | cell content |
+| highlighted | boolean | no | gold background + bold when true |
+
+### Editor features
+
+- Spreadsheet-style grid showing all rows and columns in place
+- Grid language tabs (EN / zh-TW / zh-CN) to switch which language is shown in the grid
+- Per-row: "highlight row" toggle (bold) + delete button
+- Per-cell: "highlight cell" toggle (gold background + bold)
+- Drag-to-reorder rows
+- "Paste from Excel" button: opens textarea modal, parses tab-separated text, validates column count matches, imports rows with all highlights reset to false
+- Columns editor: add/remove/reorder columns with trilingual label + width percent, running total shown
+
+### Edge cases
+- Column widths not summing to 100: distribute remaining space evenly across columns.
+- Pasted column count mismatches defined columns: show error toast, leave grid unchanged.
+- Rows overflow content area: reduce row height proportionally (min 20px), never clip.
+- Empty cell value for a language: show "[no translation]" in light gray (#CCCCCC).
