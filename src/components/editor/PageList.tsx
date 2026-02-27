@@ -24,6 +24,7 @@ const PAGE_TYPE_LABELS: Record<string, string> = {
   'flow-chart': 'Flow Chart',
   disclaimer: 'Disclaimer',
   contact: 'Contact',
+  'partner-profile': 'Partner Profile',
 };
 
 const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
@@ -44,6 +45,7 @@ const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
   { type: 'flow-chart', label: 'Flow Chart / Org Structure' },
   { type: 'disclaimer', label: 'Disclaimer' },
   { type: 'contact', label: 'Contact / Closing' },
+  { type: 'partner-profile', label: 'Partner Profile' },
 ];
 
 export default function PageList() {

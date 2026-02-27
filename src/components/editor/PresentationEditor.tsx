@@ -20,6 +20,7 @@ import BeforeAfterEditor from './BeforeAfterEditor';
 import MapTextCardEditor from './MapTextCardEditor';
 import ThreeCirclesEditor from './ThreeCirclesEditor';
 import FlowChartEditor from './FlowChartEditor';
+import PartnerProfileEditor from './PartnerProfileEditor';
 import SlidePreview from '../preview/SlidePreview';
 import DebugOverlay from '../templates/DebugOverlay';
 
@@ -153,6 +154,8 @@ export default function PresentationEditor() {
               <ThreeCirclesEditor page={selectedPage} />
             ) : selectedPage.type === 'flow-chart' ? (
               <FlowChartEditor page={selectedPage} />
+            ) : selectedPage.type === 'partner-profile' ? (
+              <PartnerProfileEditor page={selectedPage} />
             ) : (
               <p className="text-sm text-[#999]">
                 Editor not available for "{selectedPage.type}"

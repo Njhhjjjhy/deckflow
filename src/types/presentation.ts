@@ -32,7 +32,8 @@ export type PageType =
   | 'text-news'
   | 'flow-chart'
   | 'disclaimer'
-  | 'contact';
+  | 'contact'
+  | 'partner-profile';
 
 export interface Page {
   id: string;
@@ -778,6 +779,31 @@ export function createContactPage(order: number): Page {
       url: createTranslatableField(''),
       year: new Date().getFullYear().toString(),
       logoImage: '',
+    },
+  };
+}
+
+/** Helper to create a new partner profile page */
+export function createPartnerProfilePage(order: number): Page {
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'partner-profile',
+    content: {
+      partnerLogoImage: '',
+      bodyParagraph: createTranslatableField(''),
+      showLinks: 'false',
+      linkLabel: createTranslatableField(''),
+      linkUrl: createTranslatableField(''),
+      contactLine1: createTranslatableField(''),
+      contactLine2: createTranslatableField(''),
+      contactLine3: createTranslatableField(''),
+      contactLine4: createTranslatableField(''),
+      contactLine5: createTranslatableField(''),
+      bottomUrl: createTranslatableField(''),
+      sectionLabel: createTranslatableField(''),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '32',
     },
   };
 }

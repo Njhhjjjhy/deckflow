@@ -20,6 +20,7 @@ import MapTextListPage from '../templates/MapTextListPage';
 import MapTextOverlayPage from '../templates/MapTextOverlayPage';
 import ThreeCirclesPage from '../templates/ThreeCirclesPage';
 import FlowChartPage from '../templates/FlowChartPage';
+import PartnerProfilePage from '../templates/PartnerProfilePage';
 
 interface SlidePreviewProps {
   page: Page;
@@ -40,6 +41,7 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const [tiPhoto2Data, setTiPhoto2Data] = useState<string | null>(null);
   const [baPairImages, setBaPairImages] = useState<Record<string, { before: string | null; after: string | null }>>({});
   const [mapImageData, setMapImageData] = useState<string | null>(null);
+  const [partnerLogoData, setPartnerLogoData] = useState<string | null>(null);
   const heroImageKey = (page.content.heroImage as string) || '';
   const logoImageKey = (page.content.logoImage as string) || '';
   const badge1IconKey = (page.content.badge1Icon as string) || '';
@@ -53,6 +55,7 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const tiPhoto2Key = (page.content.photo2 as string) || '';
   const baPairsDataRaw = (page.content.pairsData as string) || '[]';
   const mapImageKey = page.type === 'map-text' ? ((page.content.mapImage as string) || '') : '';
+  const partnerLogoKey = page.type === 'partner-profile' ? ((page.content.partnerLogoImage as string) || '') : '';
   const mapCardsDataRaw = page.type === 'map-text' ? ((page.content.cardsData as string) || '[]') : '[]';
   const mapArrowsDataRaw = page.type === 'map-text' ? ((page.content.arrowsData as string) || '[]') : '[]';
 
@@ -138,6 +141,13 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
     if (!mapImageKey) { setMapImageData(null); return; }
     loadImage(mapImageKey).then((data) => setMapImageData(data));
   }, [mapImageKey, page.type]);
+
+  // Load partner logo image for partner-profile pages
+  useEffect(() => {
+    if (page.type !== 'partner-profile') { setPartnerLogoData(null); return; }
+    if (!partnerLogoKey) { setPartnerLogoData(null); return; }
+    loadImage(partnerLogoKey).then((data) => setPartnerLogoData(data));
+  }, [partnerLogoKey, page.type]);
 
   // Load before-after pair images
   useEffect(() => {
@@ -838,6 +848,44 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           arrowColor,
           legend: resolvedLegend,
           footnotes: resolvedFootnotes,
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'partner-profile') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const bodyParagraph = page.content.bodyParagraph as TranslatableField;
+    const showLinks = (page.content.showLinks as string) === 'true';
+    const linkLabel = page.content.linkLabel as TranslatableField;
+    const linkUrl = page.content.linkUrl as TranslatableField;
+    const contactLine1 = page.content.contactLine1 as TranslatableField;
+    const contactLine2 = page.content.contactLine2 as TranslatableField;
+    const contactLine3 = page.content.contactLine3 as TranslatableField;
+    const contactLine4 = page.content.contactLine4 as TranslatableField;
+    const contactLine5 = page.content.contactLine5 as TranslatableField;
+    const bottomUrl = page.content.bottomUrl as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+
+    return (
+      <PartnerProfilePage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          partnerLogoImage: partnerLogoKey ? (partnerLogoData ?? undefined) : undefined,
+          bodyParagraph: bodyParagraph?.[language] || bodyParagraph?.en || '',
+          showLinks,
+          linkLabel: linkLabel?.[language] || linkLabel?.en || '',
+          linkUrl: linkUrl?.[language] || linkUrl?.en || '',
+          contactLine1: contactLine1?.[language] || contactLine1?.en || '',
+          contactLine2: contactLine2?.[language] || contactLine2?.en || '',
+          contactLine3: contactLine3?.[language] || contactLine3?.en || '',
+          contactLine4: contactLine4?.[language] || contactLine4?.en || '',
+          contactLine5: contactLine5?.[language] || contactLine5?.en || '',
+          bottomUrl: bottomUrl?.[language] || bottomUrl?.en || '',
         }}
         language={language}
       />
