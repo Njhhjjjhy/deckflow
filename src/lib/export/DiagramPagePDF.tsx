@@ -26,9 +26,9 @@ const LOGO_CY = 270; // circle center y
 const LOGO_R = 80;   // circle radius
 
 const BRANCH_POSITIONS = [
-  { x: 380, y: 90 },
-  { x: 380, y: 240 },
-  { x: 380, y: 390 },
+  { x: 380, y: 96 },
+  { x: 380, y: 246 },
+  { x: 380, y: 396 },
 ];
 
 /* ------------------------------------------------------------------ */

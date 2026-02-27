@@ -30,11 +30,11 @@ const LOGO_CX = 170; // 90 + 160/2
 const LOGO_CY = 270; // 190 + 160/2
 const LOGO_R = 80;   // 160/2
 
-// Branch node centers (gold dots): x=372+8=380 for center, y offsets
+// Branch node centers (gold dots): x = 400-28+8 = 380, y = branchTop+6+8
 const BRANCH_POSITIONS = [
-  { x: 380, y: 90 },  // branch 1: top=82, node top=88, center=96 → adjusted to 90
-  { x: 380, y: 240 }, // branch 2: top=232, node top=238, center=246 → adjusted to 240
-  { x: 380, y: 390 }, // branch 3: top=382, node top=388, center=396 → adjusted to 390
+  { x: 380, y: 96 },  // branch 1: top=82, node top=82+6=88, center=88+8=96
+  { x: 380, y: 246 }, // branch 2: top=232, node top=232+6=238, center=238+8=246
+  { x: 380, y: 396 }, // branch 3: top=382, node top=382+6=388, center=388+8=396
 ];
 
 export default function DiagramPage({ content, language = 'en' }: DiagramPageProps) {
