@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init)",
+      "Read(//Users/riaan/Documents/Design Files/Code Projects/**)",
+      "Bash(npx tsc --noEmit)",
+      "Bash(npx vite build)",
+      "Bash(git add .gitignore CLAUDE.md README.md docs/ eslint.config.js index.html package-lock.json package.json public/ src/ tsconfig.app.json tsconfig.json tsconfig.node.json vite.config.ts)",
+      "Bash(git commit:*)",
+      "Bash(git add docs/brand.md src/components/templates/CoverPage.tsx src/components/templates/cover-page.css public/assets/logo-moreharvest.svg public/assets/logo-moreharvest-icon.svg)",
+      "Bash(git add package.json package-lock.json src/App.tsx src/components/templates/cover-page.css src/components/templates/DebugOverlay.tsx src/types/ src/lib/ src/components/editor/ src/components/preview/)",
+      "Bash(git add public/fonts/REM-SemiBold.ttf public/fonts/NotoSansJP-Regular.ttf src/lib/export/LogoPDF.tsx src/lib/export/CoverPagePDF.tsx src/lib/export/generatePDF.tsx src/components/editor/PresentationEditor.tsx src/components/templates/DebugOverlay.tsx package.json package-lock.json)",
+      "Bash(git add src/lib/export/generatePDF.tsx)",
+      "Bash(git add src/components/templates/SectionDividerPage.tsx src/components/templates/section-divider.css src/components/editor/SectionDividerEditor.tsx src/lib/export/SectionDividerPDF.tsx src/components/editor/PresentationEditor.tsx src/components/preview/SlidePreview.tsx src/lib/export/generatePDF.tsx src/lib/store/presentationStore.ts src/types/presentation.ts)",
+      "Bash(git add src/components/editor/PageList.tsx)",
+      "Bash(git add src/components/templates/ContactPage.tsx src/components/templates/contact-page.css src/components/editor/ContactPageEditor.tsx src/lib/export/ContactPagePDF.tsx src/lib/export/LogoIconPDF.tsx src/components/editor/PageList.tsx src/components/editor/PresentationEditor.tsx src/components/preview/SlidePreview.tsx src/lib/export/generatePDF.tsx src/lib/store/presentationStore.ts src/types/presentation.ts)",
+      "Bash(git add src/components/editor/ContactPageEditor.tsx src/components/preview/SlidePreview.tsx src/components/templates/ContactPage.tsx src/components/templates/contact-page.css src/lib/export/ContactPagePDF.tsx src/lib/export/generatePDF.tsx src/types/presentation.ts)",
+      "Bash(git add src/components/editor/PageList.tsx src/lib/store/presentationStore.ts)",
+      "Bash(npm run build)",
+      "Bash(git add src/components/templates/DisclaimerPage.tsx src/components/templates/disclaimer-page.css src/components/editor/DisclaimerPageEditor.tsx src/lib/export/DisclaimerPagePDF.tsx src/components/editor/PageList.tsx src/components/editor/PresentationEditor.tsx src/components/preview/SlidePreview.tsx src/lib/export/generatePDF.tsx src/lib/store/presentationStore.ts src/types/presentation.ts)",
+      "Bash(git add public/fonts/REM-Regular.ttf src/components/templates/ValuePropositionPage.tsx src/components/templates/value-proposition-page.css src/components/editor/ValuePropositionEditor.tsx src/lib/export/ValuePropositionPDF.tsx src/types/presentation.ts src/lib/store/presentationStore.ts src/components/editor/PageList.tsx src/components/editor/PresentationEditor.tsx src/components/preview/SlidePreview.tsx src/lib/export/generatePDF.tsx)",
+      "Bash(git add src/components/templates/DiagramPage.tsx src/components/templates/diagram-page.css src/components/editor/DiagramPageEditor.tsx src/lib/export/DiagramPagePDF.tsx src/components/editor/PageList.tsx src/components/editor/PresentationEditor.tsx src/components/preview/SlidePreview.tsx src/lib/export/generatePDF.tsx src/lib/store/presentationStore.ts src/types/presentation.ts)",
+      "Bash(git add src/components/templates/DiagramPage.tsx src/lib/export/DiagramPagePDF.tsx)",
+      "Bash(git add src/components/editor/IndexTOCEditor.tsx src/components/templates/IndexTOCPage.tsx src/components/templates/index-toc-page.css src/lib/export/IndexTOCPagePDF.tsx src/components/editor/PageList.tsx src/components/editor/PresentationEditor.tsx src/components/preview/SlidePreview.tsx src/lib/export/generatePDF.tsx src/lib/store/presentationStore.ts src/types/presentation.ts)",
+      "Bash(lsof -ti :5174)",
+      "Bash(xargs kill)",
+      "Bash(git add docs/templates.md src/components/editor/PageList.tsx src/components/editor/PresentationEditor.tsx src/components/editor/MultiCardGridEditor.tsx src/components/preview/SlidePreview.tsx src/components/templates/MultiCardGridPage.tsx src/components/templates/multi-card-grid-page.css src/lib/export/MultiCardGridPDF.tsx src/lib/export/generatePDF.tsx src/lib/store/presentationStore.ts src/types/presentation.ts)",
+      "Bash(git add src/components/editor/MultiCardGridEditor.tsx)",
+      "Bash(git add docs/templates.md package-lock.json package.json src/components/editor/PageList.tsx src/components/editor/PresentationEditor.tsx src/components/editor/TextChartEditor.tsx src/components/preview/SlidePreview.tsx src/components/templates/TextChartPage.tsx src/components/templates/text-chart-page.css src/lib/export/TextChartPDF.tsx src/lib/export/generatePDF.tsx src/lib/store/presentationStore.ts src/types/presentation.ts)",
+      "Bash(git add docs/templates.md src/components/editor/PageList.tsx src/components/editor/PresentationEditor.tsx src/components/editor/DataTableEditor.tsx src/components/preview/SlidePreview.tsx src/components/templates/DataTablePage.tsx src/components/templates/data-table-page.css src/lib/store/presentationStore.ts src/types/presentation.ts)",
+      "Bash(git add src/components/templates/ComparisonTablePage.tsx src/components/templates/comparison-table-page.css src/components/editor/ComparisonTableEditor.tsx src/types/presentation.ts src/components/preview/SlidePreview.tsx src/components/editor/PresentationEditor.tsx src/components/editor/PageList.tsx src/lib/store/presentationStore.ts docs/templates.md)"
+    ],
+    "additionalDirectories": [
+      "/Users/riaan/Documents/Design Files/Code Projects/deckflow/public",
+      "/Users/riaan/.claude/projects/-Users-riaan-Documents-Design-Files-Code-Projects-deckflow"
+    ]
+  }
+}
