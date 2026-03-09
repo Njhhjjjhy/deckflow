@@ -74,6 +74,7 @@ export interface Presentation {
   pages: Page[];
   glossary: GlossaryEntry[];
   metadata: PresentationMetadata;
+  needsReExport?: boolean;
 }
 
 /** Helper to create a new empty TranslatableField */

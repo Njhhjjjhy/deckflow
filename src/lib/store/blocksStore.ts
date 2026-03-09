@@ -102,6 +102,8 @@ interface BlocksState {
   updateBlock: (id: string, name: string, content: Record<string, import('../../types/presentation').TranslatableField | string>) => void;
   deleteBlock: (id: string) => void;
   getBlock: (id: string) => ReusableBlock | undefined;
+  addUsage: (blockId: string, presentationId: string) => void;
+  removeUsage: (blockId: string, presentationId: string) => void;
 }
 
 export const useBlocksStore = create<BlocksState>()(
@@ -138,6 +140,24 @@ export const useBlocksStore = create<BlocksState>()(
       },
 
       getBlock: (id) => get().blocks.find((b) => b.id === id),
+
+      addUsage: (blockId, presentationId) =>
+        set((state) => ({
+          blocks: state.blocks.map((b) =>
+            b.id === blockId && !b.usedIn.includes(presentationId)
+              ? { ...b, usedIn: [...b.usedIn, presentationId] }
+              : b
+          ),
+        })),
+
+      removeUsage: (blockId, presentationId) =>
+        set((state) => ({
+          blocks: state.blocks.map((b) =>
+            b.id === blockId
+              ? { ...b, usedIn: b.usedIn.filter((id) => id !== presentationId) }
+              : b
+          ),
+        })),
     }),
     {
       name: 'deckflow-blocks',

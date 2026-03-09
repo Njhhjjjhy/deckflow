@@ -25,6 +25,54 @@ import LogosTextTableEditor from './LogosTextTableEditor';
 import PhotoGalleryEditor from './PhotoGalleryEditor';
 import SlidePreview from '../preview/SlidePreview';
 import DebugOverlay from '../templates/DebugOverlay';
+import { useBlocksStore } from '../../lib/store/blocksStore';
+
+// ── Block banner (shown when page is linked to a reusable block) ──────────────
+
+function BlockBanner({ blockId }: { blockId: string }) {
+  const block = useBlocksStore((s) => s.blocks.find((b) => b.id === blockId));
+
+  const navigateToBlock = () => {
+    window.location.hash = `/blocks/${blockId}`;
+  };
+
+  return (
+    <div style={{
+      background: '#FFFBEF',
+      border: '1px solid #FBB931',
+      borderRadius: 8,
+      padding: '14px 16px',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+        <span style={{ fontSize: 14, color: '#FBB931' }}>⬡</span>
+        <span style={{ fontSize: 13, fontWeight: 600, color: '#1A1A1A' }}>
+          Content managed by block
+        </span>
+      </div>
+      <p style={{ margin: '0 0 12px 0', fontSize: 13, color: '#2A2A2A' }}>
+        <strong>{block?.name ?? 'Unknown block'}</strong>
+      </p>
+      <p style={{ margin: '0 0 14px 0', fontSize: 12, color: '#5E5E5E', lineHeight: 1.5 }}>
+        This page's content is controlled by a reusable block. Edit the block to update all presentations that use it.
+      </p>
+      <button
+        onClick={navigateToBlock}
+        style={{
+          padding: '6px 14px',
+          fontSize: 12,
+          fontWeight: 600,
+          color: '#1A1A1A',
+          background: '#FBB931',
+          border: 'none',
+          borderRadius: 6,
+          cursor: 'pointer',
+        }}
+      >
+        Edit block →
+      </button>
+    </div>
+  );
+}
 
 const LANGUAGE_OPTIONS: { key: Language; label: string }[] = [
   { key: 'en', label: 'EN' },
@@ -121,7 +169,9 @@ export default function PresentationEditor() {
         style={{ width: 320, background: '#fff' }}
       >
         <div className="p-4">
-          {selectedPage ? (
+          {selectedPage?.reusableBlockId ? (
+            <BlockBanner blockId={selectedPage.reusableBlockId} />
+          ) : selectedPage ? (
             selectedPage.type === 'cover' ? (
               <CoverPageEditor page={selectedPage} />
             ) : selectedPage.type === 'value-proposition' ? (
