@@ -1,15 +1,15 @@
 import { Document, Page, pdf } from '@react-pdf/renderer';
 import type { Presentation, TranslatableField } from '../../types/presentation';
-import CoverPagePDF from './CoverPagePDF';
-import ValuePropositionPDF from './ValuePropositionPDF';
-import SectionDividerPDF from './SectionDividerPDF';
-import ContactPagePDF from './ContactPagePDF';
-import DiagramPagePDF from './DiagramPagePDF';
-import IndexTOCPagePDF from './IndexTOCPagePDF';
-import DisclaimerPagePDF from './DisclaimerPagePDF';
-import MultiCardGridPDF from './MultiCardGridPDF';
-import TextChartPDF from './TextChartPDF';
-import { loadImage } from '../images/imageStore';
+import CoverPagePDF from './cover-page-pdf';
+import ValuePropositionPDF from './value-proposition-pdf';
+import SectionDividerPDF from './section-divider-pdf';
+import ContactPagePDF from './contact-page-pdf';
+import DiagramPagePDF from './diagram-page-pdf';
+import IndexTOCPagePDF from './index-toc-page-pdf';
+import DisclaimerPagePDF from './disclaimer-page-pdf';
+import MultiCardGridPDF from './multi-card-grid-pdf';
+import TextChartPDF from './text-chart-pdf';
+import { loadImage } from '../images/image-store';
 
 /**
  * Build a react-pdf <Document> from a Presentation.

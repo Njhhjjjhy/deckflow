@@ -1,0 +1,341 @@
+import { useRef, useEffect, useState, useCallback } from 'react';
+import { usePresentationStore } from '../../lib/store/presentation-store';
+import type { Language } from '../../types/presentation';
+import { exportPDF } from '../../lib/export/generatePDF';
+import PageList from './page-list';
+import CoverPageEditor from './cover-page-editor';
+import SectionDividerEditor from './section-divider-editor';
+import ContactPageEditor from './contact-page-editor';
+import ValuePropositionEditor from './value-proposition-editor';
+import DiagramPageEditor from './diagram-page-editor';
+import IndexTOCEditor from './index-toc-editor';
+import DisclaimerPageEditor from './disclaimer-page-editor';
+import MultiCardGridEditor from './multi-card-grid-editor';
+import TextChartEditor from './text-chart-editor';
+import DataTableEditor from './data-table-editor';
+import ComparisonTableEditor from './comparison-table-editor';
+import TimelineImageEditor from './timeline-image-editor';
+import TextImagesEditor from './text-images-editor';
+import BeforeAfterEditor from './before-after-editor';
+import MapTextCardEditor from './map-text-card-editor';
+import ThreeCirclesEditor from './three-circles-editor';
+import FlowChartEditor from './flow-chart-editor';
+import PartnerProfileEditor from './partner-profile-editor';
+import LogosTextTableEditor from './logos-text-table-editor';
+import PhotoGalleryEditor from './photo-gallery-editor';
+import SlidePreview from '../preview/slide-preview';
+import DebugOverlay from '../templates/debug-overlay';
+import { useBlocksStore } from '../../lib/store/blocks-store';
+
+// ── Block banner (shown when page is linked to a reusable block) ──────────────
+
+function BlockBanner({ blockId }: { blockId: string }) {
+  const block = useBlocksStore((s) => s.blocks.find((b) => b.id === blockId));
+
+  const navigateToBlock = () => {
+    window.location.hash = `/blocks/${blockId}`;
+  };
+
+  return (
+    <div style={{
+      background: '#FFFBEF',
+      border: '1px solid #FBB931',
+      borderRadius: 8,
+      padding: '14px 16px',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+        <span style={{ fontSize: 14, color: '#FBB931' }}>⬡</span>
+        <span style={{ fontSize: 13, fontWeight: 600, color: '#1A1A1A' }}>
+          Content managed by block
+        </span>
+      </div>
+      <p style={{ margin: '0 0 12px 0', fontSize: 13, color: '#2A2A2A' }}>
+        <strong>{block?.name ?? 'Unknown block'}</strong>
+      </p>
+      <p style={{ margin: '0 0 14px 0', fontSize: 12, color: '#5E5E5E', lineHeight: 1.5 }}>
+        This page's content is controlled by a reusable block. Edit the block to update all presentations that use it.
+      </p>
+      <button
+        onClick={navigateToBlock}
+        style={{
+          padding: '6px 14px',
+          fontSize: 12,
+          fontWeight: 600,
+          color: '#1A1A1A',
+          background: '#FBB931',
+          border: 'none',
+          borderRadius: 6,
+          cursor: 'pointer',
+        }}
+      >
+        Edit block →
+      </button>
+    </div>
+  );
+}
+
+const LANGUAGE_OPTIONS: { key: Language; label: string }[] = [
+  { key: 'en', label: 'EN' },
+  { key: 'zh-tw', label: 'zh-TW' },
+  { key: 'zh-cn', label: 'zh-CN' },
+];
+
+export default function PresentationEditor() {
+  const presentation = usePresentationStore((s) => s.presentation);
+  const selectedPageId = usePresentationStore((s) => s.selectedPageId);
+  const previewLanguage = usePresentationStore((s) => s.previewLanguage);
+  const setPreviewLanguage = usePresentationStore((s) => s.setPreviewLanguage);
+  const clearNeedsReExport = usePresentationStore((s) => s.clearNeedsReExport);
+
+  const selectedPage = presentation.pages.find((p) => p.id === selectedPageId) ?? null;
+
+  // PDF export state
+  const [exporting, setExporting] = useState(false);
+  const [exportMenuOpen, setExportMenuOpen] = useState(false);
+  const exportMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close export menu when clicking outside
+  useEffect(() => {
+    if (!exportMenuOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (exportMenuRef.current && !exportMenuRef.current.contains(e.target as Node)) {
+        setExportMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [exportMenuOpen]);
+
+  const handleExportPage = useCallback(async () => {
+    if (!selectedPageId) return;
+    setExportMenuOpen(false);
+    setExporting(true);
+    try {
+      await exportPDF(presentation, selectedPageId);
+    } catch (err) {
+      console.error('PDF export failed:', err);
+    } finally {
+      setExporting(false);
+    }
+  }, [presentation, selectedPageId]);
+
+  const handleExportAll = useCallback(async () => {
+    setExportMenuOpen(false);
+    setExporting(true);
+    try {
+      await exportPDF(presentation);
+      clearNeedsReExport();
+    } catch (err) {
+      console.error('PDF export failed:', err);
+    } finally {
+      setExporting(false);
+    }
+  }, [presentation, clearNeedsReExport]);
+
+  // Auto-scale preview to fit container
+  const previewContainerRef = useRef<HTMLDivElement>(null);
+  const [previewScale, setPreviewScale] = useState(0.65);
+  const slideRef = useRef<HTMLDivElement>(null);
+  const [debug, setDebug] = useState(false);
+
+  const computeScale = useCallback(() => {
+    const el = previewContainerRef.current;
+    if (!el) return;
+    const padding = 48; // 24px on each side
+    const availW = el.clientWidth - padding;
+    const availH = el.clientHeight - padding;
+    const scaleX = availW / 960;
+    const scaleY = availH / 540;
+    setPreviewScale(Math.min(scaleX, scaleY, 1));
+  }, []);
+
+  useEffect(() => {
+    computeScale();
+    window.addEventListener('resize', computeScale);
+    return () => window.removeEventListener('resize', computeScale);
+  }, [computeScale]);
+
+  return (
+    <div className="flex h-full" style={{ background: '#F2F2F2' }}>
+      {/* Left: Page list */}
+      <div
+        className="flex-shrink-0 border-r border-[#E5E5E5] overflow-hidden"
+        style={{ width: 180, background: '#fff' }}
+      >
+        <PageList />
+      </div>
+
+      {/* Center: Content fields */}
+      <div
+        className="flex-shrink-0 border-r border-[#E5E5E5] overflow-y-auto"
+        style={{ width: 320, background: '#fff' }}
+      >
+        <div className="p-4">
+          {selectedPage?.reusableBlockId ? (
+            <BlockBanner blockId={selectedPage.reusableBlockId} />
+          ) : selectedPage ? (
+            selectedPage.type === 'cover' ? (
+              <CoverPageEditor page={selectedPage} />
+            ) : selectedPage.type === 'value-proposition' ? (
+              <ValuePropositionEditor page={selectedPage} />
+            ) : selectedPage.type === 'diagram' ? (
+              <DiagramPageEditor page={selectedPage} />
+            ) : selectedPage.type === 'index' ? (
+              <IndexTOCEditor page={selectedPage} />
+            ) : selectedPage.type === 'section-divider' ? (
+              <SectionDividerEditor page={selectedPage} />
+            ) : selectedPage.type === 'disclaimer' ? (
+              <DisclaimerPageEditor page={selectedPage} />
+            ) : selectedPage.type === 'contact' ? (
+              <ContactPageEditor page={selectedPage} />
+            ) : selectedPage.type === 'multi-card-grid' ? (
+              <MultiCardGridEditor page={selectedPage} />
+            ) : selectedPage.type === 'text-chart' ? (
+              <TextChartEditor page={selectedPage} />
+            ) : selectedPage.type === 'data-table' ? (
+              <DataTableEditor page={selectedPage} />
+            ) : selectedPage.type === 'comparison-table' ? (
+              <ComparisonTableEditor page={selectedPage} />
+            ) : selectedPage.type === 'timeline-image' ? (
+              <TimelineImageEditor page={selectedPage} />
+            ) : selectedPage.type === 'text-images' ? (
+              <TextImagesEditor page={selectedPage} />
+            ) : selectedPage.type === 'before-after' ? (
+              <BeforeAfterEditor page={selectedPage} />
+            ) : selectedPage.type === 'map-text' ? (
+              <MapTextCardEditor page={selectedPage} />
+            ) : selectedPage.type === 'three-circles' ? (
+              <ThreeCirclesEditor page={selectedPage} />
+            ) : selectedPage.type === 'flow-chart' ? (
+              <FlowChartEditor page={selectedPage} />
+            ) : selectedPage.type === 'partner-profile' ? (
+              <PartnerProfileEditor page={selectedPage} />
+            ) : selectedPage.type === 'logos-text-table' ? (
+              <LogosTextTableEditor page={selectedPage} />
+            ) : selectedPage.type === 'photo-gallery' ? (
+              <PhotoGalleryEditor page={selectedPage} />
+            ) : (
+              <p className="text-sm text-[#999]">
+                Editor not available for "{selectedPage.type}"
+              </p>
+            )
+          ) : (
+            <p className="text-sm text-[#999]">Select a page to edit</p>
+          )}
+        </div>
+      </div>
+
+      {/* Right: Live preview */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {/* Preview toolbar */}
+        <div
+          className="flex items-center justify-between px-4 py-2 border-b border-[#E5E5E5] flex-shrink-0"
+          style={{ background: '#fff' }}
+        >
+          <span className="text-xs font-medium text-[#1A1A1A]">Preview</span>
+          <div className="flex items-center gap-3">
+            <div className="flex gap-1">
+              {LANGUAGE_OPTIONS.map((opt) => (
+                <button
+                  key={opt.key}
+                  onClick={() => setPreviewLanguage(opt.key)}
+                  className="px-2.5 py-1 text-xs rounded transition-colors"
+                  style={{
+                    background: previewLanguage === opt.key ? '#FBB931' : 'transparent',
+                    color: previewLanguage === opt.key ? '#1A1A1A' : '#666',
+                    fontWeight: previewLanguage === opt.key ? 600 : 400,
+                  }}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setDebug(!debug)}
+              className="px-2.5 py-1 text-xs rounded transition-colors"
+              style={{
+                fontFamily: 'monospace',
+                background: debug ? '#1A1A1A' : 'transparent',
+                color: debug ? '#FBB931' : '#999',
+              }}
+            >
+              {debug ? 'DEBUG ON' : 'DEBUG'}
+            </button>
+            <div ref={exportMenuRef} style={{ position: 'relative' }}>
+              <button
+                onClick={() => setExportMenuOpen((v) => !v)}
+                disabled={exporting}
+                className="px-3 py-1 text-xs font-medium rounded transition-colors"
+                style={{
+                  background: exporting ? '#E5E5E5' : '#FBB931',
+                  color: '#1A1A1A',
+                  opacity: exporting ? 0.6 : 1,
+                  cursor: exporting ? 'not-allowed' : 'pointer',
+                }}
+              >
+                {exporting ? 'Exporting…' : 'Export PDF ▾'}
+              </button>
+              {exportMenuOpen && !exporting && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    top: '100%',
+                    marginTop: 4,
+                    background: '#fff',
+                    border: '1px solid #E5E5E5',
+                    borderRadius: 6,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    zIndex: 50,
+                    minWidth: 160,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <button
+                    onClick={handleExportPage}
+                    disabled={!selectedPageId}
+                    className="w-full text-left px-3 py-2 text-xs transition-colors hover:bg-[#F2F2F2]"
+                    style={{
+                      color: selectedPageId ? '#1A1A1A' : '#999',
+                      cursor: selectedPageId ? 'pointer' : 'not-allowed',
+                    }}
+                  >
+                    Export This Page
+                  </button>
+                  <div style={{ height: 1, background: '#E5E5E5' }} />
+                  <button
+                    onClick={handleExportAll}
+                    className="w-full text-left px-3 py-2 text-xs transition-colors hover:bg-[#F2F2F2]"
+                    style={{ color: '#1A1A1A', cursor: 'pointer' }}
+                  >
+                    Export All Pages
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Preview area — scales to fit */}
+        <div ref={previewContainerRef} className="flex-1 flex items-center justify-center overflow-auto p-6">
+          {selectedPage ? (
+            <div
+              ref={slideRef}
+              style={{
+                boxShadow: '0 2px 16px rgba(0,0,0,0.10)',
+                transform: `scale(${previewScale})`,
+                transformOrigin: 'center center',
+                position: 'relative',
+              }}
+            >
+              <SlidePreview page={selectedPage} language={previewLanguage} />
+              {debug && <DebugOverlay containerRef={slideRef} />}
+            </div>
+          ) : (
+            <p className="text-sm text-[#999]">No page selected</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
