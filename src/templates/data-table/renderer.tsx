@@ -1,4 +1,4 @@
-import './data-table-page.css';
+import './styles.css';
 
 interface ColumnItem {
   label: string;

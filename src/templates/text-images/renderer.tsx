@@ -1,4 +1,4 @@
-import './text-images-page.css';
+import './styles.css';
 
 interface SectionItem {
   heading: string;

@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import './map-text-list-page.css';
+import './list.css';
 
 interface PropertyGroup {
   label: string;

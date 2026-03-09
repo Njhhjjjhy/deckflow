@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import PresentationEditor from './components/editor/presentation-editor';
-import BlocksLibrary from './components/blocks/blocks-library';
+import PresentationEditor from './components/presentation-editor';
+import BlocksLibrary from './components/blocks-library';
 import { BRAND } from './lib/brand';
 import { usePresentationStore } from './lib/store/presentation-store';
 

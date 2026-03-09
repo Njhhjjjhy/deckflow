@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Presentation, Page, Language, TranslatableField, ReusableBlock } from '../../types/presentation';
-import { createCoverPage, createValuePropositionPage, createDiagramPage, createIndexPage, createSectionDividerPage, createDisclaimerPage, createContactPage, createMultiCardGridPage, createTextChartPage, createDataTablePage, createComparisonTablePage, createTimelineImagePage, createTextImagesPage, createBeforeAfterPage, createMapTextPage, createThreeCirclesPage, createFlowChartPage, createPartnerProfilePage, createLogosTextTablePage, createPhotoGalleryPage } from '../../types/presentation';
+import { createCoverPage, createValuePropositionPage, createDiagramPage, createIndexPage, createSectionDividerPage, createDisclaimerPage, createContactPage, createMultiCardGridPage, createTextChartPage, createDataTablePage, createComparisonTablePage, createTimelineImagePage, createTextImagesPage, createBeforeAfterPage, createMapTextPage, createThreeCirclesPage, createFlowChartPage, createPartnerProfilePage, createLogosTextTablePage, createPhotoGalleryPage, createLongFormTextPage, createTextNewsPage } from '../../types/presentation';
 
 function createDefaultPresentation(): Presentation {
   return {
@@ -151,7 +151,11 @@ export const usePresentationStore = create<PresentationState>()(
                                                   ? createLogosTextTablePage(order)
                                                   : type === 'photo-gallery'
                                                     ? createPhotoGalleryPage(order)
-                                                    : createCoverPage(order);
+                                                    : type === 'long-form-text'
+                                                      ? createLongFormTextPage(order)
+                                                      : type === 'text-news'
+                                                        ? createTextNewsPage(order)
+                                                        : createCoverPage(order);
             newPage.type = type;
             return {
               presentation: {

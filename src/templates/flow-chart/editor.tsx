@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { Page, Language } from '../../types/presentation';
 import { usePresentationStore } from '../../lib/store/presentation-store';
-import LanguageTabs from './language-tabs';
+import LanguageTabs from '../../components/language-tabs';
 
 type TriLang = { en: string; 'zh-tw': string; 'zh-cn': string };
 

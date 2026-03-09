@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import type { Page, PageType } from '../../types/presentation';
-import { usePresentationStore } from '../../lib/store/presentation-store';
-import { useBlocksStore, PAGE_TYPE_LABELS as BLOCK_TYPE_LABELS } from '../../lib/store/blocks-store';
+import type { Page, PageType } from '../types/presentation';
+import { usePresentationStore } from '../lib/store/presentation-store';
+import { useBlocksStore, PAGE_TYPE_LABELS as BLOCK_TYPE_LABELS } from '../lib/store/blocks-store';
 
 const PAGE_TYPE_LABELS: Record<string, string> = {
   cover: 'Cover',
@@ -35,6 +35,7 @@ const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
   { type: 'diagram', label: 'Diagram / Branching' },
   { type: 'index', label: 'Index / TOC' },
   { type: 'section-divider', label: 'Section Divider' },
+  { type: 'long-form-text', label: 'Long-form Text (2-col)' },
   { type: 'timeline-image', label: 'Timeline + Image' },
   { type: 'multi-card-grid', label: 'Multi-Card Grid' },
   { type: 'text-chart', label: 'Text + Chart' },
@@ -50,6 +51,7 @@ const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
   { type: 'partner-profile', label: 'Partner Profile' },
   { type: 'logos-text-table', label: 'Logos + Text + Table' },
   { type: 'photo-gallery', label: 'Photo Gallery' },
+  { type: 'text-news', label: 'Text + News Clippings' },
 ];
 
 // ── Block picker modal ─────────────────────────────────────────────────────────

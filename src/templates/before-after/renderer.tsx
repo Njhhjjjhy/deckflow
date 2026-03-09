@@ -1,4 +1,4 @@
-import './before-after-page.css';
+import './styles.css';
 
 interface BeforeAfterPair {
   beforeImage?: string | null;

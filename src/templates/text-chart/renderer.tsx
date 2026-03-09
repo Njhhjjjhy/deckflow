@@ -1,5 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell, LabelList } from 'recharts';
-import './text-chart-page.css';
+import './styles.css';
 
 interface BarItem {
   label: string;

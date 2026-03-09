@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import type { Page, Language, TranslatableField } from '../../types/presentation';
 import { usePresentationStore } from '../../lib/store/presentation-store';
 import { loadImage } from '../../lib/images/image-store';
-import LanguageTabs from './language-tabs';
-import ImageUpload from './image-upload';
+import LanguageTabs from '../../components/language-tabs';
+import ImageUpload from '../../components/image-upload';
 
 interface ContactPageEditorProps {
   page: Page;

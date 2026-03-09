@@ -1,4 +1,4 @@
-import './timeline-image-page.css';
+import './styles.css';
 
 interface TimelineEntry {
   year: string;

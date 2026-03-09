@@ -1,4 +1,4 @@
-import './contact-page.css';
+import './styles.css';
 
 interface ContactPageContent {
   companyName: string;

@@ -1,14 +1,14 @@
 import { Document, Page, pdf } from '@react-pdf/renderer';
 import type { Presentation, TranslatableField } from '../../types/presentation';
-import CoverPagePDF from './cover-page-pdf';
-import ValuePropositionPDF from './value-proposition-pdf';
-import SectionDividerPDF from './section-divider-pdf';
-import ContactPagePDF from './contact-page-pdf';
-import DiagramPagePDF from './diagram-page-pdf';
-import IndexTOCPagePDF from './index-toc-page-pdf';
-import DisclaimerPagePDF from './disclaimer-page-pdf';
-import MultiCardGridPDF from './multi-card-grid-pdf';
-import TextChartPDF from './text-chart-pdf';
+import CoverPagePDF from '../../templates/cover/pdf';
+import ValuePropositionPDF from '../../templates/value-proposition/pdf';
+import SectionDividerPDF from '../../templates/section-divider/pdf';
+import ContactPagePDF from '../../templates/contact/pdf';
+import DiagramPagePDF from '../../templates/diagram/pdf';
+import IndexTOCPagePDF from '../../templates/index/pdf';
+import DisclaimerPagePDF from '../../templates/disclaimer/pdf';
+import MultiCardGridPDF from '../../templates/multi-card-grid/pdf';
+import TextChartPDF from '../../templates/text-chart/pdf';
 import { loadImage } from '../images/image-store';
 
 /**

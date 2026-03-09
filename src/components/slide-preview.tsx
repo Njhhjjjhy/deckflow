@@ -1,28 +1,30 @@
 import { useEffect, useState } from 'react';
-import type { Page, Language, TranslatableField } from '../../types/presentation';
-import { loadImage } from '../../lib/images/image-store';
-import CoverPage from '../templates/cover-page';
-import ValuePropositionPage from '../templates/value-proposition-page';
-import SectionDividerPage from '../templates/section-divider-page';
-import ContactPage from '../templates/contact-page';
-import DiagramPage from '../templates/diagram-page';
-import IndexTOCPage from '../templates/index-toc-page';
-import DisclaimerPage from '../templates/disclaimer-page';
-import MultiCardGridPage from '../templates/multi-card-grid-page';
-import TextChartPage from '../templates/text-chart-page';
-import DataTablePage from '../templates/data-table-page';
-import ComparisonTablePage from '../templates/comparison-table-page';
-import TimelineImagePage from '../templates/timeline-image-page';
-import TextImagesPage from '../templates/text-images-page';
-import BeforeAfterPage from '../templates/before-after-page';
-import MapTextCardPage from '../templates/map-text-card-page';
-import MapTextListPage from '../templates/map-text-list-page';
-import MapTextOverlayPage from '../templates/map-text-overlay-page';
-import ThreeCirclesPage from '../templates/three-circles-page';
-import FlowChartPage from '../templates/flow-chart-page';
-import PartnerProfilePage from '../templates/partner-profile-page';
-import LogosTextTablePage from '../templates/logos-text-table-page';
-import PhotoGalleryPage from '../templates/photo-gallery-page';
+import type { Page, Language, TranslatableField } from '../types/presentation';
+import { loadImage } from '../lib/images/image-store';
+import CoverPage from '../templates/cover/renderer';
+import ValuePropositionPage from '../templates/value-proposition/renderer';
+import SectionDividerPage from '../templates/section-divider/renderer';
+import ContactPage from '../templates/contact/renderer';
+import DiagramPage from '../templates/diagram/renderer';
+import IndexTOCPage from '../templates/index/renderer';
+import DisclaimerPage from '../templates/disclaimer/renderer';
+import MultiCardGridPage from '../templates/multi-card-grid/renderer';
+import TextChartPage from '../templates/text-chart/renderer';
+import DataTablePage from '../templates/data-table/renderer';
+import ComparisonTablePage from '../templates/comparison-table/renderer';
+import TimelineImagePage from '../templates/timeline-image/renderer';
+import TextImagesPage from '../templates/text-images/renderer';
+import BeforeAfterPage from '../templates/before-after/renderer';
+import MapTextCardPage from '../templates/map-text/card';
+import MapTextListPage from '../templates/map-text/list';
+import MapTextOverlayPage from '../templates/map-text/overlay';
+import ThreeCirclesPage from '../templates/three-circles/renderer';
+import FlowChartPage from '../templates/flow-chart/renderer';
+import PartnerProfilePage from '../templates/partner-profile/renderer';
+import LogosTextTablePage from '../templates/logos-text-table/renderer';
+import PhotoGalleryPage from '../templates/photo-gallery/renderer';
+import LongFormTextPage from '../templates/long-form-text/renderer';
+import TextNewsPage from '../templates/text-news/renderer';
 
 interface SlidePreviewProps {
   page: Page;
@@ -47,6 +49,7 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const [lttEntryLogoMap, setLttEntryLogoMap] = useState<Record<string, string | null>>({});
   const [lttTableImageData, setLttTableImageData] = useState<string | null>(null);
   const [galleryPhotos, setGalleryPhotos] = useState<Record<string, string | null>>({});
+  const [newsImageMap, setNewsImageMap] = useState<Record<string, string | null>>({});
   const heroImageKey = (page.content.heroImage as string) || '';
   const logoImageKey = (page.content.logoImage as string) || '';
   const badge1IconKey = (page.content.badge1Icon as string) || '';
@@ -66,6 +69,7 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
   const galleryPhotosDataRaw = page.type === 'photo-gallery' ? ((page.content.photosData as string) || '[]') : '[]';
   const mapCardsDataRaw = page.type === 'map-text' ? ((page.content.cardsData as string) || '[]') : '[]';
   const mapArrowsDataRaw = page.type === 'map-text' ? ((page.content.arrowsData as string) || '[]') : '[]';
+  const newsImagesDataRaw = page.type === 'text-news' ? ((page.content.newsImagesData as string) || '[]') : '[]';
 
   useEffect(() => {
     if (!heroImageKey) { setHeroImageData(null); return; }
@@ -205,6 +209,28 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
     });
     if (pending === 0) setGalleryPhotos({ ...newMap });
   }, [galleryPhotosDataRaw, page.type]);
+
+  // Load text-news images
+  useEffect(() => {
+    if (page.type !== 'text-news') { setNewsImageMap({}); return; }
+    let imgsRaw: { id: string; imageKey: string }[] = [];
+    try { imgsRaw = JSON.parse(newsImagesDataRaw); } catch { /* ignore */ }
+    const newMap: Record<string, string | null> = {};
+    let pending = 0;
+    imgsRaw.forEach((img) => {
+      if (img.imageKey) {
+        pending++;
+        loadImage(img.imageKey).then((data) => {
+          newMap[img.id] = data;
+          pending--;
+          if (pending === 0) setNewsImageMap({ ...newMap });
+        });
+      } else {
+        newMap[img.id] = null;
+      }
+    });
+    if (pending === 0) setNewsImageMap({ ...newMap });
+  }, [newsImagesDataRaw, page.type]);
 
   // Load before-after pair images
   useEffect(() => {
@@ -1004,6 +1030,66 @@ export default function SlidePreview({ page, language }: SlidePreviewProps) {
           sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
           year,
           photos: resolvedPhotos,
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'long-form-text') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const heading = page.content.heading as TranslatableField;
+    const col1Body = page.content.col1Body as TranslatableField;
+    const col2Body = page.content.col2Body as TranslatableField;
+    const closingStatement = page.content.closingStatement as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+
+    return (
+      <LongFormTextPage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          heading: heading?.[language] || heading?.en || '',
+          col1Body: col1Body?.[language] || col1Body?.en || '',
+          col2Body: col2Body?.[language] || col2Body?.en || '',
+          closingStatement: closingStatement?.[language] || closingStatement?.en || '',
+        }}
+        language={language}
+      />
+    );
+  }
+
+  if (page.type === 'text-news') {
+    const sectionLabel = page.content.sectionLabel as TranslatableField;
+    const heading = page.content.heading as TranslatableField;
+    const year = (page.content.year as string) || '';
+    const pageNumber = (page.content.pageNumber as string) || '';
+    const bulletsDataRaw = (page.content.bulletsData as string) || '[]';
+
+    let bulletsRaw: Record<string, string>[] = [];
+    try { bulletsRaw = JSON.parse(bulletsDataRaw); } catch { /* ignore */ }
+
+    let newsImgsRaw: { id: string; imageKey: string; caption: Record<string, string> }[] = [];
+    try { newsImgsRaw = JSON.parse(newsImagesDataRaw); } catch { /* ignore */ }
+
+    const resolvedBullets = bulletsRaw.map((b) => b?.[language] || b?.en || '');
+    const resolvedImages = newsImgsRaw.map((img) => ({
+      id: img.id,
+      imageData: img.imageKey ? (newsImageMap[img.id] || null) : null,
+      caption: img.caption?.[language] || img.caption?.en || '',
+    }));
+
+    return (
+      <TextNewsPage
+        content={{
+          sectionLabel: sectionLabel?.[language] || sectionLabel?.en || '',
+          year,
+          pageNumber: pageNumber ? parseInt(pageNumber, 10) : undefined,
+          heading: heading?.[language] || heading?.en || '',
+          bullets: resolvedBullets,
+          newsImages: resolvedImages,
         }}
         language={language}
       />

@@ -1,4 +1,4 @@
-import './diagram-page.css';
+import './styles.css';
 
 interface DiagramBranch {
   heading: string;

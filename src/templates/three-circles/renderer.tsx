@@ -1,4 +1,4 @@
-import './three-circles-page.css';
+import './styles.css';
 
 interface CircleItem {
   heading: string;

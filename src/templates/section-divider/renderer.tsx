@@ -1,4 +1,4 @@
-import './section-divider.css';
+import './styles.css';
 
 interface SectionDividerContent {
   sectionLabel: string;

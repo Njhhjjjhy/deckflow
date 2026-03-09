@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useBlocksStore, PAGE_TYPE_LABELS } from '../../lib/store/blocks-store';
-import { usePresentationStore } from '../../lib/store/presentation-store';
-import type { ReusableBlock, PageType, TranslatableField } from '../../types/presentation';
+import { useBlocksStore, PAGE_TYPE_LABELS } from '../lib/store/blocks-store';
+import { usePresentationStore } from '../lib/store/presentation-store';
+import type { ReusableBlock, PageType, TranslatableField } from '../types/presentation';
 import BlockForm from './block-form';
-import { BRAND } from '../../lib/brand';
+import { BRAND } from '../lib/brand';
 
 type View = 'list' | 'create' | { edit: string };
 

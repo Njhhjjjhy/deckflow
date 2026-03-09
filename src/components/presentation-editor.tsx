@@ -1,31 +1,33 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { usePresentationStore } from '../../lib/store/presentation-store';
-import type { Language } from '../../types/presentation';
-import { exportPDF } from '../../lib/export/generatePDF';
+import { usePresentationStore } from '../lib/store/presentation-store';
+import type { Language } from '../types/presentation';
+import { exportPDF } from '../lib/export/generatePDF';
 import PageList from './page-list';
-import CoverPageEditor from './cover-page-editor';
-import SectionDividerEditor from './section-divider-editor';
-import ContactPageEditor from './contact-page-editor';
-import ValuePropositionEditor from './value-proposition-editor';
-import DiagramPageEditor from './diagram-page-editor';
-import IndexTOCEditor from './index-toc-editor';
-import DisclaimerPageEditor from './disclaimer-page-editor';
-import MultiCardGridEditor from './multi-card-grid-editor';
-import TextChartEditor from './text-chart-editor';
-import DataTableEditor from './data-table-editor';
-import ComparisonTableEditor from './comparison-table-editor';
-import TimelineImageEditor from './timeline-image-editor';
-import TextImagesEditor from './text-images-editor';
-import BeforeAfterEditor from './before-after-editor';
-import MapTextCardEditor from './map-text-card-editor';
-import ThreeCirclesEditor from './three-circles-editor';
-import FlowChartEditor from './flow-chart-editor';
-import PartnerProfileEditor from './partner-profile-editor';
-import LogosTextTableEditor from './logos-text-table-editor';
-import PhotoGalleryEditor from './photo-gallery-editor';
-import SlidePreview from '../preview/slide-preview';
-import DebugOverlay from '../templates/debug-overlay';
-import { useBlocksStore } from '../../lib/store/blocks-store';
+import CoverPageEditor from '../templates/cover/editor';
+import SectionDividerEditor from '../templates/section-divider/editor';
+import ContactPageEditor from '../templates/contact/editor';
+import ValuePropositionEditor from '../templates/value-proposition/editor';
+import DiagramPageEditor from '../templates/diagram/editor';
+import IndexTOCEditor from '../templates/index/editor';
+import DisclaimerPageEditor from '../templates/disclaimer/editor';
+import MultiCardGridEditor from '../templates/multi-card-grid/editor';
+import TextChartEditor from '../templates/text-chart/editor';
+import DataTableEditor from '../templates/data-table/editor';
+import ComparisonTableEditor from '../templates/comparison-table/editor';
+import TimelineImageEditor from '../templates/timeline-image/editor';
+import TextImagesEditor from '../templates/text-images/editor';
+import BeforeAfterEditor from '../templates/before-after/editor';
+import MapTextCardEditor from '../templates/map-text/card-editor';
+import ThreeCirclesEditor from '../templates/three-circles/editor';
+import FlowChartEditor from '../templates/flow-chart/editor';
+import PartnerProfileEditor from '../templates/partner-profile/editor';
+import LogosTextTableEditor from '../templates/logos-text-table/editor';
+import PhotoGalleryEditor from '../templates/photo-gallery/editor';
+import LongFormTextEditor from '../templates/long-form-text/editor';
+import TextNewsEditor from '../templates/text-news/editor';
+import SlidePreview from './slide-preview';
+import DebugOverlay from './debug-overlay';
+import { useBlocksStore } from '../lib/store/blocks-store';
 
 // ── Block banner (shown when page is linked to a reusable block) ──────────────
 
@@ -214,6 +216,10 @@ export default function PresentationEditor() {
               <LogosTextTableEditor page={selectedPage} />
             ) : selectedPage.type === 'photo-gallery' ? (
               <PhotoGalleryEditor page={selectedPage} />
+            ) : selectedPage.type === 'long-form-text' ? (
+              <LongFormTextEditor page={selectedPage} />
+            ) : selectedPage.type === 'text-news' ? (
+              <TextNewsEditor page={selectedPage} />
             ) : (
               <p className="text-sm text-[#999]">
                 Editor not available for "{selectedPage.type}"

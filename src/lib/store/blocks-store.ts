@@ -23,6 +23,8 @@ import {
   createPartnerProfilePage,
   createLogosTextTablePage,
   createPhotoGalleryPage,
+  createLongFormTextPage,
+  createTextNewsPage,
 } from '../../types/presentation';
 
 export function getDefaultContent(type: PageType): Record<string, import('../../types/presentation').TranslatableField | string> {
@@ -48,24 +50,8 @@ export function getDefaultContent(type: PageType): Record<string, import('../../
     case 'partner-profile': return createPartnerProfilePage(0).content;
     case 'logos-text-table': return createLogosTextTablePage(0).content;
     case 'photo-gallery':   return createPhotoGalleryPage(0).content;
-    case 'long-form-text':
-      return {
-        sectionLabel: createTranslatableField(''),
-        year,
-        pageNumber: '',
-        heading: createTranslatableField(''),
-        col1Body: createTranslatableField(''),
-        col2Body: createTranslatableField(''),
-        closingStatement: createTranslatableField(''),
-      };
-    case 'text-news':
-      return {
-        sectionLabel: createTranslatableField(''),
-        year,
-        pageNumber: '',
-        heading: createTranslatableField(''),
-        bulletsData: JSON.stringify([{ en: '', 'zh-tw': '', 'zh-cn': '' }]),
-      };
+    case 'long-form-text': return createLongFormTextPage(0).content;
+    case 'text-news':      return createTextNewsPage(0).content;
     default:
       return { sectionLabel: createTranslatableField(''), year };
   }

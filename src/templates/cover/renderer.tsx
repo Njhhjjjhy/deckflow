@@ -1,4 +1,4 @@
-import './cover-page.css';
+import './styles.css';
 
 interface CoverPageContent {
   headline: string;

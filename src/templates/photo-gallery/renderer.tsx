@@ -1,4 +1,4 @@
-import './photo-gallery-page.css';
+import './styles.css';
 
 interface PhotoGalleryContent {
   sectionLabel?: string;

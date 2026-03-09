@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import './index-toc-page.css';
+import './styles.css';
 
 export interface IndexTOCEntry {
   id: string;

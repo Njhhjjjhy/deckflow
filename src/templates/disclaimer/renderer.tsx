@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import './disclaimer-page.css';
+import './styles.css';
 
 interface DisclaimerPageContent {
   disclaimerText: string;

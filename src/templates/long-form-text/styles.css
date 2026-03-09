@@ -1,0 +1,57 @@
+.long-form-text-page {
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.long-form-text-page__heading {
+  position: absolute;
+  left: 30px;
+  top: 68px;
+  width: 900px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.4;
+  color: #1A1A1A;
+  margin: 0;
+}
+
+.long-form-text-page__col1 {
+  position: absolute;
+  left: 30px;
+  top: 102px;
+  width: 430px;
+  height: 378px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: #1A1A1A;
+  margin: 0;
+  white-space: pre-wrap;
+  overflow: hidden;
+}
+
+.long-form-text-page__col2 {
+  position: absolute;
+  left: 500px;
+  top: 102px;
+  width: 430px;
+  height: 378px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: #1A1A1A;
+  margin: 0;
+  white-space: pre-wrap;
+  overflow: hidden;
+}
+
+.long-form-text-page__closing {
+  position: absolute;
+  left: 30px;
+  top: 492px;
+  width: 900px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.3;
+  color: #1A1A1A;
+  margin: 0;
+}

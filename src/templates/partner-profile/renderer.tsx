@@ -1,4 +1,4 @@
-import './partner-profile-page.css';
+import './styles.css';
 
 interface PartnerProfileContent {
   sectionLabel?: string;

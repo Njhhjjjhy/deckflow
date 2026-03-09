@@ -1,4 +1,4 @@
-import './comparison-table-page.css';
+import './styles.css';
 
 interface ComparisonRowItem {
   label: string;

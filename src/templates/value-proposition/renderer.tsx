@@ -1,4 +1,4 @@
-import './value-proposition-page.css';
+import './styles.css';
 
 interface ValuePropositionContent {
   badge1Label: string;

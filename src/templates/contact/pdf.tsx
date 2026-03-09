@@ -1,6 +1,6 @@
 import { View, Text, Image, StyleSheet, Font, Link } from '@react-pdf/renderer';
-import LogoPDF from './logo-pdf';
-import LogoIconPDF from './logo-icon-pdf';
+import LogoPDF from '../../lib/export/logo-pdf';
+import LogoIconPDF from '../../lib/export/logo-icon-pdf';
 
 /* ------------------------------------------------------------------ */
 /*  Register fonts                                                     */

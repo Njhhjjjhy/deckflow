@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { Page, Language } from '../../types/presentation';
 import { usePresentationStore } from '../../lib/store/presentation-store';
-import LanguageTabs from './language-tabs';
+import LanguageTabs from '../../components/language-tabs';
 
 const MAX_ROWS = 10;
 const MIN_ROWS = 1;

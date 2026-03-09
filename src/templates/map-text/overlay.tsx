@@ -1,4 +1,4 @@
-import './map-text-overlay-page.css';
+import './overlay.css';
 
 interface MapCallout {
   label: string;

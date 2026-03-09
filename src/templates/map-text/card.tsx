@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import './map-text-card-page.css';
+import './card.css';
 
 interface MapCard {
   heading: string;

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import type { Page, TranslatableField } from '../../types/presentation';
 import { usePresentationStore } from '../../lib/store/presentation-store';
 import { loadImage, fileToBase64, saveImage } from '../../lib/images/image-store';
-import LanguageTabs from './language-tabs';
+import LanguageTabs from '../../components/language-tabs';
 
 interface PhotoEntry {
   id: string;

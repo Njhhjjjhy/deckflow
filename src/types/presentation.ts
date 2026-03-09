@@ -838,6 +838,47 @@ export function createPhotoGalleryPage(order: number): Page {
   };
 }
 
+/** Helper to create a new long-form text (2-col) page */
+export function createLongFormTextPage(order: number): Page {
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'long-form-text',
+    content: {
+      sectionLabel: createTranslatableField(''),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '6',
+      heading: createTranslatableField(''),
+      col1Body: createTranslatableField(''),
+      col2Body: createTranslatableField(''),
+      closingStatement: createTranslatableField(''),
+    },
+  };
+}
+
+/** Helper to create a new text + news clippings page */
+export function createTextNewsPage(order: number): Page {
+  const defaultBullets = [
+    { en: '', 'zh-tw': '', 'zh-cn': '' },
+  ];
+  const defaultImages = [
+    { id: crypto.randomUUID(), imageKey: '', caption: { en: '', 'zh-tw': '', 'zh-cn': '' } },
+  ];
+  return {
+    id: crypto.randomUUID(),
+    order,
+    type: 'text-news',
+    content: {
+      sectionLabel: createTranslatableField(''),
+      year: new Date().getFullYear().toString(),
+      pageNumber: '26',
+      heading: createTranslatableField(''),
+      bulletsData: JSON.stringify(defaultBullets),
+      newsImagesData: JSON.stringify(defaultImages),
+    },
+  };
+}
+
 /** Helper to create a new logos + text + table image page */
 export function createLogosTextTablePage(order: number): Page {
   const defaultEntries = [

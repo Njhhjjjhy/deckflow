@@ -1,4 +1,4 @@
-import './logos-text-table-page.css';
+import './styles.css';
 
 interface PartnerEntry {
   logoImage?: string | null;

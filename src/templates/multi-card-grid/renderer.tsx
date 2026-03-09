@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import './multi-card-grid-page.css';
+import './styles.css';
 
 interface CardContent {
   icon: string | null;

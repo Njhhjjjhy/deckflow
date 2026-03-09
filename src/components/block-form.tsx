@@ -1,8 +1,8 @@
 import { useState, useCallback } from 'react';
-import type { ReusableBlock, PageType, TranslatableField, Language } from '../../types/presentation';
-import { getDefaultContent, PAGE_TYPE_LABELS } from '../../lib/store/blocks-store';
-import LanguageTabs from '../editor/language-tabs';
-import { BRAND } from '../../lib/brand';
+import type { ReusableBlock, PageType, TranslatableField, Language } from '../types/presentation';
+import { getDefaultContent, PAGE_TYPE_LABELS } from '../lib/store/blocks-store';
+import LanguageTabs from './language-tabs';
+import { BRAND } from '../lib/brand';
 
 interface BlockFormProps {
   block?: ReusableBlock;

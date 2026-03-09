@@ -33,7 +33,8 @@
 | textSecondary     | neutral800   | Supporting text         |
 | surfaceDefault    | neutral0     | Page and UI backgrounds |
 | surfaceRaised     | neutral100   | Cards, raised elements  |
-| borderDefault     | neutral200   | All borders             |
+| 
+     | neutral200   | All borders             |
 | tableHeaderBg     | amber100     | Table header rows       |
 | tableRowAlt       | neutral50    | Alternating table rows  |
 | tableRowHighlight | amber50      | Highlighted table rows  |

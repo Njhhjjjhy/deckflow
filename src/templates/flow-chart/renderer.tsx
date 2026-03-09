@@ -1,4 +1,4 @@
-import './flow-chart-page.css';
+import './styles.css';
 
 interface FlowChartNode {
   id: string;

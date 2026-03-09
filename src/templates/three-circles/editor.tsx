@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import type { Page, Language, TranslatableField } from '../../types/presentation';
 import { usePresentationStore } from '../../lib/store/presentation-store';
-import LanguageTabs from './language-tabs';
+import LanguageTabs from '../../components/language-tabs';
 
 interface ThreeCirclesEditorProps {
   page: Page;
