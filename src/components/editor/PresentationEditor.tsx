@@ -85,6 +85,7 @@ export default function PresentationEditor() {
   const selectedPageId = usePresentationStore((s) => s.selectedPageId);
   const previewLanguage = usePresentationStore((s) => s.previewLanguage);
   const setPreviewLanguage = usePresentationStore((s) => s.setPreviewLanguage);
+  const clearNeedsReExport = usePresentationStore((s) => s.clearNeedsReExport);
 
   const selectedPage = presentation.pages.find((p) => p.id === selectedPageId) ?? null;
 
@@ -123,12 +124,13 @@ export default function PresentationEditor() {
     setExporting(true);
     try {
       await exportPDF(presentation);
+      clearNeedsReExport();
     } catch (err) {
       console.error('PDF export failed:', err);
     } finally {
       setExporting(false);
     }
-  }, [presentation]);
+  }, [presentation, clearNeedsReExport]);
 
   // Auto-scale preview to fit container
   const previewContainerRef = useRef<HTMLDivElement>(null);

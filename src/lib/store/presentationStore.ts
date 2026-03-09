@@ -46,6 +46,7 @@ interface PresentationState {
   addPageFromBlock: (block: ReusableBlock) => void;
   syncBlockContent: (blockId: string, content: Record<string, TranslatableField | string>) => void;
   unlinkBlock: (blockId: string, content: Record<string, TranslatableField | string>) => void;
+  clearNeedsReExport: () => void;
 }
 
 export const usePresentationStore = create<PresentationState>()(
@@ -269,6 +270,11 @@ export const usePresentationStore = create<PresentationState>()(
               ),
               metadata: { ...state.presentation.metadata, updatedAt: new Date().toISOString() },
             },
+          })),
+
+        clearNeedsReExport: () =>
+          set((state) => ({
+            presentation: { ...state.presentation, needsReExport: false },
           })),
       };
     },
