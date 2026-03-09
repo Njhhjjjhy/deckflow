@@ -29,12 +29,14 @@ Content never contains formatting. Templates never contain content. This separat
 ```ts
 const BRAND = {
   colors: {
-    primary: '#FBB931',          // MoreHarvest gold
-    textPrimary: '#1A1A1A',      // near-black, 90% black
-    textSecondary: '#333333',    // dark gray, 80% black
-    background: '#F2F2F2',       // ALL backgrounds -- tool UI and slides
-    headerBox: '#E8E8E8',        // header boxes, slightly darker than background
-    border: '#E5E5E5',           // borders and dividers
+    primary: '#FBB931',          // MoreHarvest gold (brand-primary)
+    textPrimary: '#1A1A1A',      // neutral900 — all body text
+    textSecondary: '#2A2A2A',    // neutral800 — supporting text
+    textMuted: '#5E5E5E',        // neutral600 — captions, breadcrumbs
+    background: '#F2F2F2',       // neutral0 — ALL backgrounds -- tool UI and slides
+    surfaceCard: '#E8E8E8',      // neutral50 — inner card backgrounds
+    surface: '#DEDEDE',          // neutral100 — header bar, raised surfaces
+    border: '#C8C8C8',           // neutral200 — borders and dividers
   },
   dimensions: {
     slideWidth: 960,

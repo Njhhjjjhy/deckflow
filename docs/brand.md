@@ -16,7 +16,7 @@
 | neutral800   | #2A2A2A | Secondary text                           |
 | neutral900   | #1A1A1A | Primary text                             |
 | neutral950   | #111111 | Maximum contrast                         |
-| brandPrimary | #FBB931 | MoreHarvest gold — always use this alias |
+| brand-primary | #FBB931 | MoreHarvest gold — always use this alias |
 | amber50      | #FFFBEF | Table row highlight                      |
 | amber100     | #FFF3CD | Table header background                  |
 | amber200     | #FFE699 | —                                        |
@@ -27,17 +27,19 @@
 
 ## Semantic aliases
 
-| Token             | Resolves to  | Use                     |
-|-------------------|--------------|-------------------------|
-| textPrimary       | neutral900   | All body text           |
-| textSecondary     | neutral800   | Supporting text         |
-| surfaceDefault    | neutral0     | Page and UI backgrounds |
-| surfaceRaised     | neutral100   | Cards, raised elements  |
-| 
-     | neutral200   | All borders             |
-| tableHeaderBg     | amber100     | Table header rows       |
-| tableRowAlt       | neutral50    | Alternating table rows  |
-| tableRowHighlight | amber50      | Highlighted table rows  |
+| Token               | Resolves to | Use                          |
+|---------------------|-------------|------------------------------|
+| text-primary        | neutral900  | All body text                |
+| text-secondary      | neutral800  | Supporting text              |
+| text-muted          | neutral600  | Captions, breadcrumbs        |
+| text-placeholder    | neutral300  | Placeholder text             |
+| surface-default     | neutral0    | Slide and page backgrounds   |
+| surface-raised      | neutral100  | Header bar, raised surfaces  |
+| surface-card        | neutral50   | Inner card backgrounds       |
+| border-default      | neutral200  | All borders and dividers     |
+| table-header-bg     | amber100    | Table header rows            |
+| table-row-alt       | neutral50   | Alternating table rows       |
+| table-row-highlight | amber50     | Highlighted table rows       |
 
 ## Typography
 
