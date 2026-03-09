@@ -106,7 +106,7 @@ export default function PresentationEditor() {
   }, [computeScale]);
 
   return (
-    <div className="flex h-screen" style={{ background: '#F2F2F2' }}>
+    <div className="flex h-full" style={{ background: '#F2F2F2' }}>
       {/* Left: Page list */}
       <div
         className="flex-shrink-0 border-r border-[#E5E5E5] overflow-hidden"

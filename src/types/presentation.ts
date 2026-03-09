@@ -44,6 +44,16 @@ export interface Page {
   reusableBlockId?: string;
 }
 
+export interface ReusableBlock {
+  id: string;
+  name: string;
+  type: PageType;
+  content: Record<string, TranslatableField | string>;
+  usedIn: string[]; // presentation IDs
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface GlossaryEntry {
   en: string;
   'zh-tw': string;
