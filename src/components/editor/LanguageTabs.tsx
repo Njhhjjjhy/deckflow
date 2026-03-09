@@ -38,10 +38,10 @@ export default function LanguageTabs({ field, onChange, multiline, placeholder }
               onClick={() => setActiveTab(tab.key)}
               className="relative px-3 py-1 text-xs font-medium rounded-t transition-colors"
               style={{
-                background: isActive ? '#fff' : 'transparent',
+                background: isActive ? '#F2F2F2' : 'transparent',
                 color: isActive ? '#1A1A1A' : '#666',
-                border: isActive ? '1px solid #E5E5E5' : '1px solid transparent',
-                borderBottom: isActive ? '1px solid #fff' : '1px solid transparent',
+                border: isActive ? '1px solid #C8C8C8' : '1px solid transparent',
+                borderBottom: isActive ? '1px solid #F2F2F2' : '1px solid transparent',
                 marginBottom: isActive ? '-1px' : 0,
               }}
             >
@@ -65,7 +65,7 @@ export default function LanguageTabs({ field, onChange, multiline, placeholder }
           onChange={(e) => onChange(activeTab, e.target.value)}
           placeholder={placeholder}
           rows={3}
-          className="w-full px-3 py-2 text-sm rounded border border-[#E5E5E5] bg-white resize-y focus:outline-none focus:border-[#FBB931] focus:ring-1 focus:ring-[#FBB931]"
+          className="w-full px-3 py-2 text-sm rounded border border-[#C8C8C8] bg-[#F2F2F2] resize-y focus:outline-none focus:border-[#FBB931] focus:ring-1 focus:ring-[#FBB931]"
           style={{ color: '#1A1A1A' }}
         />
       ) : (
@@ -75,7 +75,7 @@ export default function LanguageTabs({ field, onChange, multiline, placeholder }
           onChange={(e) => onChange(activeTab, e.target.value)}
           placeholder={placeholder}
           maxLength={200}
-          className="w-full px-3 py-2 text-sm rounded border border-[#E5E5E5] bg-white focus:outline-none focus:border-[#FBB931] focus:ring-1 focus:ring-[#FBB931]"
+          className="w-full px-3 py-2 text-sm rounded border border-[#C8C8C8] bg-[#F2F2F2] focus:outline-none focus:border-[#FBB931] focus:ring-1 focus:ring-[#FBB931]"
           style={{ color: '#1A1A1A' }}
         />
       )}
