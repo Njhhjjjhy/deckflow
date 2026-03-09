@@ -1,4 +1,4 @@
-import type { Language, TranslatableField } from '../../types/presentation';
+import type { Language, TranslatableField } from '../types/presentation';
 
 interface LanguageTabsProps {
   field: TranslatableField;

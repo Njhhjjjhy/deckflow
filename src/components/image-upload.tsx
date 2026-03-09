@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { fileToBase64, saveImage } from '../../lib/images/image-store';
+import { fileToBase64, saveImage } from '../lib/images/image-store';
 
 interface ImageUploadProps {
   value: string; // image key or empty

@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import type { Page, Language } from '../../types/presentation';
 import { usePresentationStore } from '../../lib/store/presentation-store';
 import { loadImage, fileToBase64, saveImage } from '../../lib/images/image-store';
-import LanguageTabs from './language-tabs';
-import MapTextListEditor from './map-text-list-editor';
-import MapTextOverlayEditor from './map-text-overlay-editor';
+import LanguageTabs from '../../components/language-tabs';
+import MapTextListEditor from './list-editor';
+import MapTextOverlayEditor from './overlay-editor';
 
 interface MapCardData {
   id: string;
