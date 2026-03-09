@@ -37,7 +37,7 @@ export default function CoverPage({ content, language = 'en' }: CoverPageProps) 
         : "'REM', sans-serif";
 
   return (
-    <div className="cover-page">
+    <div className="slide-page cover-page">
       {/* Header bar */}
       <div className="cover-page__header">
         {/* Logo */}

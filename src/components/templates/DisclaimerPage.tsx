@@ -46,24 +46,24 @@ export default function DisclaimerPage({ content, language = 'en' }: DisclaimerP
   }, [content.disclaimerText, language]);
 
   return (
-    <div className="disclaimer-page">
+    <div className="slide-page disclaimer-page">
       {/* Wordmark — top-left */}
       <img
-        className="disclaimer-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year — top-right */}
-      <div className="disclaimer-page__year">{year}</div>
+      <div className="slide-year">{year}</div>
 
       {/* Section label */}
-      <p className="disclaimer-page__label" style={{ fontFamily }}>
+      <p className="slide-label" style={{ fontFamily }}>
         {label}
       </p>
 
       {/* Horizontal rule */}
-      <hr className="disclaimer-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Disclaimer text block */}
       <p

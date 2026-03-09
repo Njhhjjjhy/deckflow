@@ -33,26 +33,26 @@ export default function MapTextOverlayPage({ content, language = 'en' }: MapText
         : "'Noto Sans JP', sans-serif";
 
   return (
-    <div className="map-text-overlay-page">
+    <div className="slide-page map-text-overlay-page">
       {/* Wordmark — top-left */}
       <img
-        className="map-text-overlay-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year — top-right */}
-      <div className="map-text-overlay-page__year">{year}</div>
+      <div className="slide-year">{year}</div>
 
       {/* Section label */}
       {label && (
-        <p className="map-text-overlay-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
 
       {/* Horizontal rule */}
-      <hr className="map-text-overlay-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Full-width map with callout overlays */}
       <div className="map-text-overlay-page__map-area">
@@ -96,7 +96,7 @@ export default function MapTextOverlayPage({ content, language = 'en' }: MapText
 
       {/* Page number — bottom center */}
       {content.pageNumber !== undefined && (
-        <p className="map-text-overlay-page__page-number">
+        <p className="slide-page-number">
           {content.pageNumber}
         </p>
       )}

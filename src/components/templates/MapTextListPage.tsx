@@ -84,26 +84,26 @@ export default function MapTextListPage({ content, language = 'en' }: MapTextLis
   const propAreaHeight = 450 - headingHeight - summaryHeight;
 
   return (
-    <div className="map-text-list-page">
+    <div className="slide-page map-text-list-page">
       {/* Wordmark — top-left */}
       <img
-        className="map-text-list-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year — top-right */}
-      <div className="map-text-list-page__year">{year}</div>
+      <div className="slide-year">{year}</div>
 
       {/* Section label */}
       {label && (
-        <p className="map-text-list-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
 
       {/* Horizontal rule */}
-      <hr className="map-text-list-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Left column: map image */}
       <div
@@ -268,7 +268,7 @@ export default function MapTextListPage({ content, language = 'en' }: MapTextLis
 
       {/* Page number — bottom center */}
       {content.pageNumber !== undefined && (
-        <p className="map-text-list-page__page-number">
+        <p className="slide-page-number">
           {content.pageNumber}
         </p>
       )}

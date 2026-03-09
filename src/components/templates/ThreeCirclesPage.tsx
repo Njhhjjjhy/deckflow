@@ -85,22 +85,22 @@ export default function ThreeCirclesPage({ content, language = 'en' }: ThreeCirc
   ];
 
   return (
-    <div className="three-circles-page">
+    <div className="slide-page three-circles-page">
       {/* Header */}
       <img
-        className="three-circles-page__wordmark"
+        className="slide-wordmark"
         src="/moreharvest-wordmark.png"
         alt="MoreHarvest"
       />
-      <span className="three-circles-page__year" style={{ fontFamily }}>
+      <span className="slide-year" style={{ fontFamily }}>
         {year}
       </span>
       {label && (
-        <p className="three-circles-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
-      <div className="three-circles-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Heading */}
       <p className="three-circles-page__heading" style={{ fontFamily: headingFontFamily }}>
@@ -170,7 +170,7 @@ export default function ThreeCirclesPage({ content, language = 'en' }: ThreeCirc
 
       {/* Page number */}
       {content.pageNumber != null && (
-        <span className="three-circles-page__page-number" style={{ fontFamily }}>
+        <span className="slide-page-number" style={{ fontFamily }}>
           {content.pageNumber}
         </span>
       )}

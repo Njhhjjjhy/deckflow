@@ -1,61 +1,5 @@
 .timeline-image-page {
-  position: relative;
-  width: 960px;
-  height: 540px;
-  background: #F2F2F2;
-  overflow: hidden;
   font-family: 'Noto Sans JP', sans-serif;
-}
-
-.timeline-image-page__wordmark {
-  position: absolute;
-  left: 30px;
-  top: 14px;
-  height: 22px;
-  width: auto;
-}
-
-.timeline-image-page__year {
-  position: absolute;
-  right: 30px;
-  top: 14px;
-  font-size: 13px;
-  font-weight: 400;
-  color: #1A1A1A;
-  text-align: right;
-}
-
-.timeline-image-page__label {
-  position: absolute;
-  left: 30px;
-  top: 38px;
-  font-size: 11px;
-  font-weight: 400;
-  color: #333333;
-  margin: 0;
-}
-
-.timeline-image-page__rule {
-  position: absolute;
-  top: 54px;
-  left: 30px;
-  width: 900px;
-  border: none;
-  border-top: 1px solid #E5E5E5;
-  margin: 0;
-  padding: 0;
-}
-
-.timeline-image-page__page-number {
-  position: absolute;
-  top: 524px;
-  left: 0;
-  width: 960px;
-  text-align: center;
-  font-size: 11px;
-  font-weight: 400;
-  color: #333333;
-  margin: 0;
 }
 
 /* Timeline block */
@@ -91,7 +35,7 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #FFFFFF;
+  background: #F2F2F2;
   border-width: 2px;
   border-style: solid;
   box-sizing: border-box;
@@ -152,7 +96,7 @@
   top: 95px;
   width: 228px;
   height: 364px;
-  border: 2px dashed #CCCCCC;
+  border: 2px dashed #C8C8C8;
   border-radius: 2px;
   display: flex;
   align-items: center;

@@ -64,26 +64,26 @@ export default function ComparisonTablePage({ content, language = 'en' }: Compar
   };
 
   return (
-    <div className="comparison-table-page">
+    <div className="slide-page comparison-table-page">
       {/* Wordmark */}
       <img
-        className="comparison-table-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year */}
-      <div className="comparison-table-page__year">{year}</div>
+      <div className="slide-year">{year}</div>
 
       {/* Section label */}
       {label && (
-        <p className="comparison-table-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
 
       {/* Horizontal rule */}
-      <hr className="comparison-table-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Content area */}
       <div className="comparison-table-page__content">
@@ -132,7 +132,7 @@ export default function ComparisonTablePage({ content, language = 'en' }: Compar
 
       {/* Page number */}
       {content.pageNumber !== undefined && (
-        <p className="comparison-table-page__page-number">
+        <p className="slide-page-number">
           {content.pageNumber}
         </p>
       )}

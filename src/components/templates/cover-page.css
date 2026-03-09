@@ -1,9 +1,4 @@
 .cover-page {
-  position: relative;
-  width: 960px;
-  height: 540px;
-  background: #F2F2F2;
-  overflow: hidden;
   font-family: 'Noto Sans JP', sans-serif;
 }
 
@@ -15,7 +10,7 @@
   width: 960px;
   height: 56px;
   background: #F2F2F2;
-  border-bottom: 1px solid #E5E5E5;
+  border-bottom: 1px solid #C8C8C8;
 }
 
 /* Logo */
@@ -82,5 +77,5 @@
 /* Placeholder when no image */
 .cover-page__hero--placeholder {
   background: #E8E8E8;
-  border: 2px dashed #CCCCCC;
+  border: 2px dashed #C8C8C8;
 }

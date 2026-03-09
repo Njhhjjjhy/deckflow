@@ -49,7 +49,7 @@ export default function DiagramPage({ content, language = 'en' }: DiagramPagePro
   const activeBranches = content.branches.filter((b) => b.heading.trim());
 
   return (
-    <div className="diagram-page">
+    <div className="slide-page diagram-page">
       {/* Circular logo */}
       <div
         className={`diagram-page__logo${!content.logoImage ? ' diagram-page__logo--placeholder' : ''}`}

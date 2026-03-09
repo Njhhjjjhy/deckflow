@@ -69,22 +69,22 @@ export default function PartnerProfilePage({ content, language = 'en' }: Partner
   ].filter((line) => line && line.trim());
 
   return (
-    <div className="partner-profile-page">
+    <div className="slide-page partner-profile-page">
       {/* Header */}
       <img
-        className="partner-profile-page__wordmark"
+        className="slide-wordmark"
         src="/moreharvest-wordmark.png"
         alt="MoreHarvest"
       />
-      <span className="partner-profile-page__year" style={{ fontFamily }}>
+      <span className="slide-year" style={{ fontFamily }}>
         {year}
       </span>
       {label && (
-        <p className="partner-profile-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
-      <div className="partner-profile-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Partner logo — centered, fixed height ~80px */}
       {content.partnerLogoImage && (
@@ -205,7 +205,7 @@ export default function PartnerProfilePage({ content, language = 'en' }: Partner
 
       {/* Page number */}
       {content.pageNumber != null && (
-        <span className="partner-profile-page__page-number" style={{ fontFamily }}>
+        <span className="slide-page-number" style={{ fontFamily }}>
           {content.pageNumber}
         </span>
       )}

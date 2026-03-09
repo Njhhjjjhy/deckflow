@@ -55,26 +55,26 @@ export default function TextChartPage({ content, language = 'en' }: TextChartPag
     : undefined;
 
   return (
-    <div className="text-chart-page">
+    <div className="slide-page text-chart-page">
       {/* Wordmark */}
       <img
-        className="text-chart-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year */}
-      <div className="text-chart-page__year">{year}</div>
+      <div className="slide-year">{year}</div>
 
       {/* Section label */}
       {label && (
-        <p className="text-chart-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
 
       {/* Horizontal rule */}
-      <hr className="text-chart-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Left column: heading + bullets */}
       <div className="text-chart-page__left">
@@ -196,7 +196,7 @@ export default function TextChartPage({ content, language = 'en' }: TextChartPag
 
       {/* Page number */}
       {content.pageNumber !== undefined && (
-        <p className="text-chart-page__page-number">
+        <p className="slide-page-number">
           {content.pageNumber}
         </p>
       )}

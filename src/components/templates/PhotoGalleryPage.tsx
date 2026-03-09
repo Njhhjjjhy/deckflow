@@ -94,26 +94,26 @@ export default function PhotoGalleryPage({ content, language = 'en' }: PhotoGall
   const cells = computeCellPositions(photos.length);
 
   return (
-    <div className="photo-gallery-page">
+    <div className="slide-page photo-gallery-page">
       {/* Wordmark */}
       <img
-        className="photo-gallery-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year */}
-      <div className="photo-gallery-page__year" style={{ fontFamily }}>{year}</div>
+      <div className="slide-year" style={{ fontFamily }}>{year}</div>
 
       {/* Section label */}
       {label && (
-        <p className="photo-gallery-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
 
       {/* Horizontal rule */}
-      <hr className="photo-gallery-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Photo grid */}
       <div className="photo-gallery-page__grid">

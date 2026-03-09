@@ -1,58 +1,5 @@
 .index-toc-page {
-  position: relative;
-  width: 960px;
-  height: 540px;
-  background: #F2F2F2;
-  overflow: hidden;
   font-family: 'Noto Sans JP', sans-serif;
-}
-
-/* MoreHarvest wordmark — top-left */
-.index-toc-page__wordmark {
-  position: absolute;
-  left: 48px;
-  top: 28px;
-  height: 22px;
-  width: auto;
-  display: block;
-}
-
-/* Year — top-right, right-aligned at x 912 */
-.index-toc-page__year {
-  position: absolute;
-  right: 48px;
-  top: 28px;
-  font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  color: #1A1A1A;
-  line-height: 1;
-  text-align: right;
-}
-
-/* Section label e.g. "00 | Index" */
-.index-toc-page__label {
-  position: absolute;
-  left: 48px;
-  top: 52px;
-  font-weight: 400;
-  font-size: 12px;
-  color: #1A1A1A;
-  line-height: 1;
-  margin: 0;
-}
-
-/* Horizontal rule */
-.index-toc-page__rule {
-  position: absolute;
-  top: 78px;
-  left: 0;
-  width: 960px;
-  height: 0;
-  border: none;
-  border-top: 1px solid #E5E5E5;
-  margin: 0;
-  padding: 0;
 }
 
 /* TOC container — left column */
@@ -128,5 +75,5 @@
   height: 370px;
   border-radius: 50%;
   background: #E8E8E8;
-  border: 2px dashed #CCCCCC;
+  border: 2px dashed #C8C8C8;
 }

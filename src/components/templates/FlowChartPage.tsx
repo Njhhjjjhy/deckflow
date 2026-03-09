@@ -124,26 +124,26 @@ export default function FlowChartPage({ content, language = 'en' }: FlowChartPag
   }).filter(Boolean) as (FlowChartArrow & { start: { x: number; y: number }; end: { x: number; y: number }; labelX: number; labelY: number; textAnchor: string })[];
 
   return (
-    <div className="flow-chart-page">
+    <div className="slide-page flow-chart-page">
       {/* Wordmark — top-left */}
       <img
-        className="flow-chart-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year — top-right */}
-      <div className="flow-chart-page__year">{year}</div>
+      <div className="slide-year">{year}</div>
 
       {/* Section label */}
       {label && (
-        <p className="flow-chart-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
 
       {/* Horizontal rule */}
-      <hr className="flow-chart-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Left panel — legend + footnotes */}
       <div className="flow-chart-page__left-panel">
@@ -260,7 +260,7 @@ export default function FlowChartPage({ content, language = 'en' }: FlowChartPag
 
       {/* Page number — bottom center */}
       {content.pageNumber !== undefined && (
-        <p className="flow-chart-page__page-number">
+        <p className="slide-page-number">
           {content.pageNumber}
         </p>
       )}

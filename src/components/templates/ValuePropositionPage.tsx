@@ -74,7 +74,7 @@ export default function ValuePropositionPage({ content, language = 'en' }: Value
   };
 
   return (
-    <div className="value-proposition-page">
+    <div className="slide-page value-proposition-page">
       {/* Gold accent bar */}
       {accentBarVisible && (
         <div

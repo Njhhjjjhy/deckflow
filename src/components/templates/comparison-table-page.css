@@ -1,61 +1,5 @@
 .comparison-table-page {
-  position: relative;
-  width: 960px;
-  height: 540px;
-  background: #F2F2F2;
-  overflow: hidden;
   font-family: 'Noto Sans JP', sans-serif;
-}
-
-.comparison-table-page__wordmark {
-  position: absolute;
-  left: 30px;
-  top: 14px;
-  height: 22px;
-  width: auto;
-}
-
-.comparison-table-page__year {
-  position: absolute;
-  right: 30px;
-  top: 14px;
-  font-size: 13px;
-  font-weight: 400;
-  color: #1A1A1A;
-  text-align: right;
-}
-
-.comparison-table-page__label {
-  position: absolute;
-  left: 30px;
-  top: 38px;
-  font-size: 11px;
-  font-weight: 400;
-  color: #333333;
-  margin: 0;
-}
-
-.comparison-table-page__rule {
-  position: absolute;
-  top: 54px;
-  left: 30px;
-  width: 900px;
-  border: none;
-  border-top: 1px solid #E5E5E5;
-  margin: 0;
-  padding: 0;
-}
-
-.comparison-table-page__page-number {
-  position: absolute;
-  top: 524px;
-  left: 0;
-  width: 960px;
-  text-align: center;
-  font-size: 11px;
-  font-weight: 400;
-  color: #333333;
-  margin: 0;
 }
 
 /* Content area */
@@ -68,7 +12,7 @@
 
 .comparison-table-page__heading {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
   color: #1A1A1A;
   margin: 0 0 10px 0;
   line-height: 1.4;
@@ -96,7 +40,7 @@
 /* Header row */
 .comparison-table-page__table thead th {
   height: 60px;
-  border: 1px solid #E5E5E5;
+  border: 1px solid #C8C8C8;
   padding: 8px;
   vertical-align: middle;
   text-align: center;
@@ -107,12 +51,12 @@
 }
 
 .comparison-table-page__table thead th:nth-child(2) {
-  background: #FDF3D0;
+  background: #FFF3CD;
 }
 
 .comparison-table-page__table thead th:nth-child(3) {
-  background: #FFFFFF;
-  font-weight: 700;
+  background: #F2F2F2;
+  font-weight: 600;
   font-size: 14px;
   color: #1A1A1A;
 }
@@ -129,7 +73,7 @@
   font-size: 12px;
   font-weight: 400;
   color: #1A1A1A;
-  border: 1px solid #E5E5E5;
+  border: 1px solid #C8C8C8;
   padding: 8px;
   vertical-align: middle;
   text-align: center;
@@ -137,29 +81,29 @@
 }
 
 .comparison-table-page__table tbody td:nth-child(1) {
-  background: #FFFFFF;
+  background: #F2F2F2;
   text-align: center;
 }
 
 .comparison-table-page__table tbody td:nth-child(2) {
-  background: #FDF3D0;
+  background: #FFF3CD;
 }
 
 .comparison-table-page__table tbody td:nth-child(3) {
-  background: #FFFFFF;
+  background: #F2F2F2;
 }
 
 /* Source citation */
 .comparison-table-page__source {
   margin-top: 8px;
   font-size: 10px;
-  color: #333333;
+  color: #2A2A2A;
   line-height: 1.5;
 }
 
 /* Empty translation placeholder */
 .comparison-table-page__empty {
-  color: #CCCCCC;
+  color: #ADADAD;
   font-weight: 400;
   font-style: italic;
 }

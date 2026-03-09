@@ -73,26 +73,26 @@ export default function DataTablePage({ content, language = 'en' }: DataTablePag
     : defaultRowHeight;
 
   return (
-    <div className="data-table-page">
+    <div className="slide-page data-table-page">
       {/* Wordmark */}
       <img
-        className="data-table-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year */}
-      <div className="data-table-page__year">{year}</div>
+      <div className="slide-year">{year}</div>
 
       {/* Section label */}
       {label && (
-        <p className="data-table-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
 
       {/* Horizontal rule */}
-      <hr className="data-table-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Content area */}
       <div className="data-table-page__content">
@@ -157,7 +157,7 @@ export default function DataTablePage({ content, language = 'en' }: DataTablePag
 
       {/* Page number */}
       {content.pageNumber !== undefined && (
-        <p className="data-table-page__page-number">
+        <p className="slide-page-number">
           {content.pageNumber}
         </p>
       )}

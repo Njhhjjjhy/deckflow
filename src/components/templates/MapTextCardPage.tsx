@@ -71,26 +71,26 @@ export default function MapTextCardPage({ content, language = 'en' }: MapTextCar
   const headingFontSize = Math.max(MIN_HEADING_FONT_SIZE, Math.round(DEFAULT_HEADING_FONT_SIZE * fontScale));
 
   return (
-    <div className="map-text-card-page">
+    <div className="slide-page map-text-card-page">
       {/* Wordmark — top-left */}
       <img
-        className="map-text-card-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year — top-right */}
-      <div className="map-text-card-page__year">{year}</div>
+      <div className="slide-year">{year}</div>
 
       {/* Section label */}
       {label && (
-        <p className="map-text-card-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
 
       {/* Horizontal rule */}
-      <hr className="map-text-card-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Left column: map image */}
       <div
@@ -178,7 +178,7 @@ export default function MapTextCardPage({ content, language = 'en' }: MapTextCar
 
       {/* Page number — bottom center */}
       {content.pageNumber !== undefined && (
-        <p className="map-text-card-page__page-number">
+        <p className="slide-page-number">
           {content.pageNumber}
         </p>
       )}

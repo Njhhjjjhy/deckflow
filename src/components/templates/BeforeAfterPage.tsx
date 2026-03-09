@@ -120,26 +120,26 @@ export default function BeforeAfterPage({ content, language = 'en' }: BeforeAfte
   const layout = computeLayout(mode, pairs.length);
 
   return (
-    <div className="before-after-page">
+    <div className="slide-page before-after-page">
       {/* Wordmark */}
       <img
-        className="before-after-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year */}
-      <div className="before-after-page__year" style={{ fontFamily }}>{year}</div>
+      <div className="slide-year" style={{ fontFamily }}>{year}</div>
 
       {/* Section label */}
       {label && (
-        <p className="before-after-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
 
       {/* Horizontal rule */}
-      <hr className="before-after-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Grid */}
       <div className="before-after-page__grid" style={{ width: 880, height: 420 }}>
@@ -239,7 +239,7 @@ export default function BeforeAfterPage({ content, language = 'en' }: BeforeAfte
 
       {/* Page number */}
       {content.pageNumber !== undefined && (
-        <p className="before-after-page__page-number" style={{ fontFamily }}>
+        <p className="slide-page-number" style={{ fontFamily }}>
           {content.pageNumber}
         </p>
       )}

@@ -73,24 +73,24 @@ export default function IndexTOCPage({ content, language = 'en' }: IndexTOCProps
   }, [content.sections, language]);
 
   return (
-    <div className="index-toc-page">
+    <div className="slide-page index-toc-page">
       {/* Wordmark — top-left */}
       <img
-        className="index-toc-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year — top-right */}
-      <div className="index-toc-page__year">{year}</div>
+      <div className="slide-year">{year}</div>
 
       {/* Section label */}
-      <p className="index-toc-page__label" style={{ fontFamily }}>
+      <p className="slide-label" style={{ fontFamily }}>
         {label}
       </p>
 
       {/* Horizontal rule */}
-      <hr className="index-toc-page__rule" />
+      <hr className="slide-rule" />
 
       {/* TOC content */}
       <div ref={tocRef} className="index-toc-page__toc" style={{ fontSize }}>

@@ -51,26 +51,26 @@ export default function TimelineImagePage({ content, language = 'en' }: Timeline
   const entries = content.entries || [];
 
   return (
-    <div className="timeline-image-page">
+    <div className="slide-page timeline-image-page">
       {/* Wordmark */}
       <img
-        className="timeline-image-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year */}
-      <div className="timeline-image-page__year">{year}</div>
+      <div className="slide-year">{year}</div>
 
       {/* Section label */}
       {label && (
-        <p className="timeline-image-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
 
       {/* Horizontal rule */}
-      <hr className="timeline-image-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Timeline block */}
       <div className="timeline-image-page__timeline">
@@ -155,7 +155,7 @@ export default function TimelineImagePage({ content, language = 'en' }: Timeline
 
       {/* Page number */}
       {content.pageNumber !== undefined && (
-        <p className="timeline-image-page__page-number">
+        <p className="slide-page-number">
           {content.pageNumber}
         </p>
       )}

@@ -27,7 +27,7 @@ export default function SectionDividerPage({ content, language = 'en' }: Section
         : "'REM', sans-serif";
 
   return (
-    <div className="section-divider">
+    <div className="slide-page section-divider">
       {/* Left block: label + number */}
       <div className="section-divider__left">
         <p className="section-divider__label" style={{ fontFamily: labelFont }}>

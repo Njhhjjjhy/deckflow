@@ -48,22 +48,22 @@ export default function LogosTextTablePage({ content, language = 'en' }: LogosTe
   const entryHeight = Math.floor(455 / entryCount);
 
   return (
-    <div className="logos-text-table-page">
+    <div className="slide-page logos-text-table-page">
       {/* Header */}
       <img
-        className="logos-text-table-page__wordmark"
+        className="slide-wordmark"
         src="/moreharvest-wordmark.png"
         alt="MoreHarvest"
       />
-      <span className="logos-text-table-page__year" style={{ fontFamily }}>
+      <span className="slide-year" style={{ fontFamily }}>
         {year}
       </span>
       {label && (
-        <p className="logos-text-table-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
-      <div className="logos-text-table-page__rule" />
+      <hr className="slide-rule" />
 
       {/* LEFT COLUMN: Partner entries */}
       {entries.map((entry, idx) => {
@@ -220,7 +220,7 @@ export default function LogosTextTablePage({ content, language = 'en' }: LogosTe
 
       {/* Page number */}
       {content.pageNumber != null && (
-        <span className="logos-text-table-page__page-number" style={{ fontFamily }}>
+        <span className="slide-page-number" style={{ fontFamily }}>
           {content.pageNumber}
         </span>
       )}

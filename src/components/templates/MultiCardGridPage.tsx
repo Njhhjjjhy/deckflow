@@ -118,26 +118,26 @@ export default function MultiCardGridPage({ content, language = 'en' }: MultiCar
   );
 
   return (
-    <div className="multi-card-grid-page">
+    <div className="slide-page multi-card-grid-page">
       {/* Wordmark — top-left */}
       <img
-        className="multi-card-grid-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year — top-right */}
-      <div className="multi-card-grid-page__year">{year}</div>
+      <div className="slide-year">{year}</div>
 
       {/* Section label */}
       {label && (
-        <p className="multi-card-grid-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
 
       {/* Horizontal rule */}
-      <hr className="multi-card-grid-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Two-column card grid */}
       <div
@@ -165,7 +165,7 @@ export default function MultiCardGridPage({ content, language = 'en' }: MultiCar
 
       {/* Page number — bottom center */}
       {content.pageNumber !== undefined && (
-        <p className="multi-card-grid-page__page-number">
+        <p className="slide-page-number">
           {content.pageNumber}
         </p>
       )}

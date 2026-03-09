@@ -69,26 +69,26 @@ export default function TextImagesPage({ content, language = 'en' }: TextImagesP
   const photoGap = 4;
 
   return (
-    <div className="text-images-page">
+    <div className="slide-page text-images-page">
       {/* Wordmark */}
       <img
-        className="text-images-page__wordmark"
+        className="slide-wordmark"
         src="/assets/logo-moreharvest.svg"
         alt="MoreHarvest"
       />
 
       {/* Year */}
-      <div className="text-images-page__year">{year}</div>
+      <div className="slide-year">{year}</div>
 
       {/* Section label */}
       {label && (
-        <p className="text-images-page__label" style={{ fontFamily }}>
+        <p className="slide-label" style={{ fontFamily }}>
           {label}
         </p>
       )}
 
       {/* Horizontal rule */}
-      <hr className="text-images-page__rule" />
+      <hr className="slide-rule" />
 
       {/* Left column: sections */}
       <div className="text-images-page__left">
@@ -195,7 +195,7 @@ export default function TextImagesPage({ content, language = 'en' }: TextImagesP
 
       {/* Page number */}
       {content.pageNumber !== undefined && (
-        <p className="text-images-page__page-number">
+        <p className="slide-page-number">
           {content.pageNumber}
         </p>
       )}

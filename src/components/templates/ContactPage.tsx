@@ -19,7 +19,7 @@ export default function ContactPage({ content }: ContactPageProps) {
   const year = content.year || new Date().getFullYear().toString();
 
   return (
-    <div className="contact-page">
+    <div className="slide-page contact-page">
       {/* Wordmark — top-left */}
       <img
         className="contact-page__wordmark"

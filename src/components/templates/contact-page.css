@@ -1,9 +1,4 @@
 .contact-page {
-  position: relative;
-  width: 960px;
-  height: 540px;
-  background: #F2F2F2;
-  overflow: hidden;
   font-family: 'Noto Sans JP', sans-serif;
 }
 
@@ -37,7 +32,7 @@
   width: 960px;
   height: 0;
   border: none;
-  border-top: 1px solid #E5E5E5;
+  border-top: 1px solid #C8C8C8;
   margin: 0;
   padding: 0;
 }
@@ -50,8 +45,8 @@
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  background: #fff;
-  border: 1px solid #E5E5E5;
+  background: #F2F2F2;
+  border: 1px solid #C8C8C8;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -95,7 +90,7 @@
 }
 
 .contact-page__link {
-  color: #0080A0;
+  color: #1A1A1A;
   text-decoration: none;
 }
 
@@ -107,7 +102,7 @@
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 400;
   font-size: 13px;
-  color: #0080A0;
+  color: #1A1A1A;
   text-decoration: none;
   line-height: 1;
 }
