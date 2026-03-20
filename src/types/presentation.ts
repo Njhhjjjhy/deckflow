@@ -41,17 +41,6 @@ export interface Page {
   order: number;
   type: PageType;
   content: Record<string, TranslatableField | string>;
-  reusableBlockId?: string;
-}
-
-export interface ReusableBlock {
-  id: string;
-  name: string;
-  type: PageType;
-  content: Record<string, TranslatableField | string>;
-  usedIn: string[]; // presentation IDs
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface GlossaryEntry {
@@ -74,7 +63,6 @@ export interface Presentation {
   pages: Page[];
   glossary: GlossaryEntry[];
   metadata: PresentationMetadata;
-  needsReExport?: boolean;
 }
 
 /** Helper to create a new empty TranslatableField */

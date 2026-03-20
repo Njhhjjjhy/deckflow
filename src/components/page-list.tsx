@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import type { Page, PageType } from '../types/presentation';
 import { usePresentationStore } from '../lib/store/presentation-store';
-import { useBlocksStore, PAGE_TYPE_LABELS as BLOCK_TYPE_LABELS } from '../lib/store/blocks-store';
 
 const PAGE_TYPE_LABELS: Record<string, string> = {
   cover: 'Cover',
@@ -54,122 +53,16 @@ const ADD_PAGE_OPTIONS: { type: PageType; label: string }[] = [
   { type: 'text-news', label: 'Text + News Clippings' },
 ];
 
-// ── Block picker modal ─────────────────────────────────────────────────────────
-
-function BlockPickerModal({ onSelect, onClose }: {
-  onSelect: (blockId: string) => void;
-  onClose: () => void;
-}) {
-  const blocks = useBlocksStore((s) => s.blocks);
-
-  return createPortal(
-    <div
-      style={{
-        position: 'fixed', inset: 0,
-        background: 'rgba(0,0,0,0.35)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        zIndex: 9999,
-      }}
-      onClick={onClose}
-    >
-      <div
-        style={{
-          background: '#fff',
-          border: '1px solid #C8C8C8',
-          borderRadius: 10,
-          width: 400,
-          maxWidth: '90vw',
-          maxHeight: '70vh',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div style={{
-          padding: '14px 16px',
-          borderBottom: '1px solid #C8C8C8',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-          <span style={{ fontSize: 14, fontWeight: 600, color: '#1A1A1A' }}>Add from block library</span>
-          <button
-            onClick={onClose}
-            style={{ background: 'none', border: 'none', fontSize: 16, color: '#787878', cursor: 'pointer', lineHeight: 1 }}
-          >
-            ✕
-          </button>
-        </div>
-
-        {/* List */}
-        <div style={{ overflowY: 'auto', flex: 1, padding: '8px 0' }}>
-          {blocks.length === 0 ? (
-            <div style={{ padding: '24px 16px', textAlign: 'center' }}>
-              <p style={{ margin: '0 0 8px 0', fontSize: 13, fontWeight: 600, color: '#1A1A1A' }}>No blocks saved yet</p>
-              <p style={{ margin: 0, fontSize: 12, color: '#787878' }}>
-                Create reusable blocks in the{' '}
-                <a href="#/blocks" style={{ color: '#FBB931', textDecoration: 'none', fontWeight: 600 }}>Blocks library</a>.
-              </p>
-            </div>
-          ) : (
-            blocks.map((block) => (
-              <button
-                key={block.id}
-                onClick={() => onSelect(block.id)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 10,
-                  width: '100%',
-                  textAlign: 'left',
-                  padding: '10px 16px',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = '#F2F2F2'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = 'none'; }}
-              >
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: '#1A1A1A' }}>{block.name}</div>
-                  <div style={{ fontSize: 11, color: '#787878', marginTop: 2 }}>{BLOCK_TYPE_LABELS[block.type]}</div>
-                </div>
-                <span style={{
-                  fontSize: 10, fontWeight: 600, color: '#5E5E5E',
-                  background: '#E8E8E8', border: '1px solid #C8C8C8',
-                  padding: '2px 6px', borderRadius: 4,
-                }}>
-                  {block.usedIn.length} use{block.usedIn.length !== 1 ? 's' : ''}
-                </span>
-              </button>
-            ))
-          )}
-        </div>
-      </div>
-    </div>,
-    document.body
-  );
-}
-
-// ── PageList ───────────────────────────────────────────────────────────────────
-
 export default function PageList() {
   const pages = usePresentationStore((s) => s.presentation.pages);
-  const presentationId = usePresentationStore((s) => s.presentation.id);
   const selectedPageId = usePresentationStore((s) => s.selectedPageId);
   const selectPage = usePresentationStore((s) => s.selectPage);
   const addPage = usePresentationStore((s) => s.addPage);
-  const addPageFromBlock = usePresentationStore((s) => s.addPageFromBlock);
   const deletePage = usePresentationStore((s) => s.deletePage);
   const reorderPage = usePresentationStore((s) => s.reorderPage);
   const movePage = usePresentationStore((s) => s.movePage);
 
-  const { blocks, addUsage, removeUsage } = useBlocksStore();
-
   const [showMenu, setShowMenu] = useState(false);
-  const [showBlockPicker, setShowBlockPicker] = useState(false);
   const [menuPos, setMenuPos] = useState({ top: 0, left: 0 });
   const addBtnRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -197,24 +90,8 @@ export default function PageList() {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [showMenu]);
 
-  const handleSelectBlock = (blockId: string) => {
-    const block = blocks.find((b) => b.id === blockId);
-    if (!block) return;
-    addPageFromBlock(block);
-    addUsage(blockId, presentationId);
-    setShowBlockPicker(false);
-  };
-
   const handleDeletePage = (page: Page) => {
     if (!window.confirm(`Delete page ${page.order + 1} (${PAGE_TYPE_LABELS[page.type] || page.type})?`)) return;
-
-    // If this is the last page linked to a block, remove usage
-    if (page.reusableBlockId) {
-      const otherLinked = pages.filter((p) => p.id !== page.id && p.reusableBlockId === page.reusableBlockId);
-      if (otherLinked.length === 0) {
-        removeUsage(page.reusableBlockId, presentationId);
-      }
-    }
     deletePage(page.id);
   };
 
@@ -265,41 +142,16 @@ export default function PageList() {
                 {opt.label}
               </button>
             ))}
-
-            {/* Divider + block library option */}
-            <div style={{ borderTop: '1px solid #E5E5E5', margin: '4px 0' }} />
-            <button
-              onClick={() => { setShowMenu(false); setShowBlockPicker(true); }}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 6,
-                width: '100%', textAlign: 'left',
-                padding: '6px 12px', fontSize: 12, color: '#FBB931', fontWeight: 600,
-                background: 'none', border: 'none', cursor: 'pointer',
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = '#FFFBEF'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = 'none'; }}
-            >
-              <span>⬡</span>
-              From block library
-            </button>
           </div>,
           document.body
         )}
       </div>
-
-      {showBlockPicker && (
-        <BlockPickerModal
-          onSelect={handleSelectBlock}
-          onClose={() => setShowBlockPicker(false)}
-        />
-      )}
 
       <div className="flex-1 overflow-y-auto py-2">
         {pages.map((page: Page) => {
           const isSelected = page.id === selectedPageId;
           const isDragged = page.id === draggedId;
           const isDragOver = page.id === dragOverId && draggedId !== page.id;
-          const isLinkedToBlock = !!page.reusableBlockId;
 
           return (
             <div
@@ -335,26 +187,12 @@ export default function PageList() {
                 style={{
                   aspectRatio: '16/9',
                   background: isSelected ? '#FBB93111' : '#E8E8E8',
-                  borderColor: isLinkedToBlock ? '#FBB931' : (isSelected ? '#FBB931' : '#E5E5E5'),
-                  position: 'relative',
+                  borderColor: isSelected ? '#FBB931' : '#E5E5E5',
                 }}
-              >
-                {isLinkedToBlock && (
-                  <span style={{
-                    position: 'absolute', top: 3, right: 4,
-                    fontSize: 9, fontWeight: 700,
-                    color: '#FBB931', letterSpacing: '0.04em',
-                  }}>
-                    BLOCK
-                  </span>
-                )}
-              </div>
+              />
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium" style={{ color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span className="text-xs font-medium" style={{ color: '#1A1A1A' }}>
                   {page.order + 1}. {PAGE_TYPE_LABELS[page.type] || page.type}
-                  {isLinkedToBlock && (
-                    <span style={{ fontSize: 9, color: '#FBB931', fontWeight: 700 }}>⬡</span>
-                  )}
                 </span>
                 <span className="flex items-center gap-0.5" onClick={(e) => e.stopPropagation()}>
                   <button

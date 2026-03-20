@@ -15,7 +15,7 @@ Background: #F2F2F2
 **MoreHarvest logo**
 - Position: x=40, y=13
 - Height: 30px, width auto
-- Logo image file from /docs/brand.md
+- Logo image file from /public/assets
 
 **Year**
 - Position: top-right, x=920 (right-aligned), y=18

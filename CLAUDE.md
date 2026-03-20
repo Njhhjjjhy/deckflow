@@ -87,16 +87,13 @@ Build one template at a time. Test each against the corresponding Oakwater PDF p
 ### Phase 6: translation engine
 Integrate Anthropic API for EN -> zh-TW and EN -> zh-CN translation. Include term glossary in every API call. Translation status per field: auto-translated (yellow), reviewed (green), outdated (red), empty (gray). See `/docs/features.md#translation` for full spec.
 
-### Phase 7: reusable blocks
-Content fragments that can be included by reference in multiple presentations. When a block is edited, all presentations using it are flagged for re-export. See `/docs/features.md#reusable-blocks`.
-
-### Phase 8: PPTX export
+### Phase 7: PPTX export
 Add PPTX export using pptxgenjs. Each template gets a parallel PPTX builder function. Acceptance: file opens in Google Slides and looks professional. Does not need to be pixel-identical to PDF.
 
-### Phase 9: dashboard and presentation library
+### Phase 8: dashboard and presentation library
 List all presentations with metadata: name, category, last updated, translation status, quick actions (edit, preview, export, duplicate). See `/docs/features.md#dashboard`.
 
-### Phase 10: feedback workflow
+### Phase 9: feedback workflow
 Review links, page-pinned comments, open/resolved status. See `/docs/features.md#feedback`.
 
 ## Rules for every session
@@ -130,8 +127,10 @@ Review links, page-pinned comments, open/resolved status. See `/docs/features.md
   /types           -- TypeScript interfaces for all data
 /docs
   /templates.md    -- detailed specs for all 20 page types
-  /features.md     -- acceptance criteria for all 8 MVP features
-  /brand.md        -- complete brand reference (source of truth for colors, fonts, logos)
+  /features.md     -- acceptance criteria for all 7 MVP features
+  /color.md        -- color tokens, semantic aliases, accessibility
+  /typography.md   -- fonts, type scale, line heights
+  /spacing.md      -- spacing scale, border radius, canvas, margins
 /public
   /assets          -- uploaded images, logos, icons
 ```
@@ -155,7 +154,6 @@ interface Page {
   order: number;
   type: PageType; // 'cover' | 'value-proposition' | 'section-divider' | ...
   content: Record<string, TranslatableField | string | TableData | ChartData>;
-  reusableBlockId?: string;
 }
 
 interface TranslatableField {
@@ -172,14 +170,6 @@ interface GlossaryEntry {
   en: string;
   'zh-tw': string;
   'zh-cn': string;
-}
-
-interface ReusableBlock {
-  id: string;
-  name: string;
-  type: PageType;
-  content: Record<string, TranslatableField | string>;
-  usedIn: string[]; // presentation IDs
 }
 
 interface Asset {
@@ -226,7 +216,7 @@ Detailed element specs (positions, sizes, fonts, required/optional fields) are i
 
 ## MVP features summary
 
-8 features, built in the phase order above:
+7 features, built in the phase order above:
 
 1. **Content editor.** Structured form per page type. Plain text fields with trilingual tabs. Image picker (upload or choose from library). Chart/table data entry via spreadsheet-like grid. No rich text. No formatting controls.
 2. **Translation engine.** Anthropic API with term glossary. Per-field status tracking (auto-translated / reviewed / outdated / empty). Global "translate all" button. Individual field translate button.
@@ -234,22 +224,20 @@ Detailed element specs (positions, sizes, fonts, required/optional fields) are i
 4. **PDF export.** Single language or all-languages zip. Fonts embedded, images sharp, dimensions correct. Must be indistinguishable from hand-crafted output.
 5. **PPTX export.** Single language or all-languages zip. Opens cleanly in Google Slides. Professional, not pixel-perfect. Embedded fonts and images.
 6. **Asset library.** Upload once, reference everywhere. Categories: photos, logos, icons, charts, maps. Usage tracking per asset.
-7. **Reusable blocks.** Shared content fragments included by reference. Edit once, all linked presentations flagged for re-export.
-8. **Feedback workflow.** Shareable review links. Comments pinned to page numbers. Open/resolved status. Comment history preserved.
+7. **Feedback workflow.** Shareable review links. Comments pinned to page numbers. Open/resolved status. Comment history preserved.
 
 Full acceptance criteria per feature are in `/docs/features.md`.
 
 ## App navigation
 
-Six views:
-1. Dashboard -- all presentations, reusable blocks, recent activity, quick stats.
+Five views:
+1. Dashboard -- all presentations, recent activity, quick stats.
 2. Presentation editor -- three-column layout (page list / content fields / live preview).
 3. Full preview -- full-screen rendered presentation with page nav and zoom.
 4. Asset library -- grid view, upload, tag, search, usage tracking.
-5. Reusable blocks -- block library with content fields and linked presentations list.
-6. Review view -- shareable link, rendered presentation with comment sidebar, no account required.
+5. Review view -- shareable link, rendered presentation with comment sidebar, no account required.
 
-Top nav: logo, dashboard, assets, blocks, user menu.
+Top nav: logo, dashboard, assets, user menu.
 
 ## Design direction
 
@@ -266,17 +254,17 @@ Every feature must handle these states:
 - Empty state (0 pages, 0 presentations, 0 assets).
 - Loading state (translation API in progress, PDF generating, image uploading).
 - Error state (API failure, upload failure, invalid data).
-- Confirmation before destructive actions (delete page, delete presentation, delete reusable block with linked presentations).
+- Confirmation before destructive actions (delete page, delete presentation).
 
 When Chinese text is significantly shorter than English, the template must still look balanced.
-
-When a reusable block is deleted that's referenced by presentations, show a warning listing all affected presentations and require confirmation.
 
 ## Supporting docs (read when working on the relevant feature)
 
 - `/docs/templates.md` -- specs for all 20 page templates with element positions, fonts, required/optional fields
 - `/docs/features.md` -- detailed acceptance criteria for each MVP feature
-- `/docs/brand.md` -- complete brand reference (source of truth for all colors, fonts, logos)
+- `/docs/color.md` -- color tokens, semantic aliases, accessibility
+- `/docs/typography.md` -- fonts, type scale, line heights
+- `/docs/spacing.md` -- spacing scale, border radius, canvas, margins
 
 ## Success criteria
 

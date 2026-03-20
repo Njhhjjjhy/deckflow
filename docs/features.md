@@ -25,4 +25,3 @@
 - Required field left empty: yellow border on field, warning icon in page list.
 - Translation API fails: show error toast, field unchanged, retry button appears.
 - Delete page: confirmation dialog.
-- Delete reusable block with linked presentations: warning listing affected presentations.

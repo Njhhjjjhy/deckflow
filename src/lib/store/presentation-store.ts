@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Presentation, Page, Language, TranslatableField, ReusableBlock } from '../../types/presentation';
+import type { Presentation, Page, Language, TranslatableField } from '../../types/presentation';
 import { createCoverPage, createValuePropositionPage, createDiagramPage, createIndexPage, createSectionDividerPage, createDisclaimerPage, createContactPage, createMultiCardGridPage, createTextChartPage, createDataTablePage, createComparisonTablePage, createTimelineImagePage, createTextImagesPage, createBeforeAfterPage, createMapTextPage, createThreeCirclesPage, createFlowChartPage, createPartnerProfilePage, createLogosTextTablePage, createPhotoGalleryPage, createLongFormTextPage, createTextNewsPage } from '../../types/presentation';
 
 function createDefaultPresentation(): Presentation {
@@ -42,11 +42,6 @@ interface PresentationState {
   // Presentation metadata
   setName: (name: string) => void;
 
-  // Reusable block integration
-  addPageFromBlock: (block: ReusableBlock) => void;
-  syncBlockContent: (blockId: string, content: Record<string, TranslatableField | string>) => void;
-  unlinkBlock: (blockId: string, content: Record<string, TranslatableField | string>) => void;
-  clearNeedsReExport: () => void;
 }
 
 export const usePresentationStore = create<PresentationState>()(
@@ -228,58 +223,6 @@ export const usePresentationStore = create<PresentationState>()(
             },
           })),
 
-        addPageFromBlock: (block) =>
-          set((state) => {
-            const order = state.presentation.pages.length;
-            const newPage: Page = {
-              id: crypto.randomUUID(),
-              order,
-              type: block.type,
-              content: { ...block.content },
-              reusableBlockId: block.id,
-            };
-            return {
-              presentation: {
-                ...state.presentation,
-                pages: [...state.presentation.pages, newPage],
-              },
-              selectedPageId: newPage.id,
-            };
-          }),
-
-        syncBlockContent: (blockId, content) =>
-          set((state) => {
-            const hasLinked = state.presentation.pages.some((p) => p.reusableBlockId === blockId);
-            if (!hasLinked) return state;
-            return {
-              presentation: {
-                ...state.presentation,
-                needsReExport: true,
-                pages: state.presentation.pages.map((p) =>
-                  p.reusableBlockId === blockId ? { ...p, content: { ...content } } : p
-                ),
-                metadata: { ...state.presentation.metadata, updatedAt: new Date().toISOString() },
-              },
-            };
-          }),
-
-        unlinkBlock: (blockId, content) =>
-          set((state) => ({
-            presentation: {
-              ...state.presentation,
-              pages: state.presentation.pages.map((p) =>
-                p.reusableBlockId === blockId
-                  ? { ...p, content: { ...content }, reusableBlockId: undefined }
-                  : p
-              ),
-              metadata: { ...state.presentation.metadata, updatedAt: new Date().toISOString() },
-            },
-          })),
-
-        clearNeedsReExport: () =>
-          set((state) => ({
-            presentation: { ...state.presentation, needsReExport: false },
-          })),
       };
     },
     {
